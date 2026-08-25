@@ -10,6 +10,8 @@ The site is **exported as static files** and uploaded to Linux shared hosting �
 DirectAdmin, on Apache or LiteSpeed. There is no Node process in production: `npm run build`
 produces `out/`, and `out/` is the website. See [Deploying](#deploying).
 
+Live at **https://www.liquilob.com**.
+
 ```bash
 npm install
 npm run dev      # http://localhost:3210 — writing, design, everything except the form
@@ -216,7 +218,21 @@ search engines are told which version counts either way.
 
 ### cPanel
 
-Upload into `public_html`, via File Manager or FTP.
+Upload into the document root **of the domain that serves this site**, which is not always
+`public_html`:
+
+- If `liquilob.com` is the account's **primary** domain, it is `public_html`.
+- If the account was bought under a different domain — `profimann.com`, say — and
+  `liquilob.com` was added afterwards as an **addon domain**, cPanel gives it a directory of
+  its own, usually `public_html/liquilob.com/`. That directory *is* the document root for
+  `liquilob.com`, so every root-relative path in the build resolves normally. Upload there
+  and nothing else changes.
+
+  The wrinkle: cPanel leaves that same directory reachable at
+  `profimann.com/liquilob.com/`, and through that address the build's root-relative asset
+  paths point at the wrong place, so the page renders unstyled. Nothing links to it and every
+  page carries a canonical naming the real address, so it does no harm — but do not use that
+  path to check the site, and do not send it to a client.
 
 - **Force HTTPS** — *Domains*, then the toggle on the domain's row. AutoSSL issues the
   certificate; give it a few minutes after the domain resolves.
@@ -247,7 +263,36 @@ root — DirectAdmin gives every domain its own tree.
   **nginx ignores `.htaccess` entirely** — the site would still serve, but `/` would not
   redirect to `/tr/`, and the 404 and caching rules would not apply. If the host is
   nginx-only, ask them to add the equivalent `location` rules, or use a plan on Apache or
-  LiteSpeed. Güzel Hosting's Linux plans are LiteSpeed, which reads `.htaccess`.
+  LiteSpeed.
+
+### How it is actually deployed
+
+Recorded because none of it is derivable from this repository, and the next person to touch
+it should not have to work it out from a control panel.
+
+| | |
+| --- | --- |
+| Host | Güzel Hosting, DirectAdmin, **LiteSpeed** — so `.htaccess` is read in full |
+| Registrar | İsimtescil, for both `liquilob.com` and `profimann.com` |
+| Nameservers | Güzel's, set at İsimtescil. DNS, including the mail records, is managed in DirectAdmin |
+| Account | Bought under `profimann.com`; `liquilob.com` was added afterwards as a second domain |
+| Upload path | `domains/liquilob.com/public_html` — **not** the account root, which belongs to `profimann.com` |
+| HTTPS | Let's Encrypt via DirectAdmin, forced in the panel rather than in `.htaccess` |
+| Mailbox | Both the inquiry sender and recipient are on `profimann.com`, so form mail is delivered locally and never leaves the server. The addresses are in `inquiry-config.php` on the server, deliberately not in this repository |
+
+Uploading is one zip rather than 282 files. From inside `out/`:
+
+```bash
+tar -a -c -f ../liquilob-site.zip .
+```
+
+Then upload and extract it in File Manager. **Do not use PowerShell's `Compress-Archive` or
+Explorer's "Send to → Compressed folder"** — both write Windows backslashes as path
+separators, and Linux `unzip` then produces 400 files with literal backslashes in their
+names instead of a directory tree. `tar` writes the archive correctly.
+
+On a redeploy, delete the old `_next/` first — asset filenames are content-hashed, so stale
+chunks accumulate rather than being overwritten. Leave `inquiry-config.php` alone.
 
 ### Showing it to a client before launch
 

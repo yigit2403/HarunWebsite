@@ -12,3 +12,6 @@ next-env.d.ts
 public/inquiry-data.json
 public/photos/*.webp
 assets/brand/*.webp
+
+# Upload package built from out/ — see README, "Deploying".
+liquilob-site.zip
