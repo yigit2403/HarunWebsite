@@ -1,3 +1,4 @@
+import { origin } from '@/lib/deployment'
 import type { Localised } from '@/lib/i18n'
 
 /**
@@ -30,8 +31,8 @@ export const COMPANY = {
     { label: 'www.profimann.com', href: 'https://www.profimann.com' },
   ],
 
-  /** Canonical origin. Override with NEXT_PUBLIC_SITE_URL at build time. */
-  origin: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.liquilob.com',
+  /** Canonical origin. See lib/deployment.ts for how it is resolved. */
+  origin: origin(),
 } as const
 
 export const ADDRESS_LINES: Localised<string[]> = {

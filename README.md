@@ -133,6 +133,27 @@ the form sends the visitor to the phone number rather than claiming it was sent.
 
 ---
 
+## Showing it to a client before launch
+
+Deploy it as a preview. The site is built so a review deployment cannot damage the
+eventual launch:
+
+- **`robots.txt` refuses every crawler** unless the build is production *and*
+  `NEXT_PUBLIC_SITE_URL` is set. Both conditions, not either.
+- **Every page also carries `noindex, nofollow`** on a non-production build, because a
+  direct link bypasses `robots.txt` entirely.
+- **Canonical URLs and the sitemap follow the deployment**, so a preview does not announce
+  itself as `liquilob.com` before that domain exists.
+
+`lib/deployment.ts` decides this from `VERCEL_ENV`, or from `SITE_STAGE` if you host it
+somewhere else. Nothing has to be remembered at deploy time; the safe state is the default,
+and indexing has to be switched on deliberately.
+
+When the real domain is ready, set `NEXT_PUBLIC_SITE_URL=https://www.liquilob.com` on the
+production environment only. That single variable is what flips indexing on.
+
+---
+
 ## The admin panel
 
 `/admin` — first-party analytics, behind HTTP Basic auth, no third-party service and no

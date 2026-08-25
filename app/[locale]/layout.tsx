@@ -12,6 +12,7 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { Reveal } from '@/components/ui/Reveal'
 import { UI } from '@/content/dict'
 import { COMPANY } from '@/content/site'
+import { isIndexable } from '@/lib/deployment'
 import { LOCALES, LOCALE_TAG, isLocale, type Locale } from '@/lib/i18n'
 import { organizationJsonLd } from '@/lib/seo'
 
@@ -62,7 +63,11 @@ export async function generateMetadata({
     applicationName: COMPANY.brand,
     authors: [{ name: COMPANY.legalName }],
     formatDetection: { telephone: true },
-    robots: { index: true, follow: true },
+    // robots.txt already refuses crawlers on a preview; this is the per-page
+    // belt to that braces, since a direct link can bypass robots.txt.
+    robots: isIndexable()
+      ? { index: true, follow: true }
+      : { index: false, follow: false, nocache: true },
   }
 }
 
