@@ -124,11 +124,9 @@
 .slab .photo-slot__mark { background: var(--red-on-dark); }
 
 .photo-slot__label {
-  font: var(--t-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+  font: var(--t-body-sm);
   color: var(--ink-soft);
-  max-width: 32ch;
+  max-width: 34ch;
 }
 
 .slab .photo-slot__label { color: var(--on-dark-soft); }
@@ -490,10 +488,11 @@
   .statement-band {
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
     gap: var(--s16);
-    /* The pulled statement is always shorter than the column beside it.
-       Centring keeps the band from reading as half-empty. */
-    align-items: center;
   }
+
+  /* Centring only where the column beside the statement is genuinely tall.
+     Applied blanket, it manufactures the empty space it was meant to fix. */
+  .statement-band--centred { align-items: center; }
 }
 
 .statement-band__body {
@@ -519,6 +518,11 @@
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
     gap: var(--s16);
   }
+
+  /* Single measured column, for a band whose supporting image has moved out
+     to a full-bleed of its own. */
+  .slab-band__grid--single { grid-template-columns: minmax(0, 1fr); }
+  .slab-band__grid--single > * { max-width: 54rem; }
 }
 
 /* Hero actions stack to full width on narrow screens so the two CTAs read as
@@ -662,3 +666,40 @@
 }
 
 .rotor-card__links a:hover { border-bottom-color: var(--red); }
+
+/* ----------------------------------------------------------- BLEED BAND
+   The one full-width photographic moment on the page. It carries no text:
+   the brief is explicit about not setting copy over an image, and this
+   photograph has no dead corner to put a scrim in. It earns its place by
+   being the only thing on screen, which is also what makes the dark band
+   that follows land harder.                                              */
+.bleed {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--slab);
+  aspect-ratio: 2.1 / 1;
+  max-height: 62vh;
+}
+
+@media (max-width: 48rem) {
+  .bleed { aspect-ratio: 3 / 2; max-height: none; }
+}
+
+.bleed img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 46%;
+}
+
+.bleed__caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--s3) var(--s5);
+  background: var(--canvas);
+  font: var(--t-caption);
+  color: var(--graphite);
+  max-width: min(92%, 30rem);
+}

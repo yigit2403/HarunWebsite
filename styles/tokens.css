@@ -96,8 +96,11 @@
   --s16: 4rem;     /* 64 */
   --s20: 5rem;     /* 80 */
 
-  --space-section: clamp(3.5rem, 2.1rem + 6vw, 7rem);
-  --space-section-tight: clamp(2.75rem, 1.8rem + 4vw, 4.5rem);
+  /* Measured, not guessed. At the previous 7rem the gap between two bands'
+     content ran 235-509px, which is empty rather than spacious. These values
+     hold it near 190px: still generous, but the space now frames something. */
+  --space-section: clamp(3rem, 1.9rem + 4.6vw, 5.25rem);
+  --space-section-tight: clamp(2.5rem, 1.7rem + 3.2vw, 3.75rem);
 
   /* ----------------------------------------------------------------- GRID */
   --container: 1320px;

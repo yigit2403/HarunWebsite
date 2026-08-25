@@ -6,8 +6,8 @@ import { IconArrowRight, IconArrowUpRight } from '@tabler/icons-react'
 import { RotorProfile, RotorSection } from '@/components/graphics/RotorSection'
 import { CtaBand } from '@/components/site/CtaBand'
 import { ApplicationIcon } from '@/components/ui/ApplicationIcon'
+import { BleedBand } from '@/components/ui/BleedBand'
 import { DocList } from '@/components/ui/DocList'
-import { PhotoSlot } from '@/components/ui/PhotoSlot'
 import { ProductCard } from '@/components/ui/ProductCard'
 import { ProductImage } from '@/components/ui/ProductImage'
 import { SectionHead } from '@/components/ui/SectionHead'
@@ -239,10 +239,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 7. Engineering. The one dark band on the page. */}
+      {/* 7. The one full-width photograph, running straight into the dark
+          band so the two read as a single dramatic beat. */}
+      <BleedBand slot={PHOTOS.installation} locale={locale} />
+
+      {/* 8. Engineering. The one dark band on the page. */}
       <section className="slab slab-band">
         <div className="container">
-          <div className="slab-band__grid">
+          <div className="slab-band__grid slab-band__grid--single">
             <div data-reveal="">
               <span className="rule" aria-hidden="true" />
               <span className="kicker">{ENGINEERING_BAND.kicker[locale]}</span>
@@ -262,7 +266,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </div>
             </div>
 
-            <PhotoSlot slot={PHOTOS.installation} locale={locale} sizes="(min-width: 64rem) 42vw, 92vw" />
           </div>
 
           <div className="figures slab-band__figures">
@@ -281,7 +284,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 8. About. One pulled statement, the full story lives on its own page. */}
+      {/* 9. About. One pulled statement, the full story lives on its own page. */}
       <section className="section section--canvas">
         <div className="container statement-band">
           <p className="statement" data-reveal="">
@@ -297,7 +300,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 9. Technical resources. A list, not a card grid. */}
+      {/* 10. Technical resources. A list, not a card grid. */}
       <section className="section section--cloud">
         <div className="container">
           <SectionHead
@@ -314,7 +317,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 10. Technical inquiry. */}
+      {/* 11. Technical inquiry. */}
       <CtaBand
         locale={locale}
         surface="canvas"

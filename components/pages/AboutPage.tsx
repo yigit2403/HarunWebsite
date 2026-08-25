@@ -38,7 +38,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
 
       {/* The quality statement carries the section on its own. */}
       <section className="slab slab-band">
-        <div className="container statement-band">
+        <div className="container statement-band statement-band--centred">
           <p className="statement" data-reveal="">
             {ABOUT_STATEMENT.statement[locale]}
           </p>

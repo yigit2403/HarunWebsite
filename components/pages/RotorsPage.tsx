@@ -110,7 +110,7 @@ export function RotorsPage({ locale }: { locale: Locale }) {
 
       {/* What every rotor shares, on the dark band. */}
       <section className="slab slab-band">
-        <div className="container statement-band">
+        <div className="container statement-band statement-band--centred">
           <p className="statement" data-reveal="">
             {ROTOR_CLOSING[locale]}
           </p>

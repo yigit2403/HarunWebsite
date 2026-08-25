@@ -685,3 +685,40 @@
 }
 
 .phone-link:hover { border-bottom-color: var(--red); }
+
+/* A seven-item tile grid leaves the last tile alone on a three-column row,
+   with two thirds of the band standing empty. Rather than invent an eighth
+   application to square the grid, the odd one out spans the full width and
+   lays out horizontally. The rule is conditional, so a grid that divides
+   evenly is untouched. */
+@media (min-width: 64rem) {
+  .grid--3 > .industry-tile:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--s10);
+  }
+
+  .grid--3 > .industry-tile:last-child:nth-child(3n + 1) .industry-tile__icon { flex: none; }
+  .grid--3 > .industry-tile:last-child:nth-child(3n + 1) .industry-tile__name { flex: 0 0 12rem; }
+
+  .grid--3 > .industry-tile:last-child:nth-child(3n + 1) .pillar__body {
+    flex: 1 1 18rem;
+    max-width: 34ch;
+  }
+
+  .grid--3 > .industry-tile:last-child:nth-child(3n + 1) .industry-tile__fluids {
+    flex: 1 1 16rem;
+    margin-top: 0;
+    padding-left: var(--s8);
+    border-left: 1px solid var(--hairline-soft);
+  }
+
+  .grid--3 > .industry-tile:last-child:nth-child(3n + 1) .industry-tile__go {
+    flex: none;
+    margin-left: auto;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
