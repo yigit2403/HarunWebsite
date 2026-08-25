@@ -15,8 +15,8 @@ export const COMPANY = {
   brand: 'Liquilob',
   brandEndorsement: 'BY PROFIMANN',
 
-  phoneDisplay: '+90 505 353 50 70',
-  phoneHref: 'tel:+905053535070',
+  phoneDisplay: '+90 505 353 50 75',
+  phoneHref: 'tel:+905053535075',
 
   address: {
     street: 'Horozluhan Mah. Tekelioğlu Sk. No. 65',
