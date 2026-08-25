@@ -1,0 +1,17 @@
+# Normalise to LF in the repository. Without this, committing from Windows and
+# building on Linux (Vercel, CI) shows every file as modified.
+* text=auto eol=lf
+
+# Binary, never touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.dwg binary
+
+# Keep diffs on the lockfile out of review.
+package-lock.json linguist-generated=true -diff
