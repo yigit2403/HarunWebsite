@@ -18,8 +18,8 @@ export const HERO = {
     en: 'High-efficiency, durable rotary lobe pumps engineered for demanding industrial duties.',
   } as Localised,
   drawingCaption: {
-    tr: 'LQL serisi, yan görünüş',
-    en: 'LQL series, side elevation',
+    tr: 'LQL serisi, ön kapak çıkarılmış',
+    en: 'LQL series, shown with the front cover removed',
   } as Localised,
 }
 
@@ -456,8 +456,9 @@ export const CONTACT_PAGE = {
 }
 
 /* -------------------------------------------------------------- PHOTOGRAPHY
-   Reserved positions for Profimann photography. See PHOTOGRAPHY.md for the
-   shot list. Each slot renders as a measured frame until a file is set.     */
+   Slots carrying a `src` are Profimann's own images. Slots without one still
+   render as a measured, labelled frame rather than a stock stand-in; see
+   PHOTOGRAPHY.md for what is still needed.                                  */
 
 export type PhotoSlot = {
   id: string
@@ -468,6 +469,24 @@ export type PhotoSlot = {
 }
 
 export const PHOTOS: Record<string, PhotoSlot> = {
+  installation: {
+    id: 'installation',
+    ratio: '1529 / 1013',
+    src: '/photos/installation-food-line.jpg',
+    label: {
+      tr: 'Gıda üretim hattına kurulu Liquilob loblu pompa ve redüktörlü motor grubu',
+      en: 'A Liquilob lobe pump and geared motor installed on a food production line',
+    },
+  },
+  rotorFamily: {
+    id: 'rotorFamily',
+    ratio: '1331 / 538',
+    src: '/photos/rotor-family.jpg',
+    label: {
+      tr: 'Liquilob rotor ailesi: çok pervaneli, üç loblu, çift kanatlı ve tek kanatlı rotor çiftleri',
+      en: 'The Liquilob rotor family: multi-impeller, tri-lobe, bi-wing and single-wing rotor pairs',
+    },
+  },
   manufacturing: {
     id: 'manufacturing',
     ratio: '4 / 3',
@@ -484,12 +503,19 @@ export const PHOTOS: Record<string, PhotoSlot> = {
       en: 'Liquilob pump set on the assembly line',
     },
   },
-  installation: {
-    id: 'installation',
-    ratio: '16 / 9',
-    label: {
-      tr: 'Sahada kurulu pompa ve boru bağlantıları',
-      en: 'Installed pump and pipework on site',
-    },
-  },
+}
+
+/**
+ * The isolated product render, used wherever the machine itself is the
+ * subject: the hero, the catalogue cards and the product detail page. Its
+ * background has been keyed out, so it sits on any surface.
+ */
+export const PRODUCT_IMAGE = {
+  src: '/photos/pump-render.png',
+  width: 612,
+  height: 516,
+  alt: {
+    tr: 'Liquilob loblu rotorlu pompa, ön kapak çıkarılmış halde üç loblu rotor çifti görünür',
+    en: 'Liquilob rotary lobe pump with the front cover removed, showing the tri-lobe rotor pair',
+  } as Localised,
 }

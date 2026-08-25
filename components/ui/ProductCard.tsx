@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { IconArrowRight } from '@tabler/icons-react'
 
-import { PumpElevation } from '@/components/graphics/PumpElevation'
+import { ProductImage } from '@/components/ui/ProductImage'
 import { UI } from '@/content/dict'
 import type { Product } from '@/content/products'
 import type { Locale } from '@/lib/i18n'
@@ -18,7 +18,7 @@ export function ProductCard({ product, locale }: { product: Product; locale: Loc
   return (
     <article className="product-card" data-reveal="">
       <div className="product-card__figure">
-        <PumpElevation title={`${product.name} ${product.type[locale]}`} scale={product.drawScale} />
+        <ProductImage locale={locale} sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 44vw, 88vw" />
       </div>
 
       <div className="product-card__body">

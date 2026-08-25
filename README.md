@@ -24,6 +24,7 @@ Every page exists at a localised address. There are no unlocalised routes.
 | Home | `/tr` | `/en` |
 | Catalogue | `/tr/urunler` | `/en/products` |
 | Product | `/tr/urunler/lql-100` | `/en/products/lql-100` |
+| Rotor technologies | `/tr/rotor-teknolojileri` | `/en/rotor-technologies` |
 | Applications | `/tr/uygulamalar` | `/en/applications` |
 | Application | `/tr/uygulamalar/sut-urunleri` | `/en/applications/dairy` |
 | Engineering | `/tr/muhendislik` | `/en/engineering` |
@@ -58,7 +59,9 @@ All copy, in both languages, sits in `content/`. Nothing is hardcoded in a compo
 | `content/dict.ts` | Interface strings: navigation, labels, table headers, form chrome |
 | `content/pages.ts` | Page prose: home sections, about, engineering, resources, contact |
 | `content/products.ts` | The four LQL models and their specifications |
-| `content/applications.ts` | The six application pages |
+| `content/rotors.ts` | The four rotor geometries |
+| `content/configurations.ts` | Jacketed and PP body variants |
+| `content/applications.ts` | The seven application pages |
 
 Editing Turkish and English side by side is the point: every entry is
 `{ tr: '...', en: '...' }`, so a missing translation is a TypeScript error rather than a
@@ -80,16 +83,13 @@ is dimensionally coherent for review. **They are not measured test data.** Repla
 Profimann's verified figures and set the flag to `false`; the advisories disappear on their
 own.
 
-### 2. There is no photography yet
+### 2. Photography is partial
 
-The drawings on this site are real: `components/graphics/` holds a side elevation, a
-cross-section through the pumping chamber, a performance-curve frame and a dimensioned
-outline. The rotor profiles in `components/graphics/geometry.ts` are generated from the
-tri-lobe equation, not traced, so the running clearance shown is the real one.
-
-Where a photograph belongs and does not exist, the page renders a measured, labelled frame
-instead of a stock stand-in. See [PHOTOGRAPHY.md](PHOTOGRAPHY.md) for the shot list and how
-to drop the real files in.
+Profimann has supplied the product render, an installation shot, the rotor family and the
+logo, and all four are in use. Two positions are still reserved (`manufacturing`,
+`assembly`) and render as measured, labelled frames rather than stock stand-ins. See
+[PHOTOGRAPHY.md](PHOTOGRAPHY.md) for the shot list, the processing that was applied to the
+supplied files, and how to drop new ones in.
 
 Documents behave the same way. Nothing links to a catalogue PDF that has not been issued;
 every document row routes to the inquiry form with the document named.
@@ -196,8 +196,9 @@ type size or a spacing value.
 
 Rules the whole site keeps:
 
-- **One accent.** `--red` is the only chromatic colour. On the dark slab it becomes
-  `--red-on-dark`, which is the lighter variant that clears AA against `#141414`.
+- **One accent.** `--red` is `#cc0c0c`, sampled from the supplied logo artwork rather than
+  guessed. On the dark slab it becomes `--red-on-dark`, the lighter variant that clears AA
+  against `#141414`.
 - **One shape rule.** Interactive elements are 2px. Containers are 0px. Nothing is rounder.
 - **No shadows.** Depth comes from surface contrast and hairlines.
 - **Four surfaces.** `--canvas`, `--cloud`, `--fog`, `--slab`. Two bands of the same surface
@@ -206,6 +207,24 @@ Rules the whole site keeps:
   IBM Plex Mono, tabular.
 - **Red is never the only signal.** Active navigation carries `aria-current` as well as the
   red underline.
+
+### The drawings
+
+Photographs sell the machine; drawings explain it. Both are used, and neither does the
+other's job.
+
+`components/graphics/` holds a side elevation, a chamber cross-section, a performance-curve
+frame and a dimensioned outline. The rotor profiles in `components/graphics/rotors.ts` are
+**generated, not drawn**: all four geometries are one equation, `r(t) = a + b·cos(n·t)`, at
+four lobe counts, with the bore held at a constant radius so the four diagrams are directly
+comparable. Regenerate with:
+
+```bash
+node tools/rotors.js
+```
+
+That script also solves the meshing index numerically and refuses to emit a pair that
+collides, so the clearances the diagrams show are measured rather than assumed.
 
 ### Why the drawing styles are in CSS
 
@@ -237,4 +256,10 @@ shows everything immediately and the observer exits without doing any work.
 - Specification tables are horizontally scrollable inside a focusable `role="region"`, so a
   keyboard user can pan them. No specification is hidden on mobile.
 - Form labels sit above their inputs. No placeholder is used as a label.
-- Contrast: body text 6.7:1, muted footer text 7.9:1, red on white and white on red 5.3:1.
+- Contrast: body text 6.7:1, muted footer text 7.9:1, red on white and white on red 5.8:1.
+
+### A note on Turkish uppercase, again
+
+The admin panel's document is `lang="tr"`, so its English view sets `lang` on the panel
+wrapper. Without that, `text-transform: uppercase` renders "Page views" with a dotted capital
+I. The same trap applies anywhere uppercase English appears inside a Turkish document.

@@ -9,9 +9,12 @@
 
 :root {
   /* ---------------------------------------------------------------- COLOR */
-  /* Signal. One chromatic action colour, nothing else. */
-  --red: #d00000;          /* CTA fill, active nav, section rule, key figures  */
-  --red-deep: #a50000;     /* pressed state                                    */
+  /* Signal. One chromatic action colour, nothing else.
+     Sampled from the supplied LIQUILOB logo artwork: #cc0c0c accounts for 93%
+     of the red pixels across both logo files, so this is the brand red rather
+     than an approximation of it. White on it clears AA at 5.8:1. */
+  --red: #cc0c0c;          /* CTA fill, active nav, section rule, key figures  */
+  --red-deep: #a30a0a;     /* pressed state                                    */
   --red-tint: #fbeaea;     /* very pale wash, table row highlight only         */
   --red-on-dark: #ff3b3b;  /* the only red permitted on a dark slab (AA 5.3:1) */
 

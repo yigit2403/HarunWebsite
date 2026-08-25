@@ -529,3 +529,136 @@
     width: 100%;
   }
 }
+
+/* The product render is a keyed cut-out on a neutral field, so it needs more
+   air than a line drawing and no inner frame of its own. */
+.tech-frame--product {
+  background: var(--cloud);
+  padding: clamp(var(--s6), 4vw, var(--s12));
+}
+
+/* --------------------------------------------------------------- PHOTO
+   Real photography sits in the same hairline frame as the drawings, so a
+   photo and a drawing read as the same kind of object on the page.        */
+.photo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background: var(--cloud);
+}
+
+.slab .photo { border-color: var(--hairline-dark); }
+
+/* ------------------------------------------------------------ ROTOR STRIP
+   The four geometries drawn to a common bore, for comparison at a glance. */
+.rotor-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s6);
+}
+
+@media (min-width: 64rem) {
+  .rotor-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s8); }
+}
+
+.rotor-strip__item {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  padding: var(--s5);
+  text-align: center;
+}
+
+.rotor-strip__name {
+  font: var(--t-title-sm);
+  margin-top: var(--s4);
+}
+
+.rotor-strip__latin {
+  font: var(--t-value-sm);
+  color: var(--graphite);
+  margin-top: var(--s1);
+}
+
+/* ------------------------------------------------------------- ROTOR GRID */
+.rotor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.rotor-card {
+  padding: var(--s8) 0;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+@media (min-width: 64rem) {
+  .rotor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s16);
+  }
+
+  .rotor-card { padding: var(--s10) 0; }
+  .rotor-card:nth-child(-n + 2) { padding-top: var(--s8); }
+}
+
+.rotor-card__name {
+  font: var(--t-display-sm);
+  letter-spacing: var(--ls-display);
+}
+
+.rotor-card__latin {
+  font: var(--t-value-sm);
+  color: var(--graphite);
+  margin-top: var(--s1);
+}
+
+.rotor-card__summary {
+  font: var(--t-body-lg);
+  color: var(--ink);
+  max-width: 42ch;
+}
+
+.rotor-card__body {
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+
+.rotor-card__points { margin-top: var(--s2); }
+
+.rotor-card__used {
+  /* Pinned to the foot of the card so the divider lines up across a row,
+     whatever length the two descriptions happen to be. */
+  margin-top: auto;
+  padding-top: var(--s5);
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.rotor-card__used-label {
+  display: block;
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  margin-bottom: var(--s3);
+}
+
+.rotor-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+}
+
+.rotor-card__links a {
+  font: var(--t-title-sm);
+  color: var(--ink);
+  border-bottom: 2px solid var(--hairline);
+  padding-bottom: 2px;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.rotor-card__links a:hover { border-bottom-color: var(--red); }

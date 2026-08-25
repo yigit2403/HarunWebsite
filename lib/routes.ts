@@ -12,6 +12,7 @@ import { LOCALES, type Locale, type Localised } from './i18n'
 
 export const PAGE_KEYS = [
   'products',
+  'rotors',
   'applications',
   'engineering',
   'about',
@@ -23,6 +24,7 @@ export type PageKey = (typeof PAGE_KEYS)[number]
 
 export const SEGMENTS: Record<PageKey, Localised> = {
   products: { tr: 'urunler', en: 'products' },
+  rotors: { tr: 'rotor-teknolojileri', en: 'rotor-technologies' },
   applications: { tr: 'uygulamalar', en: 'applications' },
   engineering: { tr: 'muhendislik', en: 'engineering' },
   about: { tr: 'kurumsal', en: 'about' },
@@ -57,7 +59,14 @@ export function pageKeyFromSegment(locale: Locale, segment: string): PageKey | n
 }
 
 /** Every page key, in the order they appear in the primary navigation. */
-export const NAV_ORDER: PageKey[] = ['products', 'applications', 'engineering', 'about', 'support']
+export const NAV_ORDER: PageKey[] = [
+  'products',
+  'rotors',
+  'applications',
+  'engineering',
+  'about',
+  'support',
+]
 
 export function allLocales(): readonly Locale[] {
   return LOCALES

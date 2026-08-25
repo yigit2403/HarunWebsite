@@ -12,10 +12,11 @@ import type { PageKey } from '@/lib/routes'
 
 export const NAV_LABEL: Record<PageKey, Localised> = {
   products: { tr: 'Ürünler', en: 'Products' },
+  rotors: { tr: 'Rotorlar', en: 'Rotors' },
   applications: { tr: 'Uygulamalar', en: 'Applications' },
   engineering: { tr: 'Mühendislik', en: 'Engineering' },
   about: { tr: 'Kurumsal', en: 'About' },
-  support: { tr: 'Teknik Kaynaklar', en: 'Resources' },
+  support: { tr: 'Kaynaklar', en: 'Resources' },
   contact: { tr: 'İletişim', en: 'Contact' },
 }
 

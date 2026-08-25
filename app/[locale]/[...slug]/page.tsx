@@ -8,10 +8,12 @@ import { ContactPage } from '@/components/pages/ContactPage'
 import { EngineeringPage } from '@/components/pages/EngineeringPage'
 import { ProductDetailPage } from '@/components/pages/ProductDetailPage'
 import { ProductsPage } from '@/components/pages/ProductsPage'
+import { RotorsPage } from '@/components/pages/RotorsPage'
 import { SupportPage } from '@/components/pages/SupportPage'
 import { APPLICATIONS, applicationBySlug } from '@/content/applications'
 import { NAV_LABEL } from '@/content/dict'
 import { ABOUT_PAGE, APPLICATIONS_SECTION, CONTACT_PAGE, ENGINEERING_PAGE, PRODUCTS_SECTION, SUPPORT_PAGE } from '@/content/pages'
+import { ROTOR_INTRO } from '@/content/rotors'
 import { PRODUCTS, productBySlug } from '@/content/products'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n'
 import { SEGMENTS, href, pageKeyFromSegment, type PageKey } from '@/lib/routes'
@@ -93,6 +95,10 @@ function seoFor(locale: Locale, resolved: Resolved) {
           title: PRODUCTS_SECTION.title[locale],
           description: PRODUCTS_SECTION.lead[locale],
         },
+        rotors: {
+          title: locale === 'tr' ? 'Rotor Teknolojileri' : 'Rotor Technologies',
+          description: ROTOR_INTRO[locale],
+        },
         applications: {
           title: `${NAV_LABEL.applications[locale]} · ${APPLICATIONS_SECTION.title[locale]}`,
           description: APPLICATIONS_SECTION.lead[locale],
@@ -147,6 +153,8 @@ export default async function InteriorPage({
       return <ApplicationDetailPage application={applicationBySlug(locale, resolved.slug)!} locale={locale} />
     case 'products':
       return <ProductsPage locale={locale} />
+    case 'rotors':
+      return <RotorsPage locale={locale} />
     case 'applications':
       return <ApplicationsPage locale={locale} />
     case 'engineering':

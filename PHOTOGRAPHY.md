@@ -1,8 +1,35 @@
 # Photography
 
-The site is built to hold Profimann's own photographs. Until they exist, each reserved
-position renders as a measured, labelled frame rather than a stock stand-in, because a
-generic photograph of an unrelated factory would damage the page more than an honest gap.
+Profimann's own imagery, and what is still missing.
+
+## Delivered and in use
+
+| Asset | File | Where it appears |
+| --- | --- | --- |
+| Product render, cover removed | `public/photos/pump-render.png` | Home hero, catalogue cards, product detail hero |
+| Installation on a food line | `public/photos/installation-food-line.jpg` | Home engineering band |
+| Rotor family | `public/photos/rotor-family.jpg` | Rotor technologies page |
+| Logo artwork | `public/brand/liquilob-logo.png` | Header and footer |
+
+Two of these were processed before use:
+
+- **The render** arrived on an opaque white ground with a shadow slab beneath it. The
+  background was keyed out by flood-filling from the border, so white highlights *inside*
+  the machine survive, and the ground slab was cropped away at the feet. It now sits on any
+  surface. The original is in the source document if it is ever needed again.
+- **The logo** arrived with a wide red margin that left the wordmark at half the plate
+  height and `BY PROFIMANN` illegible at header size. It was cropped to its ink with even
+  padding, which renders the wordmark about 40% larger in the same space. The mark itself is
+  untouched.
+
+The brand red in `styles/tokens.css` is `#cc0c0c`, sampled from the logo artwork, where it
+accounts for 93% of the red pixels across both supplied files.
+
+## Still needed
+
+Each remaining position renders as a measured, labelled frame rather than a stock stand-in,
+because a generic photograph of an unrelated factory would damage the page more than an
+honest gap.
 
 ## How to add a photograph
 
@@ -26,9 +53,8 @@ so write it as a description of the picture, not as a caption.
 
 | Slot | Ratio | Minimum width | Appears on |
 | --- | --- | --- | --- |
-| `manufacturing` | 4:3 | 1600px | Home (engineering band), About |
+| `manufacturing` | 4:3 | 1600px | About |
 | `assembly` | 3:2 | 1600px | Engineering |
-| `installation` | 16:9 | 2000px | Every application page |
 
 ### `manufacturing`
 
@@ -42,22 +68,16 @@ A Liquilob pump set on the bench during assembly. Front cover off if possible, s
 pair is visible; that image ties directly to the cross-section drawing used elsewhere on the
 site and is the single most valuable photograph on this list.
 
-### `installation`
-
-A pump installed on a real line, with its pipework. Stainless steel, clean welds, a plant
-that looks like it runs. Wide enough to read as an installation, not a product shot.
-
 ## What to shoot for the rest of the site
 
-The catalogue and the product detail pages currently use engineering drawings, which is a
-defensible choice for a pump manufacturer. They become stronger with a photograph of the
-real machine. If a shoot is commissioned, ask for:
+The catalogue now uses the supplied render. If a shoot is commissioned, ask for:
 
-- One isolated three-quarter view per frame size (LQL-25, 50, 100, 200), same angle, same
-  lighting, on a plain light-grey seamless background. These replace the drawing in the
-  catalogue card and in the product hero.
-- One rotor close-up on a neutral background. Tri-lobe, clean, filling the frame.
-- One shot of the front cover open with the rotor pair in the casing.
+- One isolated three-quarter view **per frame size** (LQL-25, 50, 100, 200), matching the
+  existing render's angle, lighting and background. Right now one render stands in for all
+  four models, which is normal for a catalogue but weaker than showing the real size step.
+- One rotor close-up per geometry on a neutral background, to sit beside the generated
+  section diagrams on the rotor technologies page.
+- One jacketed pump and one PP-bodied pump, for the configurations section.
 
 Consistency matters more than production value here: four pumps photographed at the same
 angle on the same background read as one product family. Four pumps photographed four

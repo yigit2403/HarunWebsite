@@ -3,13 +3,13 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { IconArrowRight, IconArrowUpRight } from '@tabler/icons-react'
 
-import { PumpElevation } from '@/components/graphics/PumpElevation'
-import { RotorSection } from '@/components/graphics/RotorSection'
+import { RotorProfile, RotorSection } from '@/components/graphics/RotorSection'
 import { CtaBand } from '@/components/site/CtaBand'
 import { ApplicationIcon } from '@/components/ui/ApplicationIcon'
 import { DocList } from '@/components/ui/DocList'
 import { PhotoSlot } from '@/components/ui/PhotoSlot'
 import { ProductCard } from '@/components/ui/ProductCard'
+import { ProductImage } from '@/components/ui/ProductImage'
 import { SectionHead } from '@/components/ui/SectionHead'
 import { APPLICATIONS } from '@/content/applications'
 import { NAV_LABEL, UI } from '@/content/dict'
@@ -27,9 +27,15 @@ import {
   RESOURCES_SECTION,
 } from '@/content/pages'
 import { PRODUCTS } from '@/content/products'
+import { ROTORS_CONTENT, ROTOR_INTRO } from '@/content/rotors'
 import { isLocale, type Locale } from '@/lib/i18n'
 import { href, inquiryHref } from '@/lib/routes'
 import { pageMetadata } from '@/lib/seo'
+
+const ROTORS_TITLE = {
+  tr: 'Dört rotor geometrisi, tek hidrolik prensip',
+  en: 'Four rotor geometries, one hydraulic principle',
+} as const
 
 const META = {
   tr: {
@@ -92,8 +98,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </div>
           </div>
 
-          <figure className="tech-frame">
-            <PumpElevation title={HERO.drawingCaption[locale]} />
+          <figure className="tech-frame tech-frame--product">
+            <ProductImage locale={locale} priority sizes="(min-width: 64rem) 46vw, 92vw" />
             <figcaption className="tech-frame__caption">{HERO.drawingCaption[locale]}</figcaption>
           </figure>
         </div>
@@ -136,8 +142,36 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 4. Working principle. Diagram-led, numbered sequence beside it. */}
+      {/* 4. Rotor family. The product's real differentiator, so it earns a
+          section rather than a row in a specification table. */}
       <section className="section section--cloud">
+        <div className="container">
+          <SectionHead
+            title={ROTORS_TITLE[locale]}
+            lead={ROTOR_INTRO[locale]}
+            action={
+              <Link className="link-arrow" href={href(locale, 'rotors')}>
+                {NAV_LABEL.rotors[locale]}
+                <IconArrowRight size={18} stroke={2} aria-hidden="true" />
+              </Link>
+            }
+          />
+          <ol className="rotor-strip">
+            {ROTORS_CONTENT.map((rotor) => (
+              <li className="rotor-strip__item" key={rotor.key} data-reveal="">
+                <Link href={`${href(locale, 'rotors')}#${rotor.slug}`}>
+                  <RotorProfile rotor={rotor.key} title={rotor.name[locale]} />
+                  <h3 className="rotor-strip__name">{rotor.name[locale]}</h3>
+                  <p className="rotor-strip__latin">{rotor.latin}</p>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 5. Working principle. Diagram-led, numbered sequence beside it. */}
+      <section className="section section--canvas">
         <div className="container principle">
           <figure className="tech-frame tech-frame--plain" data-reveal="">
             <RotorSection
@@ -175,8 +209,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 5. Applications. Compact tile matrix, six items in six cells. */}
-      <section className="section section--canvas">
+      {/* 6. Applications. Compact tile matrix. */}
+      <section className="section section--cloud">
         <div className="container">
           <SectionHead
             kicker={APPLICATIONS_SECTION.kicker[locale]}
@@ -205,7 +239,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 6. Engineering. The one dark band on the page. */}
+      {/* 7. Engineering. The one dark band on the page. */}
       <section className="slab slab-band">
         <div className="container">
           <div className="slab-band__grid">
@@ -228,7 +262,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </div>
             </div>
 
-            <PhotoSlot slot={PHOTOS.manufacturing} locale={locale} />
+            <PhotoSlot slot={PHOTOS.installation} locale={locale} sizes="(min-width: 64rem) 42vw, 92vw" />
           </div>
 
           <div className="figures slab-band__figures">
@@ -247,7 +281,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 7. About. One pulled statement, the full story lives on its own page. */}
+      {/* 8. About. One pulled statement, the full story lives on its own page. */}
       <section className="section section--canvas">
         <div className="container statement-band">
           <p className="statement" data-reveal="">
@@ -263,7 +297,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 8. Technical resources. A list, not a card grid. */}
+      {/* 9. Technical resources. A list, not a card grid. */}
       <section className="section section--cloud">
         <div className="container">
           <SectionHead
@@ -280,7 +314,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 9. Technical inquiry. */}
+      {/* 10. Technical inquiry. */}
       <CtaBand
         locale={locale}
         surface="canvas"

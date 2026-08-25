@@ -29,6 +29,7 @@ export type Application = {
 export type IconKey =
   | 'food'
   | 'dairy'
+  | 'chocolate'
   | 'chemical'
   | 'pharma'
   | 'wastewater'
@@ -91,12 +92,12 @@ export const APPLICATIONS: Application[] = [
     approach: {
       tr: [
         'Liquilob loblu pompalar düşük devirde çalışır ve geniş akış kesitleri sayesinde parçacıkları taşır, ezmez. Debi mil devriyle doğru orantılı olduğundan dolum hattında invertör üzerinden doğrudan hacim kontrolü yapılabilir.',
-        'Pulsasyonun kritik olduğu dolum uygulamalarında helisel rotor kullanılır. Parçacık boyutunun büyük olduğu soslarda ise 2 kanatlı rotor tercih edilir.',
+        'Pulsasyonun kritik olduğu dolum uygulamalarında üç loblu rotor kullanılır. Parçacık boyutunun büyük olduğu soslarda ise tek kanatlı rotor tercih edilir.',
         'Gövde geometrisi ölü hacmi sınırlar ve rotorlar ön kapak sökülerek çıkarılır; parti değişimlerinde hat açma süresi kısalır.',
       ],
       en: [
         'Liquilob lobe pumps run at low speed and their wide flow passages carry particles rather than crush them. Because flow tracks shaft speed, a filling line can control volume directly from the frequency drive.',
-        'Where pulsation is critical, a helical rotor is specified. Where particle size is large, as in chunky sauces, a bi-wing rotor is the better choice.',
+        'Where pulsation is critical, a tri-lobe rotor is specified. Where particle size is large, as in chunky sauces, a single-wing rotor is the better choice.',
         'The casing geometry limits dead volume and the rotors come out through the front cover, which shortens changeover between batches.',
       ],
     },
@@ -166,12 +167,12 @@ export const APPLICATIONS: Application[] = [
     approach: {
       tr: [
         'Hijyenik konfigürasyonda salmastra bölgesi CIP çözeltisinin ulaşabileceği şekilde tasarlanır. Yıkamalı çift mekanik salmastra seçildiğinde bariyer sıvısı hem sızdırmazlığı hem de temizlenebilirliği güvence altına alır.',
-        'Yoğurt ve krema transferinde 3 kanatlı veya helisel rotor düşük kesme kuvveti sağlar. Devir 200 min-1 civarında tutulduğunda jel yapısı korunur.',
+        'Yoğurt ve krema transferinde çift kanatlı veya üç loblu rotor düşük kesme kuvveti sağlar. Devir 200 min-1 civarında tutulduğunda jel yapısı korunur.',
         'SIP uygulanan hatlarda elastomer sınıfı EPDM olarak seçilir ve pompa gövdesi buhar sıcaklığına göre boyutlandırılır.',
       ],
       en: [
         'In the hygienic configuration the seal area is arranged so that CIP solution reaches it. With a flushed double mechanical seal the barrier fluid secures both sealing and cleanability.',
-        'For yoghurt and cream a tri-lobe or helical rotor keeps shear low. Held near 200 min-1, the gel structure survives the transfer.',
+        'For yoghurt and cream a bi-wing or tri-lobe rotor keeps shear low. Held near 200 min-1, the gel structure survives the transfer.',
         'On lines with SIP the elastomer grade is specified as EPDM and the pump body is dimensioned for steam temperature.',
       ],
     },
@@ -183,6 +184,81 @@ export const APPLICATIONS: Application[] = [
       { slug: 'lql-50', note: { tr: 'Fermantasyon ve dolum hattı', en: 'Fermentation and filling line' } },
       { slug: 'lql-100', note: { tr: 'Tank boşaltma ve transfer', en: 'Tank emptying and transfer' } },
       { slug: 'lql-25', note: { tr: 'Kültür ve katkı dozajı', en: 'Culture and additive dosing' } },
+    ],
+  },
+  {
+    key: 'chocolate',
+    slug: { tr: 'cikolata', en: 'chocolate' },
+    icon: 'chocolate',
+    name: { tr: 'Çikolata ve Kremamsı Ürünler', en: 'Chocolate & Confectionery' },
+    short: {
+      tr: 'Ceketli gövde ile sıcaklık kontrollü, düşük kesmeli transfer.',
+      en: 'Temperature-controlled, low-shear transfer with a jacketed body.',
+    },
+    fluids: {
+      tr: 'Çikolata kütlesi, kakao yağı, ganaj, dolgu kremaları, fondan',
+      en: 'Chocolate mass, cocoa butter, ganache, filling creams, fondant',
+    },
+    lead: {
+      tr: 'Çikolata ve benzeri kremamsı ürünler düşük sıcaklıklarda hızla katılaşır. Bu, transfer ekipmanında ısıtma, ilk çalıştırma güvenliği ve akış stabilitesi açısından yüksek teknik gereksinim doğurur.',
+      en: 'Chocolate and similar creamy products set quickly as they cool. That places real demands on transfer equipment: heating, safe start-up and stable flow all have to be solved together.',
+    },
+    process: {
+      tr: [
+        'Konçlama ve temperleme sonrasında çikolata kütlesi, ara tanklardan kalıplama ve dolum hatlarına taşınır. Bu yolun her metresinde ürünün sıcaklığı korunmak zorundadır; aksi halde hat içinde katılaşma başlar.',
+        'Vardiya sonlarında ve duruşlarda pompa ürün dolu halde bekler. Yeniden başlatma anı, bu uygulamanın en zorlu noktasıdır: soğumuş kütle, tahrik üzerinde normal işletmenin çok üzerinde bir tork talebi yaratır.',
+      ],
+      en: [
+        'After conching and tempering, the chocolate mass moves from intermediate tanks to the moulding and filling lines. Its temperature has to hold over every metre of that path, or it begins to set inside the line.',
+        'At the end of a shift, and at every stoppage, the pump stands full of product. Restarting is the hardest moment in this duty: a cooled mass demands far more torque from the drive than normal running.',
+      ],
+    },
+    characteristics: {
+      tr: [
+        'Viskozite sıcaklığa çok duyarlıdır; birkaç derecelik düşüş akışı durdurabilir.',
+        'Kakao yağı kristal yapısı, aşırı kesme ve sıcaklık dalgalanmasından zarar görür.',
+        'Ürün doku ve aroma açısından değerlendirilir; mekanik hasar doğrudan kalite kaybıdır.',
+        'Hat gıda hijyeni gerekliliklerine tabidir.',
+      ],
+      en: [
+        'Viscosity is highly temperature sensitive. A drop of a few degrees can stop the flow.',
+        'The crystal structure of cocoa butter is damaged by excess shear and by temperature swings.',
+        'The product is judged on texture and aroma, so mechanical damage is a direct loss of quality.',
+        'The line is subject to food hygiene requirements.',
+      ],
+    },
+    challenges: {
+      tr: [
+        'Isıtılmayan gövdede ürün katılaşır ve hat tıkanır.',
+        'Yüksek kesmeli transfer, çikolatanın dokusunu ve lezzet profilini bozar.',
+        'Soğuk başlangıçta tork ihtiyacı, doğru boyutlandırılmamış tahrikte arızaya yol açar.',
+      ],
+      en: [
+        'In an unheated body the product sets and the line blocks.',
+        'High-shear transfer damages both the texture and the flavour profile of the chocolate.',
+        'Cold-start torque will damage a drive that was not sized for it.',
+      ],
+    },
+    approach: {
+      tr: [
+        'Ceketli konfigürasyonda gövdenin dışına entegre edilmiş ısıtma ceketi, ürünle temas etmeden kontrollü ısı transferi sağlar. Isıtma ortamı olarak buhar veya sıcak su, saha koşullarına göre seçilir. Sürekli sirkülasyon homojen bir sıcaklık dağılımı verir.',
+        'Düşük kesme etkili loblu rotor geometrisi, çikolatanın doğal dokusuna ve aromasına zarar vermeden transferini sağlar. Akış titreşimsiz ve dengelidir.',
+        'Tahrik, işletme torkuna göre değil soğuk başlangıç torkuna göre boyutlandırılır. Bu, uygulamada en sık atlanan ve en pahalıya mal olan detaydır.',
+      ],
+      en: [
+        'In the jacketed configuration a heating jacket integrated on the outside of the body transfers heat under control without touching the product. Steam or hot water is chosen as the medium to suit the site, and continuous circulation gives an even temperature distribution.',
+        'The low-shear lobe geometry moves the chocolate without harming its natural texture or aroma. The flow is balanced and free of vibration.',
+        'The drive is sized against cold-start torque rather than running torque. That is the detail most often skipped on this duty, and the most expensive one to get wrong.',
+      ],
+    },
+    materials: {
+      tr: 'Ürünle temas eden yüzeyler 1.4404 (AISI 316L) paslanmaz çelikten üretilir; gövde ısıtma ceketi ile birlikte teslim edilir. Elastomerler gıda uygunluğuna göre seçilir. Yapı kolay temizlenebilir ve hijyenik proseslere uygundur.',
+      en: 'Wetted surfaces are produced in 1.4404 (AISI 316L) stainless steel, and the body is supplied with its heating jacket. Elastomers are selected for food compatibility. The construction cleans easily and suits hygienic processes.',
+    },
+    models: [
+      { slug: 'lql-50', note: { tr: 'Kalıplama ve dolum besleme', en: 'Moulding and filling feed' } },
+      { slug: 'lql-100', note: { tr: 'Tank ve hat transferi', en: 'Tank and line transfer' } },
+      { slug: 'lql-25', note: { tr: 'Dolgu ve ganaj dozajı', en: 'Filling and ganache dosing' } },
     ],
   },
   {
@@ -392,12 +468,12 @@ export const APPLICATIONS: Application[] = [
       tr: [
         'Abrazif uygulamalarda aşınma plakaları ve rotor uçları ayrı parçalar olarak üretilir. Aşınma yüzeyi tükendiğinde gövde değil bu parçalar değiştirilir.',
         'Rotorlar ön kapak açılarak çıkarılır. Pompa hattan ve tahrikten ayrılmadığı için servis süresi saatlerle değil dakikalarla ölçülür.',
-        'Lifli içerikte 2 kanatlı rotor ve büyütülmüş emme ağzı kullanılır. Debi ihtiyacı düşük devirde büyük gövdeyle karşılanır; bu, aşınma hızını doğrudan düşürür.',
+        'Lifli içerikte tek kanatlı rotor ve büyütülmüş emme ağzı kullanılır. Debi ihtiyacı düşük devirde büyük gövdeyle karşılanır; bu, aşınma hızını doğrudan düşürür.',
       ],
       en: [
         'On abrasive duties the wear plates and rotor tips are separate parts. When the wear surface is spent, those parts are replaced instead of the casing.',
         'Rotors come out through the front cover. Because the pump stays coupled to the line and to its drive, service time is measured in minutes rather than hours.',
-        'For fibrous content a bi-wing rotor and an enlarged suction port are specified. Flow demand is met with a larger frame at low speed, which lowers the wear rate directly.',
+        'For fibrous content a single-wing rotor and an enlarged suction port are specified. Flow demand is met with a larger frame at low speed, which lowers the wear rate directly.',
       ],
     },
     materials: {

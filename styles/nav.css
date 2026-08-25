@@ -3,46 +3,25 @@
    ========================================================================== */
 
 /* ------------------------------------------------------- BRAND LOCKUP
-   Reconstructed from the business card: a solid red block, the LIQUILOB
-   wordmark in heavy black, and the BY PROFIMANN endorsement beneath.     */
+   Profimann's supplied logo artwork. The red field is part of the mark, so
+   the lockup carries its own background rather than sitting on the header's. */
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: var(--s3);
   flex: none;
 }
 
-.brand__block {
-  width: 7px;
-  height: 34px;
-  background: var(--red);
-  flex: none;
-}
-
-.brand__names { display: block; }
-
-.brand__primary {
+.brand__mark {
   display: block;
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 1.1875rem;
-  line-height: 1;
-  letter-spacing: -0.015em;
-  color: var(--ink);
+  width: auto;
+  height: 32px;
 }
 
-.brand__sub {
-  display: block;
-  margin-top: 3px;
-  font-size: 0.5625rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.16em;
-  color: var(--graphite);
+@media (min-width: 64rem) {
+  .brand__mark { height: 38px; }
 }
 
-.site-footer .brand__primary { color: var(--on-dark); }
-.site-footer .brand__sub { color: var(--on-dark-soft); }
+.site-footer .brand__mark { height: 52px; }
 
 /* ---------------------------------------------------------- SITE HEADER */
 .site-header {

@@ -43,8 +43,8 @@ export type Product = {
 const TEMP_RANGE = '-20 ... +130 °C'
 
 const ROTOR_OPTIONS: Localised = {
-  tr: '2 kanatlı, 3 kanatlı veya helisel rotor',
-  en: 'Bi-wing, tri-lobe or helical rotor',
+  tr: 'Tek kanatlı, çift kanatlı, üç loblu veya çok pervaneli rotor',
+  en: 'Single-wing, bi-wing, tri-lobe or multi-impeller rotor',
 }
 
 const SEAL_OPTIONS: Localised = {
@@ -204,11 +204,11 @@ export const PRODUCTS: Product[] = [
     description: {
       tr: [
         'LQL-50, gıda, süt ve kozmetik hatlarında en sık kullanılan gövde boyudur. CIP devrelerine doğrudan bağlanabilir ve dolum makinelerinin önünde besleme pompası olarak çalışır.',
-        'Rotor kanat sayısı akışkana göre seçilir: parçacıklı ürünlerde 2 kanatlı, düşük pulsasyon istenen dolum hatlarında 3 kanatlı veya helisel rotor kullanılır.',
+        'Rotor geometrisi akışkana göre seçilir: büyük parçacıklı ürünlerde tek kanatlı, kremamsı ürünlerde çift kanatlı, düşük pulsasyon istenen dolum hatlarında üç loblu rotor kullanılır.',
       ],
       en: [
         'LQL-50 is the frame size most often specified on food, dairy and cosmetics lines. It connects directly into CIP circuits and works as a feed pump ahead of filling machines.',
-        'Rotor wing count is selected for the medium: bi-wing for particulate products, tri-lobe or helical where a filling line needs low pulsation.',
+        'Rotor geometry is selected for the medium: single-wing for products carrying large particles, bi-wing for creamy products, tri-lobe where a filling line needs low pulsation.',
       ],
     },
     keySpecs: [

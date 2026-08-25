@@ -8,6 +8,7 @@ import { Breadcrumb } from '@/components/site/Breadcrumb'
 import { CtaBand } from '@/components/site/CtaBand'
 import { DocList } from '@/components/ui/DocList'
 import { JsonLd } from '@/components/ui/JsonLd'
+import { ProductImage } from '@/components/ui/ProductImage'
 import { SpecTable } from '@/components/ui/SpecTable'
 import { APPLICATIONS } from '@/content/applications'
 import { DETAIL_SECTIONS, NAV_LABEL, UI } from '@/content/dict'
@@ -40,8 +41,8 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
       {/* Product hero. The machine reads clearly, the numbers sit beside it. */}
       <section className="product-hero">
         <div className="container product-hero__grid">
-          <figure className="tech-frame">
-            <PumpElevation title={`${product.name} ${product.type[locale]}`} scale={product.drawScale} />
+          <figure className="tech-frame tech-frame--product">
+            <ProductImage locale={locale} priority sizes="(min-width: 64rem) 52vw, 92vw" />
             <figcaption className="tech-frame__caption">
               {product.name} · {product.type[locale]}
             </figcaption>
@@ -166,6 +167,15 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
               </h3>
               <figure className="tech-frame tech-frame--plain" style={{ marginBottom: 'var(--s5)' }}>
                 <DimensionOutline title={UI.dimensionsTitle[locale]} />
+                <figcaption className="tech-frame__caption">
+                  {product.name} · {UI.dimensionsTitle[locale]}
+                </figcaption>
+              </figure>
+              <figure className="tech-frame" style={{ marginBottom: 'var(--s5)' }}>
+                <PumpElevation
+                  title={`${product.name} ${product.type[locale]}`}
+                  scale={product.drawScale}
+                />
               </figure>
               <div className="empty-state">
                 <p className="empty-state__title">{UI.dimensionsEmptyTitle[locale]}</p>

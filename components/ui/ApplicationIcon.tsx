@@ -1,5 +1,6 @@
 import {
   IconBuildingFactory2,
+  IconCandy,
   IconFlask2,
   IconMilk,
   IconPill,
@@ -12,6 +13,7 @@ import type { IconKey } from '@/content/applications'
 const MAP = {
   food: IconToolsKitchen2,
   dairy: IconMilk,
+  chocolate: IconCandy,
   chemical: IconFlask2,
   pharma: IconPill,
   wastewater: IconRecycle,

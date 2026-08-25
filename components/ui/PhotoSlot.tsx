@@ -25,7 +25,7 @@ export function PhotoSlot({
 }) {
   if (slot.src) {
     return (
-      <div style={{ position: 'relative', aspectRatio: slot.ratio }}>
+      <div className="photo" style={{ aspectRatio: slot.ratio }}>
         <Image
           src={slot.src}
           alt={slot.label[locale]}
