@@ -400,6 +400,16 @@ export const DOCUMENTS: { id: string; kind: DocKind; title: Localised; meta: Loc
   },
 ]
 
+/**
+ * Resolve a document id, as it arrives from a `?doc=` parameter or out of a
+ * stored inquiry. An id that is not on the list resolves to null: the form,
+ * the email and the admin panel all refuse to name a document that does not
+ * exist rather than echoing back whatever was in the URL.
+ */
+export function findDocument(id: string): (typeof DOCUMENTS)[number] | null {
+  return DOCUMENTS.find((d) => d.id === id) ?? null
+}
+
 export const SUPPORT_PAGE = {
   title: { tr: 'Teknik Kaynaklar ve Destek', en: 'Technical Resources & Support' } as Localised,
   lead: {
@@ -464,7 +474,10 @@ export type PhotoSlot = {
   id: string
   ratio: string
   label: Localised
-  /** Public path once the file exists, e.g. '/photos/cnc-machining.jpg'. */
+  /**
+   * Public path to the generated web image, e.g. '/photos/cnc-machining.webp'.
+   * The master goes in assets/photos and `npm run images` produces this file.
+   */
   src?: string
 }
 
@@ -472,7 +485,7 @@ export const PHOTOS: Record<string, PhotoSlot> = {
   installation: {
     id: 'installation',
     ratio: '1529 / 1013',
-    src: '/photos/installation-food-line.jpg',
+    src: '/photos/installation-food-line.webp',
     label: {
       tr: 'Gıda üretim hattına kurulu Liquilob loblu pompa ve redüktörlü motor grubu',
       en: 'A Liquilob lobe pump and geared motor installed on a food production line',
@@ -481,7 +494,7 @@ export const PHOTOS: Record<string, PhotoSlot> = {
   rotorFamily: {
     id: 'rotorFamily',
     ratio: '1331 / 538',
-    src: '/photos/rotor-family.jpg',
+    src: '/photos/rotor-family.webp',
     label: {
       tr: 'Liquilob rotor ailesi: çok pervaneli, üç loblu, çift kanatlı ve tek kanatlı rotor çiftleri',
       en: 'The Liquilob rotor family: multi-impeller, tri-lobe, bi-wing and single-wing rotor pairs',
@@ -511,7 +524,7 @@ export const PHOTOS: Record<string, PhotoSlot> = {
  * background has been keyed out, so it sits on any surface.
  */
 export const PRODUCT_IMAGE = {
-  src: '/photos/pump-render.png',
+  src: '/photos/pump-render.webp',
   width: 612,
   height: 516,
   alt: {

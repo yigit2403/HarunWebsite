@@ -1,17 +1,22 @@
 /**
- * Where this build is running, and whether search engines should see it.
+ * What this build is, and whether search engines should see it.
  *
- * A customer-review deployment on a *.vercel.app URL is the single easiest way
- * to damage a site's launch: Google indexes the staging copy, and once the real
- * domain goes live the two compete with each other over duplicate content.
- * Everything here exists to make that impossible by default rather than by
- * remembering to tick a box.
+ * The site is exported as static files, so these questions are answered once,
+ * at build time, and baked into robots.txt and every page's metadata. There is
+ * no request to reconsider them on.
+ *
+ * A customer-review copy on a temporary hosting address is the single easiest
+ * way to damage a site's launch: Google indexes the review copy, and once the
+ * real domain goes live the two compete over duplicate content. Everything
+ * here exists to make that impossible by default rather than by remembering to
+ * tick a box — a build with nothing set is a build that no crawler will touch.
  */
 
 export type Stage = 'production' | 'preview' | 'development'
 
 export function stage(): Stage {
-  // Vercel sets VERCEL_ENV. Anything self-hosted can set SITE_STAGE.
+  // SITE_STAGE is what this site's builds set. VERCEL_ENV is read as well so
+  // that a move back to a Node host on Vercel needs no change here.
   const explicit = process.env.SITE_STAGE ?? process.env.VERCEL_ENV
   if (explicit === 'production') return 'production'
   if (explicit === 'preview') return 'preview'

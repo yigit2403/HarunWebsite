@@ -2,11 +2,12 @@ import Link from 'next/link'
 
 import { A, INQUIRY_FIELD_ORDER } from './dict'
 import { APPLICATIONS } from '@/content/applications'
-import { RankedBars, SplitBar, TrendChart } from '@/components/admin/Charts'
-import { delta, summarise } from '@/lib/analytics/aggregate'
-import { analyticsStore } from '@/lib/analytics/store'
+import { findDocument } from '@/content/pages'
+import { RankedBars, SplitBar, TrendChart } from '@/server/admin/Charts'
+import { delta, summarise } from '@/server/analytics/aggregate'
+import { analyticsStore } from '@/server/analytics/store'
 import { LOCALE_NAME, isLocale, type Locale } from '@/lib/i18n'
-import { mailConfigured } from '@/lib/mail'
+import { mailConfigured } from '@/server/mail'
 
 /**
  * Site analytics.
@@ -24,10 +25,13 @@ const DAY = 86_400_000
 
 type Search = { d?: string; lang?: string }
 
-/** The application field stores a key. Show the name the visitor picked. */
+/** Two fields store an id. Show the words the visitor actually saw. */
 function readField(key: string, value: string, locale: Locale): string {
-  if (key !== 'application') return value
-  return APPLICATIONS.find((a) => a.key === value)?.name[locale] ?? value
+  if (key === 'application') {
+    return APPLICATIONS.find((a) => a.key === value)?.name[locale] ?? value
+  }
+  if (key === 'doc') return findDocument(value)?.title[locale] ?? value
+  return value
 }
 
 export default async function AdminPage({

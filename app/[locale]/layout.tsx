@@ -5,7 +5,6 @@ import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google'
 
 import '../globals.css'
 
-import { Beacon } from '@/components/analytics/Beacon'
 import { Footer } from '@/components/site/Footer'
 import { Header } from '@/components/site/Header'
 import { JsonLd } from '@/components/ui/JsonLd'
@@ -92,7 +91,6 @@ export default async function LocaleLayout({
         <main id="main">{children}</main>
         <Footer locale={locale} />
         <Reveal />
-        <Beacon locale={locale} />
         <JsonLd data={organizationJsonLd(locale)} />
       </body>
     </html>

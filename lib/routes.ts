@@ -46,8 +46,17 @@ export function href(locale: Locale, page?: PageKey, ...rest: string[]): string 
   return `/${parts.join('/')}`
 }
 
-export function inquiryHref(locale: Locale): string {
-  return `${href(locale, 'contact')}#${INQUIRY_ANCHOR[locale]}`
+/**
+ * The technical inquiry form.
+ *
+ * `doc` names a document the visitor asked for. It travels as a query
+ * parameter so the form can say what it is answering and the inquiry names it
+ * on arrival. No document is served as a file yet, so this is the only record
+ * of which one to produce first.
+ */
+export function inquiryHref(locale: Locale, doc?: string): string {
+  const query = doc ? `?doc=${encodeURIComponent(doc)}` : ''
+  return `${href(locale, 'contact')}${query}#${INQUIRY_ANCHOR[locale]}`
 }
 
 /** Reverse lookup for the router and the language switcher. */

@@ -6,3 +6,9 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 .data
+
+# Generated into public/ by `npm run build`. The sources are assets/ and
+# content/ — see tools/images.mjs and tools/inquiry-data.mjs.
+public/inquiry-data.json
+public/photos/*.webp
+assets/brand/*.webp

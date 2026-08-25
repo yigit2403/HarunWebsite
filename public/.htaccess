@@ -1,0 +1,106 @@
+# Liquilob — Apache / LiteSpeed configuration for the exported site.
+#
+# This file ships with the build: `npm run build` copies it into out/, and out/
+# is what is uploaded to public_html. It does in production what proxy.ts does
+# in `next dev`, so the two must be changed together.
+#
+# Nothing here names a hostname, so the same upload can be reviewed on a
+# temporary hosting address without redirecting itself somewhere that does not
+# exist yet.
+
+Options -Indexes
+DirectorySlash On
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # ------------------------------------------------------------ CANONICAL URL
+  # Commented out deliberately. Do this in the control panel instead.
+  #
+  # cPanel and DirectAdmin both force HTTPS and redirect a parked domain or
+  # pointer from their own settings, and configuring it in two places is how a
+  # redirect loop happens: if the panel sends www to non-www while the rules
+  # below send non-www to www, the two argue with each other forever.
+  #
+  # Nothing is lost by leaving both hostnames answering. Every page carries a
+  # <link rel="canonical"> naming the www address and the sitemap lists only
+  # that one, so search engines are told which version counts regardless.
+  #
+  # Uncomment only if the panel cannot do it — and check first that it is not
+  # already doing it.
+  #
+  # RewriteCond %{HTTP_HOST} ^liquilob\.com$ [NC]
+  # RewriteRule ^(.*)$ https://www.liquilob.com/$1 [R=301,L]
+  #
+  # RewriteCond %{HTTP_HOST} ^www\.liquilob\.com$ [NC]
+  # RewriteCond %{HTTPS} !=on
+  # RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  # RewriteRule ^(.*)$ https://www.liquilob.com/$1 [R=301,L]
+
+  # ------------------------------------------------------------------- LOCALE
+  # The site has no unlocalised routes: every page lives under /tr or /en so
+  # search engines index one canonical address per language. Turkish is the
+  # default because the company, its address and its home market are Turkish.
+  #
+  # 302 rather than 301: the destination depends on the browser's language, so
+  # it must not be cached as though it were the same for everyone. The Vary
+  # header below tells shared caches the same thing.
+  RewriteCond %{HTTP:Accept-Language} ^en [NC]
+  RewriteRule ^$ /en/ [R=302,L]
+  RewriteRule ^$ /tr/ [R=302,L]
+
+  # A path that names a page but forgets the language, e.g. /urunler. Real
+  # files and directories are excluded first, so this never catches an asset,
+  # robots.txt, inquiry.php, or an already-localised page.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(?!tr/|en/|_next/|photos/)(.+?)/?$ /tr/$1/ [R=302,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # The root redirect above is chosen from Accept-Language, so a shared cache
+  # must not hand a Turkish visitor the English one. Set on every response
+  # rather than conditionally: the cost is negligible on a site this size, and
+  # it avoids depending on <If>, which not every LiteSpeed build honours.
+  Header always append Vary Accept-Language
+
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+
+  # HTML must not be cached, or a content change stays invisible until the
+  # cache expires. It is small and compressed, so revalidating costs almost
+  # nothing. Everything else is content-hashed — see mod_expires below.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+  # Next.js puts a content hash in the filename of everything under
+  # /_next/static, so a year is safe: a changed file arrives under a new name.
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript text/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# The inquiry form's field and label tables. inquiry.php reads this from disk,
+# so nothing needs to fetch it over HTTP.
+<Files "inquiry-data.json">
+  Require all denied
+</Files>
+
+# The root 404 is Turkish, matching the default locale. See app/not-found.tsx.
+ErrorDocument 404 /404.html

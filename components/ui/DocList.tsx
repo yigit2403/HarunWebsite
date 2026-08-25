@@ -36,7 +36,7 @@ export function DocList({
           </div>
           <Link
             className="btn btn--secondary btn--sm"
-            href={inquiryHref(locale)}
+            href={inquiryHref(locale, doc.id)}
             data-track-doc={doc.id}
           >
             {UI.requestDocument[locale]}

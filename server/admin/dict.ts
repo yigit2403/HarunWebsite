@@ -60,6 +60,7 @@ export const A = {
     en: 'Inquiries in this range that were not forwarded',
   },
 
+  fieldDoc: { tr: 'Talep edilen doküman', en: 'Requested document' },
   fieldName: { tr: 'Ad Soyad', en: 'Name' },
   fieldCompany: { tr: 'Firma', en: 'Company' },
   fieldEmail: { tr: 'E-posta', en: 'Email' },
@@ -74,6 +75,8 @@ export const A = {
 } satisfies Record<string, Localised>
 
 export const INQUIRY_FIELD_ORDER = [
+  // First, because it is why they wrote in.
+  ['doc', A.fieldDoc],
   ['name', A.fieldName],
   ['company', A.fieldCompany],
   ['email', A.fieldEmail],

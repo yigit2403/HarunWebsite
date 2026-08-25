@@ -6,11 +6,15 @@ and its rotary lobe pump brand **Liquilob**.
 Next.js App Router, TypeScript, hand-written CSS on a token system. No UI framework,
 no CSS framework, no animation library.
 
+The site is **exported as static files** and uploaded to Linux shared hosting — cPanel or
+DirectAdmin, on Apache or LiteSpeed. There is no Node process in production: `npm run build`
+produces `out/`, and `out/` is the website. See [Deploying](#deploying).
+
 ```bash
 npm install
-npm run dev      # http://localhost:3210
-npm run build
-npm start
+npm run dev      # http://localhost:3210 — writing, design, everything except the form
+npm run build    # generates images and data, then exports the site to out/
+npm run preview  # serves out/ with PHP, so the contact form works too
 ```
 
 ---
@@ -36,8 +40,15 @@ One table drives all of it: [`lib/routes.ts`](lib/routes.ts). Adding a page mean
 row there. That row feeds routing, `generateStaticParams`, the header, the footer, the
 sitemap and the language switcher, so none of them can drift apart.
 
-`proxy.ts` sends a bare path to `/tr`, or to `/en` when the browser asks for English.
-Model codes (`lql-100`) are identical in both languages; application slugs are translated.
+A bare path is sent to `/tr`, or to `/en` when the browser asks for English. This happens
+in two places, because a static site has no middleware: [`proxy.ts`](proxy.ts) does it in
+`next dev`, and [`public/.htaccess`](public/.htaccess) does it on the server. **They must be
+changed together.** Model codes (`lql-100`) are identical in both languages; application
+slugs are translated.
+
+Exported pages are directories: `/tr/urunler/` is `out/tr/urunler/index.html`. Apache serves
+it from its `DirectoryIndex` and redirects the slashless form, so every address the sitemap
+and the canonical tags name is the one that answers `200`.
 
 ### A note on Turkish uppercase
 
@@ -62,6 +73,7 @@ All copy, in both languages, sits in `content/`. Nothing is hardcoded in a compo
 | `content/rotors.ts` | The four rotor geometries |
 | `content/configurations.ts` | Jacketed and PP body variants |
 | `content/applications.ts` | The seven application pages |
+| `content/inquiry.ts` | The contact form's fields, and how they are labelled in the email |
 
 Editing Turkish and English side by side is the point: every entry is
 `{ tr: '...', en: '...' }`, so a missing translation is a TypeScript error rather than a
@@ -100,107 +112,190 @@ every document row routes to the inquiry form with the document named.
 
 ---
 
-## The contact form and email forwarding
+## The contact form
 
-```bash
-cp .env.example .env.local
+[`components/forms/InquiryForm.tsx`](components/forms/InquiryForm.tsx) posts JSON to
+[`public/inquiry.php`](public/inquiry.php), which validates it and emails it to Profimann.
+PHP rather than a route handler because the site is static: the script is uploaded beside
+the HTML and runs on the host's own PHP.
+
+**It is currently dormant, and deliberately so.** Profimann has no mailbox for the site
+yet, so `$INQUIRY_TO` is empty, the script answers `503`, and the form shows the phone
+number rather than claiming the message was sent. Switching it on is two lines on the
+server and no rebuild:
+
+```php
+$INQUIRY_TO = 'info@liquilob.com';     // wherever inquiries should land
+$INQUIRY_FROM = 'site@liquilob.com';   // a mailbox on this domain
 ```
 
-`components/forms/InquiryForm.tsx` posts to `app/api/inquiry/route.ts`, which tries three
-things in order and records the inquiry either way:
+Put them either in `inquiry.php` itself or, better, in an `inquiry-config.php` beside it.
+That second file is not part of the build, so re-uploading the site never overwrites it.
 
-| Step | Needs | Status |
-| --- | --- | --- |
-| 1. Email | `INQUIRY_TO_EMAIL` + `INQUIRY_FROM_EMAIL` + `RESEND_API_KEY` | **Built, currently off.** Profimann has no mailbox for the site yet. |
-| 2. Webhook | `INQUIRY_WEBHOOK_URL` | Optional. CRM intake, Zapier, Make, or a Slack or Teams incoming webhook. |
-| 3. Store | always | So nothing is lost while 1 and 2 are off. |
+Sending as an address **on liquilob.com** matters: the envelope sender is set with `-f` so
+the domain's own SPF record covers the message. A `From:` on someone else's domain is what
+gets a contact form filed as spam. `Reply-To` is the enquirer, so replying from the mailbox
+goes straight back to them.
 
-**Turning email on later is three environment variables and a redeploy.** Nothing in the
-code needs to change. Sign up at [resend.com](https://resend.com), verify the `liquilob.com`
-domain, then set:
+### One description of the fields, not two
 
-```bash
-INQUIRY_TO_EMAIL=info@liquilob.com      # wherever inquiries should land
-INQUIRY_FROM_EMAIL=site@liquilob.com    # a sender on the verified domain
-RESEND_API_KEY=re_...
-```
+PHP cannot read the TypeScript the rest of the site is written in, and a second copy of the
+field labels would be wrong the first time someone added a document. So there is no second
+copy: [`content/inquiry.ts`](content/inquiry.ts) describes the fields, and
+[`tools/inquiry-data.mjs`](tools/inquiry-data.mjs) writes them — with the document and
+application lists — to `public/inquiry-data.json` at build time. `inquiry.php` reads that.
 
-The email is laid out in `lib/mail.ts` with the fields in the order the form asks them, and
-`reply_to` set to the enquirer, so replying from the mailbox goes straight back to them.
-For a different provider, change the `deliver` call in that file and nothing else; for plain
-SMTP, add nodemailer and swap the `fetch` for a transport.
+Adding a field is a row in `content/inquiry.ts` and an input in the form. **Editing
+`inquiry.php` to add a field is a mistake.**
 
-Until then, every inquiry appears in `/admin` flagged **not forwarded**, and the panel
-carries a banner saying forwarding is off. The route only reports success when the message
-actually went somewhere durable: if it can neither forward nor store, it answers `503` and
-the form sends the visitor to the phone number rather than claiming it was sent.
+The generated JSON is denied over HTTP in `.htaccess`; the script reads it from disk.
+
+### Which document was asked for
+
+No catalogue or datasheet exists as a file yet, so every **Talep Et / Request** row in
+`components/ui/DocList.tsx` routes to the inquiry form rather than to a download. The
+document id travels with it as `?doc=`, the form names the document above the fields, and
+submits it as a hidden field.
+
+That makes the request legible where it lands. The email subject reads **Doküman talebi /
+Document request** instead of the usual technical-inquiry line, so the mailbox can be sorted
+on it, and the document is the first row of the email.
+
+This is the answer to *which document do we produce first*. It used to be a click counted
+by the analytics beacon; carrying it on the inquiry instead is what let that beacon go when
+the site moved to static hosting, because an id attached to a named company survives where
+an anonymous click count does not.
+
+The id is checked against the document list before anything is emailed — `findDocument` in
+`content/pages.ts` on the client, the same list via `inquiry-data.json` in the PHP. The
+endpoint is public, so a posted value that is not a real document id is dropped rather than
+echoed into the mailbox.
 
 ---
 
-## Showing it to a client before launch
+## Deploying
 
-Deploy it as a preview. The site is built so a review deployment cannot damage the
-eventual launch:
+The build is the same wherever it lands. Only the upload path and the panel differ.
+
+```bash
+SITE_STAGE=production NEXT_PUBLIC_SITE_URL=https://www.liquilob.com npm run build
+```
+
+That writes `out/`. Upload **the contents of `out/`** — not the folder itself. There is
+nothing to install, nothing to restart, and no Node version to pick: it is HTML, CSS,
+JavaScript, images, and one PHP file.
+
+Three things in `out/` are easy to miss:
+
+| File | Why it matters |
+| --- | --- |
+| `.htaccess` | The locale redirects, caching, the 404. FTP clients hide dotfiles by default — turn that off, or the site will 404 at `/`. |
+| `inquiry.php` | The contact form. Needs `$INQUIRY_TO` set on the server; see above. |
+| `inquiry-data.json` | Read by `inquiry.php`. Without it the form answers `503`. |
+
+Uploading does not delete, so an `inquiry-config.php` you placed on the server survives a
+redeploy. Nothing else on the server is written to by the site.
+
+**Both environment variables are read at build time**, not on the server. Rebuilding without
+them produces a site that tells crawlers to stay out — which is the point, further down.
+
+### HTTPS and the www address belong to the panel, not to `.htaccess`
+
+Both panels can force HTTPS and redirect a parked domain or pointer from their own settings,
+and `.htaccess` ships with those rules **commented out** on purpose. Configuring the same
+redirect in two places is how a loop happens: if the panel sends `www` to non-`www` while
+`.htaccess` sends non-`www` to `www`, the two argue forever.
+
+Set it in the panel. If you cannot, uncomment the CANONICAL URL block in
+[`public/.htaccess`](public/.htaccess) — but check first that the panel is not already doing
+it.
+
+If neither does it, nothing breaks. Both hostnames answer, every page carries a
+`<link rel="canonical">` naming the `www` address, and the sitemap lists only that one, so
+search engines are told which version counts either way.
+
+### cPanel
+
+Upload into `public_html`, via File Manager or FTP.
+
+- **Force HTTPS** — *Domains*, then the toggle on the domain's row. AutoSSL issues the
+  certificate; give it a few minutes after the domain resolves.
+- **The `www` address** — served automatically. To make it redirect one way or the other,
+  use *Domains* → *Redirects*.
+- **PHP version** — *MultiPHP Manager*. Anything 7.4 or newer runs `inquiry.php`.
+- **The mailbox** — *Email Accounts*. Create `info@liquilob.com` there, then put it in
+  `$INQUIRY_TO`. Mail to a mailbox on the same server never leaves the machine.
+
+### DirectAdmin
+
+Upload into `domains/<your-domain>/public_html`, via File Manager or FTP. Not the account
+root — DirectAdmin gives every domain its own tree.
+
+- **`private_html`** — the one that catches people out. On older DirectAdmin setups HTTPS is
+  served from `private_html` rather than `public_html`, so a site uploaded only to
+  `public_html` looks fine on `http://` and empty on `https://`. In *Domain Setup* choose
+  the option to use a **symbolic link from `private_html` to `public_html`**, then upload
+  once. Newer versions default to this; check rather than assume.
+- **Force HTTPS** — *SSL Certificates* for the certificate (Let's Encrypt), then the force
+  HTTPS redirect option in *Domain Setup*.
+- **Pointers** — DirectAdmin's equivalent of parked domains, under *Domain Pointers*. A
+  pointer can be a plain alias or a redirect; pick redirect if you want one canonical
+  hostname.
+- **PHP version** — *Select PHP Version* per domain, if the host enables it.
+- **The mailbox** — *E-Mail Accounts*, same as above.
+- **Check the web server.** DirectAdmin hosts run Apache, LiteSpeed *or* nginx.
+  **nginx ignores `.htaccess` entirely** — the site would still serve, but `/` would not
+  redirect to `/tr/`, and the 404 and caching rules would not apply. If the host is
+  nginx-only, ask them to add the equivalent `location` rules, or use a plan on Apache or
+  LiteSpeed. Güzel Hosting's Linux plans are LiteSpeed, which reads `.htaccess`.
+
+### Showing it to a client before launch
+
+Upload the same `out/` to a temporary hosting address, built **without** those two variables.
+The site is arranged so that a review copy cannot damage the eventual launch:
 
 - **`robots.txt` refuses every crawler** unless the build is production *and*
   `NEXT_PUBLIC_SITE_URL` is set. Both conditions, not either.
 - **Every page also carries `noindex, nofollow`** on a non-production build, because a
   direct link bypasses `robots.txt` entirely.
-- **Canonical URLs and the sitemap follow the deployment**, so a preview does not announce
+- **Canonical URLs and the sitemap follow the build**, so a review copy does not announce
   itself as `liquilob.com` before that domain exists.
+- **`.htaccess` names no hostname**, so a temporary address cannot redirect itself to a
+  domain that does not exist yet.
 
-`lib/deployment.ts` decides this from `VERCEL_ENV`, or from `SITE_STAGE` if you host it
-somewhere else. Nothing has to be remembered at deploy time; the safe state is the default,
-and indexing has to be switched on deliberately.
+[`lib/deployment.ts`](lib/deployment.ts) decides this from `SITE_STAGE`. The safe state is
+the default; indexing has to be switched on deliberately.
 
-When the real domain is ready, set `NEXT_PUBLIC_SITE_URL=https://www.liquilob.com` on the
-production environment only. That single variable is what flips indexing on.
+### If the server returns 500 after uploading
+
+That is `.htaccess`, and almost always one directive the host does not support. Comment out
+the `<IfModule mod_headers.c>` block first, then the `mod_expires` one. The `mod_rewrite`
+block is the part the site actually needs.
 
 ---
 
-## The admin panel
+## Analytics
 
-`/admin` — first-party analytics, behind HTTP Basic auth, no third-party service and no
-cookies. Because it stores nothing that identifies a person, the site needs no consent
-banner.
+There are none in the site. The host's own statistics cover it — **Metrics** in cPanel,
+**Site Summary / Statistics / Logs** in DirectAdmin, both usually AWStats or Webalizer over
+the raw access log. Between them you get page views, top pages, referrers, and the
+Turkish/English split, which is just the URL prefix. Two things to know when reading them:
 
-```bash
-ADMIN_USER=admin
-ADMIN_PASSWORD=<something long>
-```
+- **Server logs count crawlers**, and AWStats filters them imperfectly. The numbers read
+  higher than a JavaScript beacon's would.
+- **Server logs record IP addresses.** The first-party beacon this replaced deliberately did
+  not, which is why the site still has no cookie banner — it sets no cookie and no
+  client-side identifier. Request logging is ordinary and the host is the processor, but it
+  is a different posture from what the code used to do.
 
-**With `ADMIN_PASSWORD` unset the panel refuses to serve at all** (503), so forgetting to
-configure it fails closed rather than leaving the page open. Auth is enforced in `proxy.ts`,
-which also stamps `x-robots-tag: noindex`; `/admin` is disallowed in `robots.txt` and absent
-from the sitemap.
+What the logs cannot see is which document a visitor asked for, because every document row
+links to the same contact anchor. That signal travels on the inquiry instead — see
+[Which document was asked for](#which-document-was-asked-for).
 
-It shows page views, sessions, inquiries and document requests with period-on-period
-deltas, a daily trend, top pages, referring sites, language split, devices, and the full
-text of recent inquiries. **Most requested documents** is the one to watch right now: the
-document library is not published, so that panel says which document to produce first.
-
-### Where the data lives
-
-Choose an adapter with an environment variable. The panel tells you which one is active.
-
-| Set this | Adapter | Use when |
-| --- | --- | --- |
-| `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` | Redis over REST | Vercel or any serverless host |
-| `ANALYTICS_DATA_DIR=/var/lib/liquilob` | One JSONL file per month | Your own server running `next start` |
-| neither | In memory | Development. **Lost on restart**, and the panel says so in a banner. |
-
-Swapping in Postgres later means implementing `append` and `read` in
-`lib/analytics/store.ts`. Nothing else knows which adapter is in use.
-
-### What is and is not collected
-
-Collected: pathname, language, referring **hostname**, viewport width, and a random session
-id held in `sessionStorage` that dies with the tab.
-
-Not collected: no cookie, no IP address, no cross-site identifier, no fingerprint. Query
-strings are stripped from paths and referrers are reduced to a bare hostname before storage,
-because both are the usual way personal data leaks into an analytics log. The beacon honours
-Do Not Track and Global Privacy Control and sends nothing when either is set.
+The first-party analytics and the `/admin` dashboard that used to serve this purpose are
+parked, intact, in [`server/`](server/README.md), along with the rest of the server-side
+code. Nothing there is built or deployed; it is there because the decision to drop it is
+reversible, and that file explains how.
 
 ---
 

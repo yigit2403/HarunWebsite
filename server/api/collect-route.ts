@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
-import { analyticsStore } from '@/lib/analytics/store'
-import type { AnalyticsEvent } from '@/lib/analytics/types'
+import { analyticsStore } from '@/server/analytics/store'
+import type { AnalyticsEvent } from '@/server/analytics/types'
 import { isLocale } from '@/lib/i18n'
 
 /**

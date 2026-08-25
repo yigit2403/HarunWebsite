@@ -1,4 +1,4 @@
-import type { DayBucket, Ranked } from '@/lib/analytics/aggregate'
+import type { DayBucket, Ranked } from '@/server/analytics/aggregate'
 import type { Locale } from '@/lib/i18n'
 
 /**

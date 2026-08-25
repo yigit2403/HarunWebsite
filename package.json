@@ -2,11 +2,14 @@
   "name": "profimann-liquilob",
   "version": "1.0.0",
   "private": true,
-  "description": "Profimann Makine San. Tic. Ltd. Sti. / Liquilob rotary lobe pumps. Bilingual (TR/EN) industrial website.",
+  "description": "Profimann Makine San. Tic. Ltd. Sti. / Liquilob rotary lobe pumps. Bilingual (TR/EN) industrial website. Exported as static files for cPanel hosting.",
   "scripts": {
     "dev": "next dev -p 3210",
+    "prebuild": "npm run images && npm run data",
     "build": "next build",
-    "start": "next start -p 3210",
+    "images": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/images.mjs",
+    "data": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/inquiry-data.mjs",
+    "preview": "php -S localhost:3211 -t out",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -19,6 +22,7 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "sharp": "^0.35.3",
     "typescript": "^5.8.3"
   }
 }

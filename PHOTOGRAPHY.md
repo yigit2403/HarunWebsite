@@ -4,12 +4,17 @@ Profimann's own imagery, and what is still missing.
 
 ## Delivered and in use
 
-| Asset | File | Where it appears |
-| --- | --- | --- |
-| Product render, cover removed | `public/photos/pump-render.png` | Home hero, catalogue cards, product detail hero |
-| Installation on a food line | `public/photos/installation-food-line.jpg` | Home engineering band |
-| Rotor family | `public/photos/rotor-family.jpg` | Rotor technologies page |
-| Logo artwork | `public/brand/liquilob-logo.png` | Header and footer |
+Masters live in `assets/` and are never served. `npm run images` encodes each one
+into the web file in the table below; `npm run build` does it for you.
+
+| Asset | Master | Served as | Where it appears |
+| --- | --- | --- | --- |
+| Product render, cover removed | `assets/photos/pump-render.png` | `/photos/pump-render.webp` | Home hero, catalogue cards, product detail hero |
+| Installation on a food line | `assets/photos/installation-food-line.jpg` | `/photos/installation-food-line.webp` | Home engineering band |
+| Rotor family | `assets/photos/rotor-family.jpg` | `/photos/rotor-family.webp` | Rotor technologies page |
+| Logo artwork | `assets/brand/liquilob-logo.png` | fingerprinted by Next | Header and footer |
+
+Together they weigh 978 kB as masters and 161 kB as served files.
 
 Two of these were processed before use:
 
@@ -33,21 +38,42 @@ honest gap.
 
 ## How to add a photograph
 
-1. Put the file in `public/photos/`.
-2. Add `src` to the matching slot in `content/pages.ts` → `PHOTOS`:
+The site is exported as static files, so there is no image optimiser running in
+production: whatever sits in `public/` is what a visitor downloads, at full size, on every
+screen. `tools/images.mjs` does that work ahead of time instead.
+
+1. Put the full-resolution original in `assets/photos/`. Do not put it in `public/`.
+2. Add an entry to `IMAGES` in `tools/images.mjs`, where `width` is the widest the layout
+   ever renders it, doubled for high-density screens:
+
+```js
+{
+  from: 'assets/photos/manufacturing.jpg',
+  to: 'public/photos/manufacturing.webp',
+  width: 1400,
+  options: { quality: 78 },
+},
+```
+
+3. Add `src` to the matching slot in `content/pages.ts` → `PHOTOS`:
 
 ```ts
 manufacturing: {
   id: 'manufacturing',
   ratio: '4 / 3',
   label: { tr: '...', en: '...' },
-  src: '/photos/manufacturing.jpg',   // <- this line is the whole change
+  src: '/photos/manufacturing.webp',   // <- points at the generated file
 },
 ```
 
-The frame is replaced by an optimised, lazily loaded `next/image`. Nothing around it moves,
-because the slot already reserves the correct aspect ratio. The `label` becomes the alt text,
-so write it as a description of the picture, not as a caption.
+4. `npm run build`.
+
+The frame is replaced by a lazily loaded `next/image`. Nothing around it moves, because the
+slot already reserves the correct aspect ratio. The `label` becomes the alt text, so write
+it as a description of the picture, not as a caption.
+
+Re-encoding a WebP produces a slightly worse WebP each time, which is why the masters stay
+in `assets/` rather than being replaced by their output.
 
 ## Shot list
 

@@ -10,9 +10,14 @@ import { PAGE_KEYS, href } from '@/lib/routes'
  * Every page in both languages, each entry declaring its counterpart through
  * `alternates.languages` so the two versions are treated as one document.
  */
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
-  const absolute = (path: string) => `${COMPANY.origin}${path}`
+  // trailingSlash is on, so /tr/urunler answers with a redirect and
+  // /tr/urunler/ answers with the page. The sitemap must list the address that
+  // returns 200, and the same one the page's own canonical tag names.
+  const absolute = (path: string) => `${COMPANY.origin}${path.replace(/\/$/, '')}/`
 
   const pairs: { tr: string; en: string; priority: number }[] = [
     { tr: href('tr'), en: href('en'), priority: 1 },

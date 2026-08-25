@@ -1,10 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import { IconAlertTriangle, IconArrowRight, IconCheck, IconLoader2 } from '@tabler/icons-react'
+import { useEffect, useState } from 'react'
+import {
+  IconAlertTriangle,
+  IconArrowRight,
+  IconCheck,
+  IconFileDescription,
+  IconLoader2,
+} from '@tabler/icons-react'
 
 import { APPLICATIONS } from '@/content/applications'
 import { UI } from '@/content/dict'
+import { findDocument } from '@/content/pages'
 import { COMPANY } from '@/content/site'
 import type { Locale } from '@/lib/i18n'
 
@@ -17,13 +24,37 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
  * frame size, in the order they are usually asked. Labels sit above inputs and
  * no field uses a placeholder in place of a label.
  *
- * Submission posts to /api/inquiry, which forwards by email or webhook where
- * one is configured and otherwise records the inquiry for the admin panel. If
- * it can do neither it replies 503, and the error state below sends the
- * visitor to the phone number rather than claiming the message was sent.
+ * Submission posts to public/inquiry.php, which emails the inquiry to
+ * Profimann. Until the mailbox exists that script has nowhere to send it, so it
+ * replies 503, and the error state below sends the visitor to the phone number
+ * rather than claiming the message was sent.
+ *
+ * A visitor who clicked "Request" on a document row arrives with the document
+ * id in the address. The form names it and sends it along, so the inquiry says
+ * which document was wanted instead of leaving it to be guessed.
  */
+
+/**
+ * Where the form posts.
+ *
+ * The site is exported as static files, so this is a PHP script sitting beside
+ * the HTML rather than a route in this app — see public/inquiry.php. `next dev`
+ * cannot run PHP: to exercise the form locally, build the site and serve out/
+ * with a PHP server (`npm run preview`), or point this at a handler that is
+ * already running.
+ */
+const ENDPOINT = process.env.NEXT_PUBLIC_INQUIRY_ENDPOINT || '/inquiry.php'
 export function InquiryForm({ locale }: { locale: Locale }) {
   const [status, setStatus] = useState<Status>('idle')
+  const [doc, setDoc] = useState<ReturnType<typeof findDocument>>(null)
+
+  // Read from the address rather than with useSearchParams: this keeps the
+  // page above prerenderable, and it is the only thing that works in a static
+  // export, where the query string exists in the browser and nowhere else.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('doc')
+    setDoc(id ? findDocument(id) : null)
+  }, [])
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -37,7 +68,7 @@ export function InquiryForm({ locale }: { locale: Locale }) {
     setStatus('sending')
     try {
       const payload = Object.fromEntries(new FormData(form).entries())
-      const response = await fetch('/api/inquiry', {
+      const response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ ...payload, locale }),
@@ -70,6 +101,23 @@ export function InquiryForm({ locale }: { locale: Locale }) {
 
   return (
     <form onSubmit={onSubmit} noValidate={false}>
+      {doc ? (
+        <>
+          <div className="form-doc">
+            <IconFileDescription
+              size={20}
+              stroke={1.75}
+              aria-hidden="true"
+              style={{ flex: 'none', marginTop: 2 }}
+            />
+            <span>
+              {UI.formDocNotice[locale]}: <strong>{doc.title[locale]}</strong>
+            </span>
+          </div>
+          <input type="hidden" name="doc" value={doc.id} />
+        </>
+      ) : null}
+
       <div className="form-grid">
         <div className="field">
           <label className="field__label" htmlFor="inq-name">

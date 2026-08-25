@@ -96,6 +96,7 @@ export const UI = {
     en: 'Solids content, CIP requirement, duty cycle and existing equipment.',
   },
   formSelect: { tr: 'Seçiniz', en: 'Select' },
+  formDocNotice: { tr: 'Talep ettiğiniz doküman', en: 'Document you requested' },
   formSubmit: { tr: 'Talebi Gönder', en: 'Send Request' },
   formSending: { tr: 'Gönderiliyor', en: 'Sending' },
   formRequired: { tr: 'zorunlu', en: 'required' },

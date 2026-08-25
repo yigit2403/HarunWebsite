@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import logo from '@/public/brand/liquilob-logo.png'
+import logo from '@/assets/brand/liquilob-logo.webp'
 import { COMPANY } from '@/content/site'
 import type { Locale } from '@/lib/i18n'
 import { home } from '@/lib/routes'

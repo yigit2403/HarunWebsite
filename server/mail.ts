@@ -1,3 +1,6 @@
+import { APPLICATIONS } from '@/content/applications'
+import { INQUIRY_FIELDS, INQUIRY_SUBJECT } from '@/content/inquiry'
+import { findDocument } from '@/content/pages'
 import type { Locale } from '@/lib/i18n'
 
 /**
@@ -42,21 +45,6 @@ export function mailConfigured(): boolean {
   return mailConfig() !== null
 }
 
-/** Field order matches the form, so the email reads the way it was filled in. */
-const FIELD_LABELS: { key: string; tr: string; en: string }[] = [
-  { key: 'name', tr: 'Ad Soyad', en: 'Name' },
-  { key: 'company', tr: 'Firma', en: 'Company' },
-  { key: 'email', tr: 'E-posta', en: 'Email' },
-  { key: 'phone', tr: 'Telefon', en: 'Phone' },
-  { key: 'application', tr: 'Uygulama', en: 'Application' },
-  { key: 'fluid', tr: 'Akışkan', en: 'Fluid' },
-  { key: 'flow', tr: 'Debi', en: 'Flow rate' },
-  { key: 'pressure', tr: 'Basınç', en: 'Pressure' },
-  { key: 'viscosity', tr: 'Viskozite', en: 'Viscosity' },
-  { key: 'temperature', tr: 'Sıcaklık', en: 'Temperature' },
-  { key: 'message', tr: 'Proses notları', en: 'Process notes' },
-]
-
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, '&amp;')
@@ -64,16 +52,27 @@ const escapeHtml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
 
+/**
+ * Two fields store an id rather than the words the visitor saw. The email
+ * shows what they picked: "dairy" and "catalogue" are not what the person
+ * reading the mailbox is looking for.
+ */
+function readValue(key: string, value: string, locale: Locale): string {
+  if (key === 'application') {
+    return APPLICATIONS.find((a) => a.key === value)?.name[locale] ?? value
+  }
+  if (key === 'doc') return findDocument(value)?.title[locale] ?? value
+  return value
+}
+
 export function renderInquiry(fields: Record<string, string>, locale: Locale) {
-  const rows = FIELD_LABELS.filter((f) => fields[f.key]).map((f) => ({
-    label: locale === 'tr' ? f.tr : f.en,
-    value: fields[f.key],
+  const rows = INQUIRY_FIELDS.filter((f) => fields[f.key]).map((f) => ({
+    label: f.label[locale],
+    value: readValue(f.key, fields[f.key], locale),
   }))
 
-  const subject =
-    locale === 'tr'
-      ? `Teknik talep: ${fields.company || fields.name}`
-      : `Technical inquiry: ${fields.company || fields.name}`
+  const kind = fields.doc ? 'document' : 'inquiry'
+  const subject = `${INQUIRY_SUBJECT[kind][locale]}: ${fields.company || fields.name}`
 
   const text = rows.map((r) => `${r.label}: ${r.value}`).join('\n')
 

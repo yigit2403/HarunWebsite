@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 
-import { analyticsStore } from '@/lib/analytics/store'
-import type { InquiryEvent } from '@/lib/analytics/types'
+import { INQUIRY_FIELDS, INQUIRY_MAX_FIELD, INQUIRY_REQUIRED } from '@/content/inquiry'
+import { findDocument } from '@/content/pages'
+import { analyticsStore } from '@/server/analytics/store'
+import type { InquiryEvent } from '@/server/analytics/types'
 import { DEFAULT_LOCALE, isLocale } from '@/lib/i18n'
-import { sendInquiryMail } from '@/lib/mail'
+import { sendInquiryMail } from '@/server/mail'
 
 /**
  * Technical inquiry endpoint.
@@ -25,21 +27,8 @@ import { sendInquiryMail } from '@/lib/mail'
 
 export const runtime = 'nodejs'
 
-const MAX_FIELD = 4000
-
-const FIELDS = [
-  'name',
-  'company',
-  'email',
-  'phone',
-  'application',
-  'fluid',
-  'flow',
-  'pressure',
-  'viscosity',
-  'temperature',
-  'message',
-] as const
+const MAX_FIELD = INQUIRY_MAX_FIELD
+const FIELDS = INQUIRY_FIELDS.map((f) => f.key)
 
 function clean(value: unknown): string {
   if (typeof value !== 'string') return ''
@@ -74,12 +63,16 @@ export async function POST(request: Request) {
   const fields: Record<string, string> = {}
   for (const field of FIELDS) fields[field] = clean(body[field])
 
-  if (!fields.name || !fields.company || !fields.email) {
+  if (INQUIRY_REQUIRED.some((key) => !fields[key])) {
     return NextResponse.json({ error: 'missing_required_fields' }, { status: 422 })
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(fields.email)) {
     return NextResponse.json({ error: 'invalid_email' }, { status: 422 })
   }
+
+  // The document is a known id or nothing. This endpoint is public, so a
+  // posted value must never reach an email or the inquiry log unchecked.
+  if (fields.doc && !findDocument(fields.doc)) fields.doc = ''
 
   // Honeypot: a real visitor never fills a field the form does not render.
   if (clean(body.website)) {
