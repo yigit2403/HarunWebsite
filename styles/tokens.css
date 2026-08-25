@@ -71,7 +71,14 @@
   --ls-button: 0.045em;
   --ls-display: -0.021em;
 
-  /* Numbers always run mono. */
+  /* A phone number is contact information, not a measured value: it reads in
+     the sans face with proportional figures. Mono is for capacities, pressures
+     and dimensions, where tabular alignment is the point. */
+  --t-phone: 500 0.9375rem / 1 var(--font-sans);
+  --t-phone-md: 600 1.0625rem / 1.2 var(--font-sans);
+  --t-phone-lg: 600 clamp(1.5rem, 1.15rem + 1.4vw, 2.125rem) / 1.1 var(--font-sans);
+
+  /* Technical numbers always run mono. */
   --t-value-xl: 600 clamp(2rem, 1.5rem + 2vw, 2.875rem) / 1 var(--font-mono);
   --t-value: 500 1rem / 1.5 var(--font-mono);
   --t-value-sm: 500 0.875rem / 1.5 var(--font-mono);

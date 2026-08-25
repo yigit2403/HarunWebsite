@@ -55,10 +55,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
               </li>
               <li>
                 <IconPhone size={18} stroke={1.75} aria-hidden="true" style={{ color: 'var(--red)' }} />
-                <a
-                  href={COMPANY.phoneHref}
-                  style={{ color: 'var(--ink)', fontFamily: 'var(--font-mono)' }}
-                >
+                <a className="phone-link" href={COMPANY.phoneHref}>
                   {COMPANY.phoneDisplay}
                 </a>
               </li>

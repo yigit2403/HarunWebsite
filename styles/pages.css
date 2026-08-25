@@ -349,10 +349,10 @@
 }
 
 .cta-band__phone {
-  font: var(--t-value-xl);
-  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  font: var(--t-phone-lg);
+  font-variant-numeric: proportional-nums;
   color: var(--ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   border-bottom: 2px solid transparent;
   justify-self: start;
 }

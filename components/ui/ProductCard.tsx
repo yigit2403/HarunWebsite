@@ -18,7 +18,15 @@ export function ProductCard({ product, locale }: { product: Product; locale: Loc
   return (
     <article className="product-card" data-reveal="">
       <div className="product-card__figure">
-        <ProductImage locale={locale} sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 44vw, 88vw" />
+        {/* Scaled to the model's frame size, normalised against the largest,
+            so the four cards show the real size step instead of one photo
+            repeated four times. */}
+        <div
+          className="product-card__scale"
+          style={{ ['--scale' as string]: `${Math.round((product.drawScale / 1.15) * 100)}%` }}
+        >
+          <ProductImage locale={locale} sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 44vw, 88vw" />
+        </div>
       </div>
 
       <div className="product-card__body">

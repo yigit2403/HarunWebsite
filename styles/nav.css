@@ -87,7 +87,8 @@
 
 .header-phone {
   display: none;
-  font: var(--t-value-sm);
+  font: var(--t-phone);
+  font-variant-numeric: proportional-nums;
   color: var(--ink);
   white-space: nowrap;
   border-bottom: 1px solid transparent;
@@ -191,7 +192,8 @@
 }
 
 .drawer__phone {
-  font: var(--t-value);
+  font: var(--t-phone-md);
+  font-variant-numeric: proportional-nums;
   color: var(--ink);
   display: inline-flex;
   align-items: center;
