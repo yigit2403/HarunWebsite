@@ -22,6 +22,23 @@ export type SpecGroup = {
   rows: SpecRow[]
 }
 
+/**
+ * The measured values for one model. This is the single source of truth: the
+ * catalogue card, the comparison table and the technical data table are all
+ * derived from it, so a figure cannot be updated in one place and go stale in
+ * another. It is also the only block that changes when Profimann's verified
+ * test data replaces the current placeholders.
+ */
+export type ModelSpecs = {
+  capacity: string
+  pressure: string
+  displacement: string
+  speed: string
+  viscosity: string
+  connection: string
+  weight: string
+}
+
 export type Product = {
   /** Model code. Identical in both languages by design. */
   slug: string
@@ -30,8 +47,10 @@ export type Product = {
   type: Localised
   summary: Localised
   description: Localised<string[]>
-  /** Shown in the catalogue card and at the top of the detail page. */
+  specs: ModelSpecs
+  /** Derived from `specs`. Shown on the card and at the top of the detail page. */
   keySpecs: { label: Localised; value: string }[]
+  /** Derived from `specs`. */
   specGroups: SpecGroup[]
   advantages: { term: Localised; def: Localised }[]
   /** Keys into content/applications.ts */
@@ -72,15 +91,7 @@ const DRIVE: Localised = {
   en: 'Helical geared motor, with flow control via variable frequency drive',
 }
 
-function commonGroups(o: {
-  displacement: string
-  speed: string
-  capacity: string
-  pressure: string
-  viscosity: string
-  connection: string
-  weight: string
-}): SpecGroup[] {
+function specGroupsFrom(o: ModelSpecs): SpecGroup[] {
   return [
     {
       title: { tr: 'Hidrolik veriler', en: 'Hydraulic data' },
@@ -106,6 +117,15 @@ function commonGroups(o: {
         { label: { tr: 'Pompa ağırlığı (yaklaşık)', en: 'Pump weight, approximate' }, value: o.weight },
       ],
     },
+  ]
+}
+
+/** The three values an engineer scans first, in the order they scan them. */
+function keySpecsFrom(o: ModelSpecs): Product['keySpecs'] {
+  return [
+    { label: { tr: 'Kapasite', en: 'Capacity' }, value: o.capacity },
+    { label: { tr: 'Maks. basınç', en: 'Max. pressure' }, value: o.pressure },
+    { label: { tr: 'Bağlantı', en: 'Connection' }, value: o.connection },
   ]
 }
 
@@ -154,7 +174,9 @@ const SHARED_ADVANTAGES: Product['advantages'] = [
   },
 ]
 
-export const PRODUCTS: Product[] = [
+type RawProduct = Omit<Product, 'keySpecs' | 'specGroups'>
+
+const MODELS: RawProduct[] = [
   {
     slug: 'lql-25',
     name: 'LQL-25',
@@ -174,12 +196,7 @@ export const PRODUCTS: Product[] = [
         'The short frame length makes it straightforward to retrofit into an existing process line. It is typically used for flavourings, additive solutions and viscous concentrates.',
       ],
     },
-    keySpecs: [
-      { label: { tr: 'Kapasite', en: 'Capacity' }, value: '0,5 - 8 m³/h' },
-      { label: { tr: 'Maks. basınç', en: 'Max. pressure' }, value: '8 bar' },
-      { label: { tr: 'Bağlantı', en: 'Connection' }, value: 'DN 25 - DN 40' },
-    ],
-    specGroups: commonGroups({
+    specs: {
       capacity: '0,5 - 8 m³/h',
       pressure: '8 bar',
       displacement: '0,20 l/dev',
@@ -187,7 +204,7 @@ export const PRODUCTS: Product[] = [
       viscosity: '1 - 60.000 mPa·s',
       connection: 'DN 25 - DN 40',
       weight: '38 kg',
-    }),
+    },
     advantages: SHARED_ADVANTAGES,
     applications: ['food-beverage', 'pharma-cosmetics', 'chemical'],
     drawScale: 0.78,
@@ -211,12 +228,7 @@ export const PRODUCTS: Product[] = [
         'Rotor geometry is selected for the medium: single-wing for products carrying large particles, bi-wing for creamy products, tri-lobe where a filling line needs low pulsation.',
       ],
     },
-    keySpecs: [
-      { label: { tr: 'Kapasite', en: 'Capacity' }, value: '4 - 30 m³/h' },
-      { label: { tr: 'Maks. basınç', en: 'Max. pressure' }, value: '10 bar' },
-      { label: { tr: 'Bağlantı', en: 'Connection' }, value: 'DN 50 - DN 65' },
-    ],
-    specGroups: commonGroups({
+    specs: {
       capacity: '4 - 30 m³/h',
       pressure: '10 bar',
       displacement: '0,90 l/dev',
@@ -224,7 +236,7 @@ export const PRODUCTS: Product[] = [
       viscosity: '1 - 100.000 mPa·s',
       connection: 'DN 50 - DN 65',
       weight: '76 kg',
-    }),
+    },
     advantages: SHARED_ADVANTAGES,
     applications: ['food-beverage', 'dairy', 'pharma-cosmetics'],
     drawScale: 0.9,
@@ -248,12 +260,7 @@ export const PRODUCTS: Product[] = [
         'Wear plates and rotor tips are separate parts and are renewed without replacing the casing. On abrasive duties such as wastewater and filler compounds this drives the operating cost directly.',
       ],
     },
-    keySpecs: [
-      { label: { tr: 'Kapasite', en: 'Capacity' }, value: '15 - 90 m³/h' },
-      { label: { tr: 'Maks. basınç', en: 'Max. pressure' }, value: '12 bar' },
-      { label: { tr: 'Bağlantı', en: 'Connection' }, value: 'DN 80 - DN 100' },
-    ],
-    specGroups: commonGroups({
+    specs: {
       capacity: '15 - 90 m³/h',
       pressure: '12 bar',
       displacement: '3,20 l/dev',
@@ -261,7 +268,7 @@ export const PRODUCTS: Product[] = [
       viscosity: '1 - 150.000 mPa·s',
       connection: 'DN 80 - DN 100',
       weight: '145 kg',
-    }),
+    },
     advantages: SHARED_ADVANTAGES,
     applications: ['chemical', 'wastewater', 'industrial-process'],
     drawScale: 1,
@@ -285,12 +292,7 @@ export const PRODUCTS: Product[] = [
         'A reinforced shaft and an enlarged bearing set carry the axial loads that build up on long discharge lines.',
       ],
     },
-    keySpecs: [
-      { label: { tr: 'Kapasite', en: 'Capacity' }, value: '60 - 220 m³/h' },
-      { label: { tr: 'Maks. basınç', en: 'Max. pressure' }, value: '12 bar' },
-      { label: { tr: 'Bağlantı', en: 'Connection' }, value: 'DN 125 - DN 150' },
-    ],
-    specGroups: commonGroups({
+    specs: {
       capacity: '60 - 220 m³/h',
       pressure: '12 bar',
       displacement: '9,50 l/dev',
@@ -298,12 +300,18 @@ export const PRODUCTS: Product[] = [
       viscosity: '1 - 200.000 mPa·s',
       connection: 'DN 125 - DN 150',
       weight: '310 kg',
-    }),
+    },
     advantages: SHARED_ADVANTAGES,
     applications: ['wastewater', 'industrial-process', 'chemical'],
     drawScale: 1.15,
   },
 ]
+
+export const PRODUCTS: Product[] = MODELS.map((model) => ({
+  ...model,
+  keySpecs: keySpecsFrom(model.specs),
+  specGroups: specGroupsFrom(model.specs),
+}))
 
 export function productBySlug(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug)
@@ -317,9 +325,14 @@ export const COMPARE_COLUMNS: { key: 'capacity' | 'pressure' | 'connection' | 'v
   { key: 'viscosity', label: { tr: 'Viskozite', en: 'Viscosity' } },
 ]
 
-export const COMPARE_ROWS: Record<string, Record<string, string>> = {
-  'lql-25': { capacity: '0,5 - 8 m³/h', pressure: '8 bar', connection: 'DN 25 - 40', viscosity: '1 - 60.000 mPa·s' },
-  'lql-50': { capacity: '4 - 30 m³/h', pressure: '10 bar', connection: 'DN 50 - 65', viscosity: '1 - 100.000 mPa·s' },
-  'lql-100': { capacity: '15 - 90 m³/h', pressure: '12 bar', connection: 'DN 80 - 100', viscosity: '1 - 150.000 mPa·s' },
-  'lql-200': { capacity: '60 - 220 m³/h', pressure: '12 bar', connection: 'DN 125 - 150', viscosity: '1 - 200.000 mPa·s' },
-}
+export const COMPARE_ROWS: Record<string, Record<string, string>> = Object.fromEntries(
+  PRODUCTS.map((p) => [
+    p.slug,
+    {
+      capacity: p.specs.capacity,
+      pressure: p.specs.pressure,
+      connection: p.specs.connection,
+      viscosity: p.specs.viscosity,
+    },
+  ])
+)

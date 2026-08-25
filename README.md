@@ -79,9 +79,13 @@ verification.
 
 The numbers currently in `content/products.ts` follow the internal geometry of the series
 (displacement × speed × 60 gives the stated capacity, for all four frames) so the catalogue
-is dimensionally coherent for review. **They are not measured test data.** Replace them with
-Profimann's verified figures and set the flag to `false`; the advisories disappear on their
-own.
+is dimensionally coherent for review. **They are not measured test data.**
+
+Each model has one `specs` block and everything derives from it: the catalogue card, the
+comparison table on the catalogue page, the key specifications on the detail page and the
+technical data table. So replacing a figure is a single edit that cannot leave a stale copy
+behind somewhere else. When Profimann's verified data arrives, update those four blocks and
+set `SPECS_ARE_PROVISIONAL` to `false`; the advisories disappear on their own.
 
 ### 2. Photography is partial
 
