@@ -1,0 +1,165 @@
+/* ==========================================================================
+   ENGINEERING DRAWINGS
+
+   The line vocabulary for every SVG on the site, kept in CSS rather than in
+   SVG presentation attributes. Browsers do not resolve var() inside a
+   presentation attribute, so `fill="var(--canvas)"` silently paints black;
+   the same value in a CSS rule resolves correctly and stays tied to the
+   design tokens.
+
+   Line weights follow drawing convention: heavy for cut and outline edges,
+   medium for detail, thin dash-dot for centrelines. Red is reserved for
+   dimensions, flow and rotation, which is the same rule the rest of the
+   site follows.
+   ========================================================================== */
+
+.dwg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Outline and cut edges */
+.dwg-body {
+  fill: var(--canvas);
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: miter;
+}
+
+.dwg-body--thin { stroke-width: 2; }
+
+.dwg-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+.dwg-line--thin { stroke-width: 2; }
+
+/* Secondary detail: split lines, inspection covers, bores */
+.dwg-detail {
+  fill: none;
+  stroke: var(--graphite);
+  stroke-width: 1.5;
+}
+
+.dwg-shade {
+  fill: var(--fog);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+/* Section drawing */
+.dwg-casing-wall {
+  fill: none;
+  stroke: var(--fog);
+  stroke-width: 10;
+}
+
+.dwg-casing {
+  fill: var(--canvas);
+  stroke: var(--ink);
+  stroke-width: 3.5;
+}
+
+/* Outline only. The fluid area is painted beneath it and must show through. */
+.dwg-casing-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.5;
+}
+
+/* The swept volume: bore minus both rotors, even-odd. */
+.dwg-fluid {
+  fill: var(--red-tint);
+  stroke: none;
+}
+
+.dwg-rotor {
+  fill: var(--canvas);
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.dwg-shaft {
+  fill: var(--canvas);
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+
+/* Centrelines, dash-dot per drawing convention */
+.dwg-centre {
+  fill: none;
+  stroke: #bfbfbf;
+  stroke-width: 1.25;
+  stroke-dasharray: 26 6 4 6;
+}
+
+.dwg-centre--tight { stroke-dasharray: 14 4 3 4; }
+
+/* Chart frame */
+.dwg-grid {
+  fill: none;
+  stroke: var(--hairline);
+  stroke-width: 1;
+}
+
+.dwg-plot { fill: var(--canvas); }
+
+.dwg-axis {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+/* Red: dimensions, flow, rotation */
+.dwg-dim {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2;
+}
+
+.dwg-dim--extension { stroke-width: 1.25; }
+.dwg-dim--fine { stroke-width: 1.6; }
+
+.dwg-arrow {
+  fill: var(--red);
+  stroke: none;
+}
+
+.dwg-flow {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 3;
+}
+
+.dwg-spin {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2.5;
+}
+
+/* Lettering */
+.dwg-label {
+  fill: var(--graphite);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+}
+
+.dwg-tick {
+  fill: var(--graphite);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.dwg-dim-text {
+  fill: var(--red);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+}

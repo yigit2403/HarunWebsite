@@ -1,0 +1,531 @@
+/* ==========================================================================
+   PAGE COMPOSITIONS - hero, engineering slab, principle, detail, contact
+   ========================================================================== */
+
+/* ----------------------------------------------------------------- HERO
+   Asymmetric split. The solid red column on the left is the business card's
+   dominant graphic element carried into the layout, not a decoration: it is
+   a real grid column at desktop and collapses into the red rule on mobile. */
+.hero {
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+  padding-block: clamp(2.5rem, 1.4rem + 4.4vw, 5rem);
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--s10);
+  align-items: center;
+}
+
+.hero__mark {
+  width: 44px;
+  height: 3px;
+  background: var(--red);
+}
+
+.hero__title {
+  font: var(--t-display-xl);
+  letter-spacing: var(--ls-display);
+  margin-top: var(--s6);
+  text-wrap: balance;
+}
+
+.hero__title .is-red { color: var(--red); }
+
+.hero__lead {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+  margin-top: var(--s6);
+  max-width: 44ch;
+}
+
+.hero__actions { margin-top: var(--s8); }
+
+@media (min-width: 64rem) {
+  .hero__inner {
+    /* Equal content columns. The copy column is sized so the longest headline
+       sentence in either language sets on one line at the capped display size,
+       which is what keeps the hero to two lines rather than three. */
+    grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--s10);
+    row-gap: 0;
+  }
+
+  .hero__mark {
+    width: 48px;
+    height: 100%;
+    min-height: 22rem;
+    align-self: stretch;
+  }
+
+  .hero__copy { padding-block: var(--s4); }
+  .hero__title { margin-top: 0; }
+}
+
+@media (min-width: 80rem) {
+  .hero__inner { column-gap: var(--s12); }
+}
+
+/* --------------------------------------------------------- TECH FRAME
+   Neutral field that holds an engineering drawing. Hairline border, light
+   gray ground, generous inset so the machine reads as a subject.          */
+.tech-frame {
+  position: relative;
+  background: var(--cloud);
+  border: 1px solid var(--hairline);
+  padding: clamp(var(--s5), 3vw, var(--s10));
+}
+
+.tech-frame--plain { background: var(--canvas); }
+
+.tech-frame__caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--s2) var(--s3);
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+  border-right: 1px solid var(--hairline);
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+/* ---------------------------------------------------------- PHOTO SLOT
+   Reserved position for client photography that does not exist yet. It
+   renders as a measured, labelled frame rather than a stock stand-in, so
+   the layout is complete and the shot list is unambiguous. Swapping in the
+   real image is a one-line change in content/photography.ts.              */
+.photo-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: var(--s3);
+  background: var(--cloud);
+  border: 1px solid var(--hairline);
+  padding: var(--s8) var(--s6);
+  text-align: center;
+  min-height: 12rem;
+}
+
+.slab .photo-slot {
+  background: var(--slab-raised);
+  border-color: var(--hairline-dark);
+}
+
+.photo-slot__mark {
+  width: 28px;
+  height: 3px;
+  background: var(--red);
+}
+
+.slab .photo-slot__mark { background: var(--red-on-dark); }
+
+.photo-slot__label {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  max-width: 32ch;
+}
+
+.slab .photo-slot__label { color: var(--on-dark-soft); }
+
+.photo-slot__spec {
+  font: var(--t-value-sm);
+  color: var(--graphite);
+}
+
+.slab .photo-slot__spec { color: var(--on-dark-soft); }
+
+/* ------------------------------------------------------ ENGINEERING SLAB
+   The one dramatic band on the page. Full-bleed charcoal, large statement
+   on the left, three key figures beneath, drawing on the right.           */
+.slab-band { padding-block: var(--space-section); }
+
+.slab-band__title {
+  font: var(--t-display-lg);
+  letter-spacing: var(--ls-display);
+  max-width: 18ch;
+}
+
+.slab-band__body {
+  font: var(--t-body-lg);
+  color: var(--on-dark-soft);
+  margin-top: var(--s6);
+  max-width: 46ch;
+}
+
+.slab-band__figures { margin-top: var(--s12); }
+
+/* ----------------------------------------------------- WORKING PRINCIPLE
+   Cross-section drawing with annotated callouts beside it. Distinct from
+   every other section on the page: diagram-led, not copy-led.             */
+.principle {
+  display: grid;
+  gap: var(--s10);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .principle {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s16);
+  }
+}
+
+.principle__steps {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.principle__step {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: var(--s4);
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.principle__index {
+  font: var(--t-value-sm);
+  color: var(--red);
+  padding-top: 0.15em;
+}
+
+.principle__step h3 {
+  font: var(--t-title-md);
+  margin-bottom: var(--s2);
+}
+
+.principle__step p {
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------- PRODUCT DETAIL */
+.product-hero {
+  padding-block: clamp(2rem, 1.4rem + 2.6vw, 3.5rem) clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.product-hero__grid {
+  display: grid;
+  gap: var(--s10);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .product-hero__grid {
+    grid-template-columns: minmax(0, 6.5fr) minmax(0, 5.5fr);
+    gap: var(--s16);
+  }
+}
+
+.product-hero__series {
+  font: var(--t-kicker);
+  letter-spacing: var(--ls-kicker);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.product-hero__name {
+  font: var(--t-display-lg);
+  letter-spacing: var(--ls-display);
+  margin-top: var(--s3);
+}
+
+.product-hero__type {
+  font: var(--t-title-lg);
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-top: var(--s2);
+}
+
+.product-hero__desc {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+  margin-top: var(--s6);
+  max-width: 48ch;
+}
+
+.key-specs {
+  margin-top: var(--s8);
+  border-top: 1px solid var(--hairline);
+}
+
+.key-spec {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--s4);
+  padding: var(--s4) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.key-spec__label {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.key-spec__value {
+  font: var(--t-value);
+  color: var(--ink);
+  text-align: right;
+}
+
+.product-section { padding-block: var(--space-section-tight); }
+.product-section + .product-section { border-top: 1px solid var(--hairline); }
+
+.product-section__title {
+  font: var(--t-display-md);
+  letter-spacing: var(--ls-display);
+  margin-bottom: var(--s8);
+}
+
+/* ------------------------------------------------------- EMPTY STATE
+   Performance curves and dimension tables are issued per duty point. The
+   frame is drawn to scale and the state says what to do next.             */
+.empty-state {
+  display: grid;
+  gap: var(--s4);
+  justify-items: start;
+  padding: var(--s8);
+  background: var(--cloud);
+  border: 1px solid var(--hairline);
+}
+
+.empty-state__title { font: var(--t-title-lg); }
+
+.empty-state__body {
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+
+/* ------------------------------------------------------------ CTA BAND */
+.cta-band {
+  background: var(--cloud);
+  border-top: 1px solid var(--hairline);
+  padding-block: var(--space-section);
+}
+
+.cta-band__inner {
+  display: grid;
+  gap: var(--s8);
+  align-items: end;
+}
+
+@media (min-width: 64rem) {
+  .cta-band__inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s16);
+  }
+}
+
+.cta-band__title {
+  font: var(--t-display-md);
+  letter-spacing: var(--ls-display);
+  max-width: 20ch;
+}
+
+.cta-band__body {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+  margin-top: var(--s5);
+  max-width: 52ch;
+}
+
+.cta-band__aside {
+  border-top: 3px solid var(--red);
+  padding-top: var(--s6);
+  display: grid;
+  gap: var(--s5);
+}
+
+.cta-band__phone {
+  font: var(--t-value-xl);
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid transparent;
+  justify-self: start;
+}
+
+.cta-band__phone:hover { border-bottom-color: var(--red); }
+
+.cta-band__phone-label {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  display: block;
+  margin-bottom: var(--s2);
+}
+
+/* ------------------------------------------------------------- ABOUT
+   Editorial two-column with a pulled statement. Not a card, not a grid.  */
+.prose {
+  max-width: 40rem;
+  display: grid;
+  gap: var(--s5);
+}
+
+.prose p {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+}
+
+.prose h3 {
+  font: var(--t-title-lg);
+  color: var(--ink);
+  margin-top: var(--s5);
+}
+
+.statement {
+  border-left: 3px solid var(--red);
+  padding-left: var(--s6);
+  font: var(--t-display-sm);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  max-width: 34ch;
+}
+
+.slab .statement { border-left-color: var(--red-on-dark); color: var(--on-dark); }
+
+/* ------------------------------------------------- APPLICATION DETAIL */
+.app-detail {
+  display: grid;
+  gap: var(--s10);
+}
+
+@media (min-width: 64rem) {
+  .app-detail {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: var(--s16);
+    align-items: start;
+  }
+}
+
+.app-aside {
+  position: sticky;
+  top: 6.5rem;
+  border-top: 3px solid var(--red);
+  padding-top: var(--s6);
+  display: grid;
+  gap: var(--s6);
+}
+
+.app-aside__title {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.app-model-list { display: grid; gap: 0; border-top: 1px solid var(--hairline); }
+
+.app-model {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s4) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.app-model__name { font: var(--t-title-md); }
+.app-model__note { font: var(--t-value-sm); color: var(--graphite); }
+
+/* --------------------------------------------------------- RELATED ROW */
+.related {
+  display: grid;
+  gap: var(--grid-gap);
+}
+
+@media (min-width: 48rem) {
+  .related { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 64rem) {
+  .related { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* ---------------------------------------------------------- CATALOGUE
+   Model comparison strip above the card grid: the fastest way for an
+   engineer who already knows their duty point to find the right frame.   */
+.compare-strip { margin-bottom: var(--s12); }
+
+/* ------------------------------------------------------------ 404 PAGE */
+.notfound {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: var(--s6);
+  padding-block: clamp(4rem, 2rem + 10vw, 9rem);
+}
+
+.notfound__code {
+  font: var(--t-value-xl);
+  color: var(--red);
+  letter-spacing: -0.03em;
+}
+
+/* ------------------------------------------------- STATEMENT BAND (about)
+   A single pulled sentence carries the About section on the homepage. The
+   full company story lives on its own page rather than being dumped here.  */
+.statement-band {
+  display: grid;
+  gap: var(--s8);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .statement-band {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--s16);
+    /* The pulled statement is always shorter than the column beside it.
+       Centring keeps the band from reading as half-empty. */
+    align-items: center;
+  }
+}
+
+.statement-band__body {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+  max-width: 46ch;
+}
+
+.statement-band__link { margin-top: var(--s6); display: inline-flex; }
+
+/* CTA band on a white surface, used where the preceding band is already gray. */
+.cta-band--canvas { background: var(--canvas); }
+
+/* Dark engineering band: statement left, drawing right, figures beneath. */
+.slab-band__grid {
+  display: grid;
+  gap: var(--s10);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .slab-band__grid {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--s16);
+  }
+}
+
+/* Hero actions stack to full width on narrow screens so the two CTAs read as
+   equal weight targets rather than two ragged pills. */
+@media (max-width: 30rem) {
+  .hero__actions .btn,
+  .cta-band .btn-row .btn {
+    width: 100%;
+  }
+}

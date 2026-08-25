@@ -1,0 +1,130 @@
+/* ==========================================================================
+   PROFIMANN / LIQUILOB - DESIGN TOKENS
+   Single source of truth. Nothing in this project hardcodes a hex or a px
+   value that belongs to one of these scales.
+
+   Identity source: the Profimann / Liquilob business card.
+   Red block, bold black type, large white field, thin dividers, square geometry.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------- COLOR */
+  /* Signal. One chromatic action colour, nothing else. */
+  --red: #d00000;          /* CTA fill, active nav, section rule, key figures  */
+  --red-deep: #a50000;     /* pressed state                                    */
+  --red-tint: #fbeaea;     /* very pale wash, table row highlight only         */
+  --red-on-dark: #ff3b3b;  /* the only red permitted on a dark slab (AA 5.3:1) */
+
+  /* Ink */
+  --ink: #111111;          /* headings, primary body                           */
+  --ink-soft: #333333;     /* secondary body                                   */
+  --graphite: #5c5c5c;     /* metadata, captions, table sub-labels             */
+
+  /* Surfaces */
+  --canvas: #ffffff;
+  --cloud: #f5f5f5;        /* alternating light band                           */
+  --fog: #ebebeb;          /* utility / table header band                      */
+  --slab: #141414;         /* dark engineering band + footer                   */
+  --slab-raised: #1f1f1f;  /* panel inside a dark band                         */
+
+  /* On-surface */
+  --on-red: #ffffff;
+  --on-dark: #ffffff;
+  --on-dark-soft: #a8a8a8; /* AA 7.9:1 on --slab                               */
+
+  /* Lines */
+  --hairline: #d9d9d9;
+  --hairline-soft: #e6e6e6;
+  --hairline-dark: rgba(255, 255, 255, 0.14);
+  --rule-strong: #111111;
+
+  /* ----------------------------------------------------------- TYPOGRAPHY */
+  --font-sans: var(--font-plex-sans), "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  /* Display. Confident, not editorial-fashion. Weight 700 throughout. */
+  --t-display-xl: 700 clamp(2.25rem, 1.55rem + 2.2vw, 3rem) / 1.06 var(--font-sans);
+  --t-display-lg: 700 clamp(1.875rem, 1.42rem + 1.85vw, 2.625rem) / 1.1 var(--font-sans);
+  --t-display-md: 700 clamp(1.625rem, 1.34rem + 1.15vw, 2.25rem) / 1.14 var(--font-sans);
+  --t-display-sm: 700 clamp(1.375rem, 1.24rem + 0.55vw, 1.625rem) / 1.2 var(--font-sans);
+
+  /* Titles */
+  --t-title-lg: 600 1.25rem / 1.3 var(--font-sans);
+  --t-title-md: 600 1.0625rem / 1.4 var(--font-sans);
+  --t-title-sm: 600 0.9375rem / 1.45 var(--font-sans);
+
+  /* Body. Weight 400, never lighter. Factory lighting and mobile screens. */
+  --t-body-lg: 400 1.125rem / 1.6 var(--font-sans);
+  --t-body: 400 1rem / 1.65 var(--font-sans);
+  --t-body-sm: 400 0.9375rem / 1.6 var(--font-sans);
+  --t-caption: 400 0.8125rem / 1.5 var(--font-sans);
+
+  /* Technical. Uppercase is reserved for these three roles only. */
+  --t-kicker: 600 0.75rem / 1.2 var(--font-sans);
+  --t-label: 600 0.75rem / 1.3 var(--font-sans);
+  --t-button: 600 0.875rem / 1 var(--font-sans);
+  --ls-kicker: 0.14em;
+  --ls-label: 0.08em;
+  --ls-button: 0.045em;
+  --ls-display: -0.021em;
+
+  /* Numbers always run mono. */
+  --t-value-xl: 600 clamp(2rem, 1.5rem + 2vw, 2.875rem) / 1 var(--font-mono);
+  --t-value: 500 1rem / 1.5 var(--font-mono);
+  --t-value-sm: 500 0.875rem / 1.5 var(--font-mono);
+
+  /* -------------------------------------------------------------- SPACING */
+  --s1: 0.25rem;   /*  4 */
+  --s2: 0.5rem;    /*  8 */
+  --s3: 0.75rem;   /* 12 */
+  --s4: 1rem;      /* 16 */
+  --s5: 1.25rem;   /* 20 */
+  --s6: 1.5rem;    /* 24 */
+  --s8: 2rem;      /* 32 */
+  --s10: 2.5rem;   /* 40 */
+  --s12: 3rem;     /* 48 */
+  --s16: 4rem;     /* 64 */
+  --s20: 5rem;     /* 80 */
+
+  --space-section: clamp(3.5rem, 2.1rem + 6vw, 7rem);
+  --space-section-tight: clamp(2.75rem, 1.8rem + 4vw, 4.5rem);
+
+  /* ----------------------------------------------------------------- GRID */
+  --container: 1320px;
+  --container-narrow: 940px;
+  --gutter: 1.25rem;
+  --grid-gap: 1.5rem;
+
+  /* --------------------------------------------------------------- SHAPE
+     One rule, applied everywhere: interactive elements 2px, containers 0px.
+     Nothing on this site is rounder than 2px.                              */
+  --radius-interactive: 2px;
+  --radius-container: 0px;
+
+  /* Depth is colour contrast and hairlines. There are no drop shadows. */
+
+  /* ---------------------------------------------------------------- MOTION */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur: 260ms;
+  --dur-slow: 560ms;
+
+  /* ---------------------------------------------------------------- LAYERS */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-drawer: 60;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 2rem;
+    --grid-gap: 2rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --gutter: 2.5rem;
+  }
+}

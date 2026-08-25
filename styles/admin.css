@@ -1,0 +1,473 @@
+/* ==========================================================================
+   ADMIN PANEL
+
+   Internal tool, built on the same tokens as the public site so it does not
+   read as a bolted-on dashboard. Light only, matching the site's theme lock.
+
+   Chart marks follow one set of specs: bars capped at 24px, a 4px rounded
+   data-end square at the baseline, a 2px surface gap between touching marks,
+   hairline solid gridlines, and text always in an ink token rather than the
+   data colour. Hover tooltips are pure CSS: the panel ships no JavaScript.
+   ========================================================================== */
+
+.admin {
+  min-height: 100dvh;
+  background: var(--cloud);
+}
+
+.admin__bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.admin__bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s5);
+  min-height: 64px;
+  padding-block: var(--s3);
+}
+
+.admin__title {
+  font: var(--t-title-md);
+  color: var(--graphite);
+  margin-right: auto;
+}
+
+.admin__title strong {
+  display: block;
+  font: var(--t-title-lg);
+  color: var(--ink);
+}
+
+.admin__main { padding-block: var(--s8) var(--s16); }
+
+/* Segmented control, used for the date range and the language toggle. */
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-interactive);
+  overflow: hidden;
+  background: var(--canvas);
+}
+
+.segmented a {
+  padding: 0 var(--s4);
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.segmented a + a { border-left: 1px solid var(--hairline); }
+.segmented a:hover { background: var(--cloud); color: var(--ink); }
+.segmented a[aria-current='true'] { background: var(--ink); color: var(--canvas); }
+
+/* ------------------------------------------------------------ PANEL SHELL */
+.panel {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  padding: var(--s6);
+}
+
+.panel + .panel { margin-top: var(--grid-gap); }
+
+.panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s6);
+}
+
+.panel__title {
+  font: var(--t-title-md);
+  color: var(--ink);
+}
+
+.panel__note {
+  font: var(--t-caption);
+  color: var(--graphite);
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--grid-gap);
+}
+
+@media (min-width: 64rem) {
+  .admin-grid--split { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .admin-grid--halves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* -------------------------------------------------------------- STAT ROW
+   A KPI row of stat tiles, not a bar chart of four numbers.               */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+}
+
+@media (min-width: 64rem) {
+  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.stat {
+  padding: var(--s6);
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.stat:nth-child(2n) { border-right: 0; }
+.stat:nth-last-child(-n + 2) { border-bottom: 0; }
+
+@media (min-width: 64rem) {
+  .stat:nth-child(2n) { border-right: 1px solid var(--hairline); }
+  .stat:last-child { border-right: 0; }
+  .stat { border-bottom: 0; }
+}
+
+.stat__label {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.stat__value {
+  display: block;
+  margin-top: var(--s3);
+  font: var(--t-value-xl);
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  letter-spacing: -0.03em;
+  color: var(--red);
+}
+
+.stat__delta {
+  display: inline-block;
+  margin-top: var(--s2);
+  font: var(--t-value-sm);
+  color: var(--graphite);
+}
+
+.stat__delta[data-dir='up']::before { content: '+'; }
+
+/* ------------------------------------------------------------ TREND CHART
+   Daily page views. One series, so no legend: the panel title names it.   */
+.chart {
+  position: relative;
+  padding-left: 3.25rem;
+}
+
+.chart__plot {
+  position: relative;
+  height: 210px;
+}
+
+.chart__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chart__gridline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.chart__gridline span {
+  position: absolute;
+  right: calc(100% + var(--s3));
+  transform: translateY(-50%);
+  font: var(--t-value-sm);
+  font-size: 0.75rem;
+  color: var(--graphite);
+  white-space: nowrap;
+}
+
+.chart__bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px; /* the surface gap that separates touching marks */
+}
+
+.chart__bar {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chart__mark {
+  width: 100%;
+  max-width: 24px;
+  height: var(--h);
+  min-height: 2px;
+  background: var(--ink-soft);
+  /* rounded data-end, square at the baseline */
+  border-radius: 4px 4px 0 0;
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.chart__bar[data-peak='true'] .chart__mark { background: var(--red); }
+.chart__bar:hover .chart__mark { background: var(--red); }
+
+/* The hit target is the whole column, not the mark, so short bars are easy
+   to hover. */
+.chart__tip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--canvas);
+  padding: var(--s2) var(--s3);
+  border-radius: var(--radius-interactive);
+  font: var(--t-value-sm);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 2;
+  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.chart__bar:hover .chart__tip,
+.chart__bar:focus-within .chart__tip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* The first and last columns anchor their tooltip to the inside edge. A
+   centred tooltip on an edge column pushes past the viewport and drags the
+   page into a horizontal scroll even while it is invisible. */
+.chart__bar:first-child .chart__tip { left: 0; transform: translate(0, 4px); }
+.chart__bar:first-child:hover .chart__tip,
+.chart__bar:first-child:focus-within .chart__tip { transform: translate(0, 0); }
+
+.chart__bar:last-child .chart__tip { left: auto; right: 0; transform: translate(0, 4px); }
+.chart__bar:last-child:hover .chart__tip,
+.chart__bar:last-child:focus-within .chart__tip { transform: translate(0, 0); }
+
+.chart__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--s3);
+  font: var(--t-value-sm);
+  font-size: 0.75rem;
+  color: var(--graphite);
+}
+
+/* Peak callout: the one direct label on the chart. */
+.chart__peak {
+  font: var(--t-caption);
+  color: var(--graphite);
+  margin-top: var(--s4);
+}
+
+.chart__peak strong { color: var(--ink); font-weight: 600; }
+
+/* ------------------------------------------------------------ RANKED BARS
+   Magnitude comparison. Length carries the value; there is no background
+   track behind the bar and no number on every axis tick.                  */
+.ranked { display: grid; gap: var(--s4); }
+
+.ranked__row { display: grid; gap: var(--s2); }
+
+.ranked__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s4);
+}
+
+.ranked__label {
+  font: var(--t-body-sm);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.ranked__value {
+  font: var(--t-value-sm);
+  color: var(--graphite);
+  white-space: nowrap;
+}
+
+.ranked__mark {
+  height: 8px;
+  width: var(--w);
+  min-width: 3px;
+  background: var(--ink-soft);
+  border-radius: 0 4px 4px 0;
+}
+
+.ranked__row:first-child .ranked__mark { background: var(--red); }
+
+/* ------------------------------------------------------------- SPLIT BAR
+   Two-segment part-to-whole. This is an emphasis pair, one hue plus a
+   de-emphasis gray, not a categorical palette: Turkish is the primary
+   market and English is context. Both segments are direct-labelled, so
+   identity never rests on colour alone.                                   */
+.split-bar {
+  display: flex;
+  gap: 2px;
+  height: 28px;
+  margin-bottom: var(--s5);
+}
+
+.split-bar__seg {
+  width: var(--w);
+  min-width: 3px;
+  background: var(--ink-soft);
+}
+
+.split-bar__seg:first-child { background: var(--red); border-radius: 4px 0 0 4px; }
+.split-bar__seg:last-child { background: #8a8a8a; border-radius: 0 4px 4px 0; }
+
+.split-legend { display: grid; gap: var(--s3); }
+
+.split-legend li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  font: var(--t-body-sm);
+  color: var(--ink);
+}
+
+.split-legend__swatch {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 2px;
+  transform: translateY(-1px);
+}
+
+.split-legend__value {
+  margin-left: auto;
+  font: var(--t-value-sm);
+  color: var(--graphite);
+}
+
+/* ------------------------------------------------------------ DATA TABLE
+   Every chart has a table behind it, so nothing is gated behind colour or
+   behind a hover.                                                         */
+.data-toggle {
+  margin-top: var(--s5);
+  border-top: 1px solid var(--hairline-soft);
+  padding-top: var(--s4);
+}
+
+.data-toggle summary {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  cursor: pointer;
+}
+
+.data-toggle summary:hover { color: var(--ink); }
+.data-toggle[open] summary { margin-bottom: var(--s4); }
+
+/* -------------------------------------------------------------- NOTICES */
+.notice {
+  border-left: 3px solid var(--red);
+  background: var(--red-tint);
+  padding: var(--s4) var(--s5);
+  font: var(--t-body-sm);
+  color: var(--ink);
+  margin-bottom: var(--grid-gap);
+}
+
+.notice--neutral {
+  border-left-color: var(--ink);
+  background: var(--fog);
+  color: var(--ink-soft);
+}
+
+.notice strong { font-weight: 600; color: var(--ink); }
+.notice code {
+  font: var(--t-value-sm);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  padding: 1px 5px;
+}
+
+/* ------------------------------------------------------------- INQUIRIES */
+.inquiry {
+  border-top: 1px solid var(--hairline);
+  padding-block: var(--s5);
+}
+
+.inquiry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s3);
+  margin-bottom: var(--s3);
+}
+
+.inquiry__company { font: var(--t-title-md); }
+.inquiry__meta { font: var(--t-value-sm); color: var(--graphite); margin-left: auto; }
+
+.inquiry__flag {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 1px 6px;
+}
+
+.inquiry__fields {
+  display: grid;
+  gap: var(--s2) var(--s5);
+  font: var(--t-body-sm);
+}
+
+@media (min-width: 48rem) {
+  .inquiry__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.inquiry__fields div { display: flex; gap: var(--s3); }
+
+.inquiry__fields dt {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  min-width: 8rem;
+  flex: none;
+}
+
+.inquiry__fields dd { color: var(--ink-soft); overflow-wrap: anywhere; }
+
+/* Process notes are the long field; give them the full row. */
+@media (min-width: 48rem) {
+  .inquiry__fields .inquiry__field--wide { grid-column: 1 / -1; }
+}
+
+.empty-note {
+  font: var(--t-body-sm);
+  color: var(--graphite);
+  padding-block: var(--s6);
+}

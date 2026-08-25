@@ -1,0 +1,24 @@
+{
+  "name": "profimann-liquilob",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Profimann Makine San. Tic. Ltd. Sti. / Liquilob rotary lobe pumps. Bilingual (TR/EN) industrial website.",
+  "scripts": {
+    "dev": "next dev -p 3210",
+    "build": "next build",
+    "start": "next start -p 3210",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.34.0",
+    "next": "^16.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "typescript": "^5.8.3"
+  }
+}

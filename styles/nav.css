@@ -1,0 +1,315 @@
+/* ==========================================================================
+   NAVIGATION - brand lockup, sticky header, mobile drawer, footer
+   ========================================================================== */
+
+/* ------------------------------------------------------- BRAND LOCKUP
+   Reconstructed from the business card: a solid red block, the LIQUILOB
+   wordmark in heavy black, and the BY PROFIMANN endorsement beneath.     */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  flex: none;
+}
+
+.brand__block {
+  width: 7px;
+  height: 34px;
+  background: var(--red);
+  flex: none;
+}
+
+.brand__names { display: block; }
+
+.brand__primary {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.brand__sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  color: var(--graphite);
+}
+
+.site-footer .brand__primary { color: var(--on-dark); }
+.site-footer .brand__sub { color: var(--on-dark-soft); }
+
+/* ---------------------------------------------------------- SITE HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s5);
+  height: 60px;
+}
+
+@media (min-width: 64rem) {
+  .site-header__inner { height: 72px; gap: var(--s8); }
+}
+
+.site-nav { display: none; }
+
+@media (min-width: 64rem) {
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--s4), 1.2vw, var(--s6));
+    margin-right: auto;
+  }
+}
+
+.site-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 72px;
+  font: var(--t-title-sm);
+  font-weight: 500;
+  color: var(--ink-soft);
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+.site-nav__link:hover { color: var(--ink); border-bottom-color: var(--hairline); }
+
+.site-nav__link[aria-current] {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--red);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  margin-left: auto;
+}
+
+@media (min-width: 64rem) {
+  .site-header__actions { margin-left: 0; }
+}
+
+.header-phone {
+  display: none;
+  font: var(--t-value-sm);
+  color: var(--ink);
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+}
+
+.header-phone:hover { border-bottom-color: var(--red); }
+
+@media (min-width: 80rem) {
+  .header-phone { display: inline-block; }
+}
+
+/* Scoped to the top bar. The drawer lives inside .site-header too, and its
+   own primary CTA has to stay visible at exactly the widths this hides. */
+.site-header__actions .btn--primary { display: none; }
+
+@media (min-width: 64rem) {
+  .site-header__actions .btn--primary { display: inline-flex; }
+}
+
+/* ------------------------------------------------------ LANGUAGE SWITCH */
+.lang {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-interactive);
+  overflow: hidden;
+  flex: none;
+}
+
+.lang__opt {
+  padding: 0 var(--s3);
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  color: var(--graphite);
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.lang__opt + .lang__opt { border-left: 1px solid var(--hairline); }
+.lang__opt:hover { background: var(--cloud); color: var(--ink); }
+
+.lang__opt[aria-current="true"] {
+  background: var(--ink);
+  color: var(--canvas);
+}
+
+.site-footer .lang { border-color: var(--hairline-dark); }
+.site-footer .lang__opt { color: var(--on-dark-soft); }
+.site-footer .lang__opt + .lang__opt { border-left-color: var(--hairline-dark); }
+.site-footer .lang__opt:hover { background: var(--slab-raised); color: var(--on-dark); }
+.site-footer .lang__opt[aria-current="true"] { background: var(--canvas); color: var(--ink); }
+
+/* --------------------------------------------------------- MOBILE MENU */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: calc(var(--s2) * -1);
+  color: var(--ink);
+  border-radius: var(--radius-interactive);
+}
+
+@media (min-width: 64rem) {
+  .nav-toggle { display: none; }
+}
+
+.drawer {
+  position: fixed;
+  inset: 60px 0 0;
+  z-index: var(--z-drawer);
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: var(--s12);
+}
+
+.drawer__list { border-top: 1px solid var(--hairline); }
+
+.drawer__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--hairline);
+  font: var(--t-title-lg);
+  color: var(--ink);
+}
+
+.drawer__link[aria-current] { color: var(--red); }
+.drawer__link svg { color: var(--graphite); }
+
+.drawer__foot {
+  margin-top: var(--s8);
+  display: grid;
+  gap: var(--s5);
+}
+
+.drawer__phone {
+  font: var(--t-value);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.drawer__phone svg { color: var(--red); }
+
+/* -------------------------------------------------------------- FOOTER */
+.site-footer {
+  background: var(--slab);
+  color: var(--on-dark);
+  padding-top: var(--space-section-tight);
+}
+
+.site-footer h2,
+.site-footer h3 { color: var(--on-dark); }
+
+.footer-grid {
+  display: grid;
+  gap: var(--s10);
+  padding-bottom: var(--s12);
+}
+
+@media (min-width: 48rem) {
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 64rem) {
+  .footer-grid {
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+    gap: var(--s8);
+  }
+}
+
+.footer-col__title {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--on-dark);
+  margin-bottom: var(--s5);
+}
+
+.footer-col ul { display: grid; gap: var(--s3); }
+
+.footer-col a {
+  font: var(--t-body-sm);
+  color: var(--on-dark-soft);
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.footer-col a:hover { color: var(--on-dark); border-bottom-color: var(--red-on-dark); }
+
+.footer-brand__legal {
+  font: var(--t-body-sm);
+  color: var(--on-dark-soft);
+  margin-top: var(--s6);
+  max-width: 30ch;
+}
+
+.footer-contact {
+  display: grid;
+  gap: var(--s4);
+  margin-top: var(--s6);
+  font: var(--t-body-sm);
+  color: var(--on-dark-soft);
+}
+
+.footer-contact li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: var(--s3);
+  align-items: start;
+}
+
+.footer-contact svg { color: var(--red-on-dark); margin-top: 2px; }
+.footer-contact a { color: var(--on-dark); border-bottom: 1px solid transparent; }
+.footer-contact a:hover { border-bottom-color: var(--red-on-dark); }
+
+.footer-base {
+  border-top: 1px solid var(--hairline-dark);
+  padding-block: var(--s6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  font: var(--t-caption);
+  color: var(--on-dark-soft);
+}
+
+.footer-base__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s5);
+}
+
+.footer-base__links a { border-bottom: 1px solid transparent; }
+.footer-base__links a:hover { color: var(--on-dark); border-bottom-color: var(--red-on-dark); }

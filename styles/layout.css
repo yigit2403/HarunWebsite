@@ -1,0 +1,196 @@
+/* ==========================================================================
+   LAYOUT - container, grid, section bands, the red-rule heading motif
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+/* ------------------------------------------------------------ SECTIONS
+   Surface rhythm. Bands alternate; two identical surfaces never sit next
+   to each other. Surface vocabulary is exactly four values.               */
+.section {
+  padding-block: var(--space-section);
+}
+
+.section--tight {
+  padding-block: var(--space-section-tight);
+}
+
+.section--canvas { background: var(--canvas); }
+.section--cloud  { background: var(--cloud); }
+.section--fog    { background: var(--fog); }
+
+.slab {
+  background: var(--slab);
+  color: var(--on-dark);
+}
+
+.slab h1, .slab h2, .slab h3, .slab h4 { color: var(--on-dark); }
+.slab p { color: var(--on-dark-soft); }
+
+/* Hairline seam between two same-coloured bands. */
+.section--seam-top { border-top: 1px solid var(--hairline); }
+
+/* ------------------------------------------------- SECTION HEAD + MOTIF
+   The short horizontal red line from the business card. It is the brand
+   artifact of this site: it sits above every major heading. The uppercase
+   text kicker is the exception, not the rule, and is used sparingly.      */
+.rule {
+  display: block;
+  width: 44px;
+  height: 3px;
+  background: var(--red);
+  margin-bottom: var(--s5);
+}
+
+.slab .rule { background: var(--red-on-dark); }
+
+.rule--center { margin-inline: auto; }
+
+.kicker {
+  display: block;
+  font: var(--t-kicker);
+  letter-spacing: var(--ls-kicker);
+  text-transform: uppercase;
+  color: var(--graphite);
+  margin-bottom: var(--s3);
+}
+
+.slab .kicker { color: var(--on-dark-soft); }
+
+.section-head {
+  max-width: 46rem;
+  margin-bottom: var(--s12);
+}
+
+.section-head__title {
+  font: var(--t-display-md);
+  letter-spacing: var(--ls-display);
+}
+
+.section-head__lead {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+  margin-top: var(--s5);
+  max-width: 42rem;
+}
+
+.slab .section-head__lead { color: var(--on-dark-soft); }
+
+/* Head with a trailing action on the same baseline (catalogue rows). */
+.section-head--row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s6);
+  max-width: none;
+}
+
+.section-head--row > div { max-width: 40rem; }
+
+/* ---------------------------------------------------------------- GRID */
+.grid {
+  display: grid;
+  /* Default grid columns are auto-sized, so a wide child such as a
+     min-width'd specification table pushes the track past the viewport.
+     minmax(0, 1fr) lets the track shrink and the table scroll inside itself. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--grid-gap);
+}
+
+.grid--2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid--3 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid--4 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+@media (min-width: 40rem) {
+  .grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 64rem) {
+  .grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Editorial split: copy column plus a wider asset column. */
+.split {
+  display: grid;
+  gap: var(--s10);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .split {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--s16);
+  }
+
+  .split--even { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .split--reverse > :first-child { order: 2; }
+}
+
+/* --------------------------------------------------------- BREADCRUMB */
+.breadcrumb {
+  padding-block: var(--s5);
+  border-bottom: 1px solid var(--hairline);
+  background: var(--canvas);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  font: var(--t-caption);
+  color: var(--graphite);
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.breadcrumb li + li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-top: 1px solid var(--steel, #bfbfbf);
+  border-right: 1px solid var(--hairline);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.breadcrumb a { border-bottom: 1px solid transparent; }
+.breadcrumb a:hover { color: var(--ink); border-bottom-color: var(--red); }
+.breadcrumb [aria-current='page'] { color: var(--ink); }
+
+/* ------------------------------------------------------- PAGE MASTHEAD
+   Shared top block for every interior page. Red rule, title, lead.        */
+.masthead {
+  padding-block: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem) clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.masthead__title {
+  font: var(--t-display-lg);
+  letter-spacing: var(--ls-display);
+  max-width: 20ch;
+}
+
+.masthead__lead {
+  font: var(--t-body-lg);
+  color: var(--ink-soft);
+  margin-top: var(--s6);
+  max-width: 48ch;
+}

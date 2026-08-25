@@ -1,0 +1,674 @@
+/* ==========================================================================
+   COMPONENTS - buttons, cards, technical tables, downloads, forms, figures
+   Every interactive element is 2px. Every container is 0px. No shadows.
+   ========================================================================== */
+
+/* ------------------------------------------------------------- BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 48px;
+  padding: 0 var(--s6);
+  border: 1px solid transparent;
+  border-radius: var(--radius-interactive);
+  font: var(--t-button);
+  letter-spacing: var(--ls-button);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn svg { flex: none; }
+
+/* Primary. Red is the only filled action colour on the site. */
+.btn--primary {
+  background: var(--red);
+  color: var(--on-red);
+  border-color: var(--red);
+}
+
+.btn--primary:hover { background: var(--red-deep); border-color: var(--red-deep); }
+
+/* Secondary. Outlined ink, fills on hover. */
+.btn--secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--secondary:hover { background: var(--ink); color: var(--canvas); }
+
+/* On a dark slab. */
+.slab .btn--secondary,
+.site-footer .btn--secondary {
+  color: var(--on-dark);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.slab .btn--secondary:hover,
+.site-footer .btn--secondary:hover {
+  background: var(--canvas);
+  color: var(--ink);
+  border-color: var(--canvas);
+}
+
+.btn--sm { min-height: 40px; padding: 0 var(--s4); font-size: 0.8125rem; }
+.btn--block { width: 100%; }
+
+.btn[aria-disabled="true"],
+.btn:disabled {
+  background: var(--fog);
+  border-color: var(--fog);
+  color: var(--graphite);
+  pointer-events: none;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+}
+
+/* ------------------------------------------------------- ARROW TEXT LINK
+   Red underline grows from the left on hover, arrow steps 4px right.      */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  font: var(--t-title-sm);
+  color: var(--red);
+  position: relative;
+  padding-bottom: 3px;
+}
+
+.link-arrow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+
+.link-arrow:hover::after { transform: scaleX(1); }
+
+.link-arrow svg {
+  transition: transform var(--dur) var(--ease);
+  flex: none;
+}
+
+.link-arrow:hover svg { transform: translateX(4px); }
+
+.slab .link-arrow { color: var(--red-on-dark); }
+.slab .link-arrow::after { background: var(--red-on-dark); }
+
+/* -------------------------------------------------------------- PILLARS
+   Four engineering value statements. Not cards: hairline-divided columns
+   with the red rule carried across the top of each.                       */
+.pillars {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.pillar {
+  padding: var(--s8) 0 var(--s6);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.pillar__mark {
+  width: 28px;
+  height: 3px;
+  background: var(--red);
+  margin-bottom: var(--s5);
+}
+
+.pillar__title {
+  font: var(--t-title-lg);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s3);
+}
+
+.pillar__body {
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+  max-width: 34ch;
+}
+
+@media (min-width: 48rem) {
+  .pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s10);
+  }
+}
+
+@media (min-width: 64rem) {
+  .pillars {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--s8);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .pillar {
+    border-bottom: 0;
+    border-left: 1px solid var(--hairline);
+    padding: var(--s8) var(--s6);
+  }
+
+  .pillar:first-child { border-left: 0; padding-left: 0; }
+}
+
+/* --------------------------------------------------------- PRODUCT CARD
+   Catalogue tile. Square, hairline-bordered, spec-first. No price, no cart,
+   no shopping affordances of any kind.                                    */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-container);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.product-card:hover { border-color: var(--ink); }
+
+.product-card__figure {
+  position: relative;
+  background: var(--cloud);
+  border-bottom: 1px solid var(--hairline);
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  padding: var(--s6);
+  overflow: hidden;
+}
+
+/* Scoped to the drawing. A universal child selector here also caught the
+   absolutely positioned type badge and blew it up to fill the frame. */
+.product-card__figure > svg {
+  width: 100%;
+  height: 100%;
+  transition: transform var(--dur-slow) var(--ease);
+}
+
+.product-card:hover .product-card__figure > svg { transform: scale(1.03); }
+
+.product-card__type {
+  display: block;
+  margin-bottom: var(--s2);
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.product-card__body {
+  padding: var(--s6);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-card__name {
+  font: var(--t-display-sm);
+  letter-spacing: var(--ls-display);
+}
+
+.product-card__desc {
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+  margin-top: var(--s3);
+}
+
+.product-card__specs {
+  margin-top: var(--s6);
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.product-card__spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.product-card__spec dt {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.product-card__spec dd {
+  font: var(--t-value-sm);
+  color: var(--ink);
+  text-align: right;
+}
+
+.product-card__foot { margin-top: auto; padding-top: var(--s6); }
+
+/* ------------------------------------------------------- TECHNICAL TABLE
+   Dense but readable. 0px radius, one hairline family, zebra on the row
+   background rather than a border under every single row.                 */
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--hairline);
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll:focus-visible { outline-offset: -3px; }
+
+.spec-table {
+  min-width: 34rem;
+  font: var(--t-body-sm);
+}
+
+.spec-table caption {
+  text-align: left;
+  padding: var(--s4) var(--s5);
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  border-bottom: 1px solid var(--hairline);
+  background: var(--canvas);
+}
+
+.spec-table th,
+.spec-table td {
+  padding: var(--s3) var(--s5);
+  text-align: left;
+  vertical-align: top;
+}
+
+.spec-table thead th {
+  background: var(--fog);
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.spec-table tbody tr:nth-child(even) { background: var(--cloud); }
+
+.spec-table tbody th {
+  font: var(--t-title-sm);
+  color: var(--ink);
+  width: 34%;
+  min-width: 12rem;
+}
+
+.spec-table td { font: var(--t-value-sm); color: var(--ink-soft); }
+.spec-table td.is-text { font: var(--t-body-sm); }
+
+.spec-table__note {
+  padding: var(--s4) var(--s5);
+  border-top: 1px solid var(--hairline);
+  background: var(--canvas);
+  font: var(--t-caption);
+  color: var(--graphite);
+}
+
+/* ------------------------------------------------------------ KEY FIGURE
+   Large mono number with a label. Red is only applied to numbers at 32px+,
+   which clears large-text contrast on both the light and the dark surface. */
+.figures {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.slab .figures { border-color: var(--hairline-dark); }
+
+.figure-item {
+  padding: var(--s6) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.slab .figure-item { border-color: var(--hairline-dark); }
+
+.figure-item__value {
+  font: var(--t-value-xl);
+  color: var(--red);
+  letter-spacing: -0.03em;
+  display: block;
+}
+
+.slab .figure-item__value { color: var(--red-on-dark); }
+
+.figure-item__unit {
+  font: var(--t-title-md);
+  color: var(--ink-soft);
+  margin-left: var(--s2);
+}
+
+.slab .figure-item__unit { color: var(--on-dark-soft); }
+
+.figure-item__label {
+  display: block;
+  margin-top: var(--s3);
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+  max-width: 30ch;
+}
+
+.slab .figure-item__label { color: var(--on-dark-soft); }
+
+@media (min-width: 48rem) {
+  .figures {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s8);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .slab .figures { border-bottom-color: var(--hairline-dark); }
+
+  .figure-item {
+    border-bottom: 0;
+    border-left: 1px solid var(--hairline);
+    padding: var(--s8) var(--s6);
+  }
+
+  .slab .figure-item { border-left-color: var(--hairline-dark); }
+  .figure-item:first-child { border-left: 0; padding-left: 0; }
+}
+
+/* -------------------------------------------------------- INDUSTRY TILE */
+.industry-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  padding: var(--s6);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  min-height: 100%;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.industry-tile:hover { border-color: var(--ink); }
+
+.industry-tile__icon {
+  color: var(--red);
+  width: 30px;
+  height: 30px;
+}
+
+.industry-tile__name {
+  font: var(--t-title-md);
+  letter-spacing: -0.005em;
+}
+
+.industry-tile__fluids {
+  font: var(--t-caption);
+  color: var(--graphite);
+  margin-top: auto;
+}
+
+.industry-tile__go {
+  padding-top: var(--s4);
+  border-top: 1px solid var(--hairline-soft);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.industry-tile__go svg { transition: transform var(--dur) var(--ease); }
+.industry-tile:hover .industry-tile__go svg { transform: translateX(3px); }
+
+/* ---------------------------------------------------------- DOWNLOAD ROW
+   Documents are a list, not a card grid. One hairline between rows.       */
+.doc-list { border-top: 1px solid var(--hairline); }
+
+.doc-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.doc-row__title {
+  font: var(--t-title-md);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.doc-row__title svg { color: var(--red); flex: none; }
+
+.doc-row__meta {
+  font: var(--t-value-sm);
+  color: var(--graphite);
+  margin-top: var(--s2);
+  padding-left: calc(22px + var(--s3));
+}
+
+.doc-row__action {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  white-space: nowrap;
+}
+
+.doc-row__action[data-state="available"] { color: var(--red); }
+
+/* --------------------------------------------------------------- FORMS */
+.field { display: grid; gap: var(--s2); }
+
+.field__label {
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.field__req { color: var(--red); }
+
+.field__hint {
+  font: var(--t-caption);
+  color: var(--graphite);
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--s3) var(--s4);
+  background: var(--canvas);
+  color: var(--ink);
+  border: 1px solid #a6a6a6;
+  border-radius: var(--radius-interactive);
+  font: var(--t-body);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.input::placeholder,
+.textarea::placeholder { color: var(--graphite); }
+
+.input:hover,
+.textarea:hover,
+.select:hover { border-color: var(--ink-soft); }
+
+.input:focus-visible,
+.textarea:focus-visible,
+.select:focus-visible { border-color: var(--ink); }
+
+.textarea { min-height: 8.5rem; resize: vertical; }
+
+.select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(50% + 1px), calc(100% - 14px) calc(50% + 1px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: var(--s10);
+}
+
+.form-grid { display: grid; gap: var(--s5); }
+
+@media (min-width: 40rem) {
+  .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .form-grid .field--wide { grid-column: 1 / -1; }
+}
+
+.form-note {
+  font: var(--t-caption);
+  color: var(--graphite);
+  max-width: 52ch;
+}
+
+.form-status {
+  border-left: 3px solid var(--red);
+  background: var(--red-tint);
+  padding: var(--s4) var(--s5);
+  font: var(--t-body-sm);
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------- CALLOUT */
+.callout {
+  border-left: 3px solid var(--red);
+  background: var(--cloud);
+  padding: var(--s4) var(--s5);
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+}
+
+.callout strong { color: var(--ink); font-weight: 600; }
+
+/* --------------------------------------------------------------- LISTS
+   The marker is a short red rule sized to the cap height, not a disc.     */
+.tick-list { display: grid; gap: var(--s4); }
+
+.tick-list li {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  gap: var(--s4);
+  align-items: start;
+  font: var(--t-body);
+  color: var(--ink-soft);
+}
+
+.tick-list li::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  background: var(--red);
+  margin-top: 0.72em;
+}
+
+.slab .tick-list li { color: var(--on-dark-soft); }
+.slab .tick-list li::before { background: var(--red-on-dark); }
+
+/* Definition matrix, used for advantages and material options. */
+.matrix {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.matrix__item {
+  padding: var(--s6) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.matrix__term {
+  font: var(--t-title-md);
+  margin-bottom: var(--s2);
+}
+
+.matrix__def {
+  font: var(--t-body-sm);
+  color: var(--ink-soft);
+  max-width: 46ch;
+}
+
+@media (min-width: 48rem) {
+  .matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s10); }
+}
+
+/* ------------------------------------------------------------ ANCHOR NAV
+   Product-detail in-page navigation. Sticks under the header.             */
+.anchor-nav {
+  position: sticky;
+  top: 60px;
+  z-index: var(--z-sticky);
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.anchor-nav__track {
+  display: flex;
+  gap: var(--s6);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.anchor-nav__track::-webkit-scrollbar { display: none; }
+
+.anchor-nav a {
+  padding: var(--s4) 0;
+  font: var(--t-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--graphite);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+.anchor-nav a:hover { color: var(--ink); border-bottom-color: var(--red); }
+
+@media (min-width: 64rem) {
+  .anchor-nav { top: 72px; }
+}
+
+/* Dark-slab variants of the two list families. */
+.slab .principle__steps,
+.slab .principle__step { border-color: var(--hairline-dark); }
+.slab .principle__index { color: var(--red-on-dark); }
+.slab .principle__step h3 { color: var(--on-dark); }
+.slab .principle__step p { color: var(--on-dark-soft); }
+
+.slab .matrix,
+.slab .matrix__item { border-color: var(--hairline-dark); }
+.slab .matrix__term { color: var(--on-dark); }
+.slab .matrix__def { color: var(--on-dark-soft); }
+
+/* Numbered term, used where a matrix item carries a sequence. */
+.matrix__index {
+  font: var(--t-value-sm);
+  color: var(--red);
+  display: block;
+  margin-bottom: var(--s2);
+}
+
+.slab .matrix__index { color: var(--red-on-dark); }
