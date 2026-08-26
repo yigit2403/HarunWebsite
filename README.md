@@ -121,23 +121,29 @@ every document row routes to the inquiry form with the document named.
 PHP rather than a route handler because the site is static: the script is uploaded beside
 the HTML and runs on the host's own PHP.
 
-**It is currently dormant, and deliberately so.** Profimann has no mailbox for the site
-yet, so `$INQUIRY_TO` is empty, the script answers `503`, and the form shows the phone
-number rather than claiming the message was sent. Switching it on is two lines on the
-server and no rebuild:
+**It is live.** The two addresses are set in an `inquiry-config.php` sitting beside
+`inquiry.php` on the server:
 
 ```php
-$INQUIRY_TO = 'info@liquilob.com';     // wherever inquiries should land
-$INQUIRY_FROM = 'site@liquilob.com';   // a mailbox on this domain
+<?php
+$INQUIRY_TO = '...';     // where inquiries land
+$INQUIRY_FROM = '...';   // the site's sending identity
 ```
 
-Put them either in `inquiry.php` itself or, better, in an `inquiry-config.php` beside it.
-That second file is not part of the build, so re-uploading the site never overwrites it.
+They are **deliberately not in this repository** — partly so they are not published
+alongside the code, and partly because that file is not part of the build, so a redeploy
+cannot overwrite them. Ship the defaults in `inquiry.php` empty; an empty `$INQUIRY_TO`
+makes the endpoint answer `503` and the form show the phone number, which is the correct
+behaviour for a build that has not been configured yet rather than a failure.
 
-Sending as an address **on liquilob.com** matters: the envelope sender is set with `-f` so
-the domain's own SPF record covers the message. A `From:` on someone else's domain is what
-gets a contact form filed as spam. `Reply-To` is the enquirer, so replying from the mailbox
-goes straight back to them.
+Both addresses are on **the same domain, on the same server**, so form mail is delivered
+locally and never leaves the machine: no SPF evaluation, no relay, no spam classification in
+the path. Where the sender's domain does not host the site, this still works — the envelope
+sender is set with `-f` so that domain's SPF record covers the message — but local delivery
+is the most reliable arrangement available and worth keeping.
+
+`Reply-To` is set to the enquirer, so replying from the mailbox goes to the customer rather
+than back to the site's own address.
 
 ### One description of the fields, not two
 
@@ -177,7 +183,32 @@ echoed into the mailbox.
 
 ## Deploying
 
-The build is the same wherever it lands. Only the upload path and the panel differ.
+**Push to `main`.** [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds the
+site and uploads it over FTPS, to every document root the site is served from. A pull
+request is built and checked but never deployed.
+
+It needs three repository secrets — *Settings → Secrets and variables → Actions*:
+
+| Secret | Value |
+| --- | --- |
+| `FTP_SERVER` | the hostname from the hosting panel |
+| `FTP_USERNAME` | the DirectAdmin account username |
+| `FTP_PASSWORD` | that account's password, or a dedicated FTP account's |
+
+The workflow uploads incrementally and keeps its own sync state on the server, so a redeploy
+transfers only what changed and removes what no longer exists — which is what stops old
+content-hashed `_next/` chunks accumulating. `inquiry-config.php` and `.well-known/` are
+excluded, so the mailbox settings and Let's Encrypt renewals are never touched.
+
+Before uploading it checks that the build actually produced a servable site: `.htaccess`,
+`inquiry.php`, `inquiry-data.json`, both home pages, and a `robots.txt` that lets crawlers
+in. Each of those has a specific failure it catches — a missing `.htaccess` alone means the
+site 404s at `/`.
+
+### Deploying by hand
+
+Still worth knowing, for a first upload to a new server or when the pipeline is not an
+option.
 
 ```bash
 SITE_STAGE=production NEXT_PUBLIC_SITE_URL=https://www.liquilob.com npm run build
@@ -292,7 +323,8 @@ separators, and Linux `unzip` then produces 400 files with literal backslashes i
 names instead of a directory tree. `tar` writes the archive correctly.
 
 On a redeploy, delete the old `_next/` first — asset filenames are content-hashed, so stale
-chunks accumulate rather than being overwritten. Leave `inquiry-config.php` alone.
+chunks accumulate rather than being overwritten. Leave `inquiry-config.php` alone. The
+pipeline handles both of these itself; this only applies to uploading by hand.
 
 ### Showing it to a client before launch
 

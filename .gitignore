@@ -15,3 +15,6 @@ assets/brand/*.webp
 
 # Upload package built from out/ — see README, "Deploying".
 liquilob-site.zip
+
+# Scratch scripts. Not part of the site.
+.tmpwork/
