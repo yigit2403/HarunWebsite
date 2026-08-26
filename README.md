@@ -101,13 +101,21 @@ technical data table. So replacing a figure is a single edit that cannot leave a
 behind somewhere else. When Profimann's verified data arrives, update those four blocks and
 set `SPECS_ARE_PROVISIONAL` to `false`; the advisories disappear on their own.
 
-### 2. Photography is partial
+### 2. The imagery is CAD, not photography
 
-Profimann has supplied the product render, an installation shot, the rotor family and the
-logo, and all four are in use. Two positions are still reserved (`manufacturing`,
-`assembly`) and render as measured, labelled frames rather than stock stand-ins. See
-[PHOTOGRAPHY.md](PHOTOGRAPHY.md) for the shot list, the processing that was applied to the
-supplied files, and how to drop new ones in.
+Profimann has supplied the product render, an installation shot, the rotor family, the logo
+and two views off the CAD model of the complete pump set: a colour render and a hidden-line
+general arrangement. All of them are in use and no position renders a placeholder frame any
+more.
+
+What is still missing is a camera. Every image of the machine itself is a render or a
+drawing, which is normal for a pump catalogue but leaves two frames that a photograph would
+carry better. Two smaller things are also worth knowing: the CAD exports came through a
+messaging app rather than straight out of SolidWorks, which costs the two mid-page figures
+some sharpness, and the colour render's master has two appearances corrected that nobody had
+set in the model. Both are fixed at the source rather than here. See
+[PHOTOGRAPHY.md](PHOTOGRAPHY.md) for the shot list, the processing applied to the supplied
+files, and how to drop new ones in.
 
 Documents behave the same way. Nothing links to a catalogue PDF that has not been issued;
 every document row routes to the inquiry form with the document named.

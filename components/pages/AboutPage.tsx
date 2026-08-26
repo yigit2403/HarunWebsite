@@ -32,7 +32,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
               <p key={p.slice(0, 40)}>{p}</p>
             ))}
           </div>
-          <PhotoSlot slot={PHOTOS.manufacturing} locale={locale} />
+          <PhotoSlot slot={PHOTOS.unit} locale={locale} />
         </div>
       </section>
 

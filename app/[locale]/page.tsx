@@ -25,6 +25,7 @@ import {
   PRINCIPLE,
   PRODUCTS_SECTION,
   RESOURCES_SECTION,
+  UNIT_IMAGE,
 } from '@/content/pages'
 import { PRODUCTS } from '@/content/products'
 import { ROTORS_CONTENT, ROTOR_INTRO } from '@/content/rotors'
@@ -99,7 +100,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
 
           <figure className="tech-frame tech-frame--product">
-            <ProductImage locale={locale} priority sizes="(min-width: 64rem) 46vw, 92vw" />
+            <ProductImage
+              locale={locale}
+              image={UNIT_IMAGE}
+              priority
+              sizes="(min-width: 64rem) 46vw, 92vw"
+            />
             <figcaption className="tech-frame__caption">{HERO.drawingCaption[locale]}</figcaption>
           </figure>
         </div>

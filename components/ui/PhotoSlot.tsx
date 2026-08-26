@@ -4,13 +4,15 @@ import type { PhotoSlot as Slot } from '@/content/pages'
 import type { Locale } from '@/lib/i18n'
 
 /**
- * Reserved position for Profimann photography.
+ * A position on the page that holds one of Profimann's own images.
  *
- * There is no pump photography yet and a generic stock photograph of a factory
- * would be worse than none, so until a file is dropped into /public/photos and
- * referenced from content/pages.ts this renders as a measured frame naming the
- * shot that belongs here. The shot list is in PHOTOGRAPHY.md. Adding the real
- * image is a one-line change and every layout around it stays as it is.
+ * Every slot in content/pages.ts currently carries a `src`, so in practice this
+ * renders a lazily loaded image in a hairline frame. The branch below it is
+ * what makes adding a new position safe: a slot declared without a `src` draws
+ * a measured frame naming the shot that belongs there, rather than reaching for
+ * a stock photograph of somebody else's factory. The shot list is in
+ * PHOTOGRAPHY.md. Filling a slot is a one-line change and nothing around it
+ * moves, because the slot already reserves the right aspect ratio.
  */
 export function PhotoSlot({
   slot,

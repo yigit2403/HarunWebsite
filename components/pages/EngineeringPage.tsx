@@ -27,7 +27,7 @@ export function EngineeringPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Philosophy, set against the manufacturing photograph. */}
+      {/* Philosophy, set against the general arrangement of the pump set. */}
       <section className="section section--canvas">
         <div className="container split">
           <div className="prose" data-reveal="">
@@ -35,7 +35,7 @@ export function EngineeringPage({ locale }: { locale: Locale }) {
               <p key={p.slice(0, 40)}>{p}</p>
             ))}
           </div>
-          <PhotoSlot slot={PHOTOS.assembly} locale={locale} />
+          <PhotoSlot slot={PHOTOS.unitDrawing} locale={locale} />
         </div>
       </section>
 

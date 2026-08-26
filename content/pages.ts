@@ -17,9 +17,12 @@ export const HERO = {
     tr: 'Endüstriyel uygulamalar için yüksek verimli, dayanıklı ve hassas loblu pompa çözümleri.',
     en: 'High-efficiency, durable rotary lobe pumps engineered for demanding industrial duties.',
   } as Localised,
+  // Names what is in the hero figure. The caption changed with the figure: the
+  // hero now carries the complete set rather than the bare pump, and the
+  // cover-removed render it used to hold moved to the catalogue.
   drawingCaption: {
-    tr: 'LQL serisi, ön kapak çıkarılmış',
-    en: 'LQL series, shown with the front cover removed',
+    tr: 'LQL serisi, ortak şase üzerinde redüktörlü motorla',
+    en: 'LQL series, with its geared motor on a common baseplate',
   } as Localised,
 }
 
@@ -500,28 +503,52 @@ export const PHOTOS: Record<string, PhotoSlot> = {
       en: 'The Liquilob rotor family: multi-impeller, tri-lobe, bi-wing and single-wing rotor pairs',
     },
   },
-  manufacturing: {
-    id: 'manufacturing',
-    ratio: '4 / 3',
+  unit: {
+    id: 'unit',
+    // The master's own ratio, so the keyed cut-out is never cropped by the
+    // cover fit and the air the crop built in survives to the page.
+    ratio: '899 / 450',
+    src: '/photos/pump-unit.webp',
     label: {
-      tr: 'Üretim: gövde işleme veya rotor tesviye operasyonu',
-      en: 'Production: casing machining or rotor finishing operation',
+      tr: 'Ortak şase üzerinde komple Liquilob pompa grubu: loblu pompa, kaplin muhafazası, redüktör ve elektrik motoru',
+      en: 'A complete Liquilob pump set on a common baseplate: lobe pump, coupling guard, gear reducer and electric motor',
     },
   },
-  assembly: {
-    id: 'assembly',
-    ratio: '3 / 2',
+  unitDrawing: {
+    id: 'unitDrawing',
+    ratio: '1091 / 494',
+    src: '/photos/pump-unit-drawing.webp',
     label: {
-      tr: 'Montaj hattında Liquilob pompa grubu',
-      en: 'Liquilob pump set on the assembly line',
+      tr: 'Pompa grubunun yan görünüş genel yerleşim çizimi: pompa, kaplin muhafazası, redüktör ve motor',
+      en: 'Side elevation general arrangement of the pump set: pump, coupling guard, gear reducer and motor',
     },
   },
 }
 
 /**
- * The isolated product render, used wherever the machine itself is the
- * subject: the hero, the catalogue cards and the product detail page. Its
- * background has been keyed out, so it sits on any surface.
+ * The complete pump set, on the home hero.
+ *
+ * The catalogue below it needs the pump on its own, because the pump is what
+ * is being sold and the motor is selected per duty. The hero is a different
+ * job: it has to say what the machine *is* before a visitor knows any of the
+ * vocabulary, and a bare casing does not do that. This is the unit as it
+ * leaves the works — pump, coupling guard, reducer and motor lined up on one
+ * baseplate — which is the shape a process engineer recognises from the plant.
+ *
+ * Same file as PHOTOS.unit, and deliberately the same alt text: it is the same
+ * photograph of the same machine, so there is one description of it.
+ */
+export const UNIT_IMAGE = {
+  src: PHOTOS.unit.src as string,
+  width: 899,
+  height: 450,
+  alt: PHOTOS.unit.label,
+}
+
+/**
+ * The isolated product render, used wherever the pump itself is the subject:
+ * the catalogue cards and the product detail page. Its background has been
+ * keyed out, so it sits on any surface.
  */
 export const PRODUCT_IMAGE = {
   src: '/photos/pump-render.webp',

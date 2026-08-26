@@ -3,32 +3,44 @@ import Image from 'next/image'
 import { PRODUCT_IMAGE } from '@/content/pages'
 import type { Locale } from '@/lib/i18n'
 
+type Subject = {
+  src: string
+  width: number
+  height: number
+  alt: Record<Locale, string>
+}
+
 /**
- * The Liquilob product render.
+ * A keyed render of the machine, sized by the layout rather than by the file.
  *
- * One render covers the LQL series, which is how an industrial catalogue
- * normally works: the photograph establishes the machine and the specification
- * rows separate the frame sizes. The line drawings are not retired by it, they
- * move to where a drawing genuinely does more than a photograph, which is the
- * dimensional and sectional content.
+ * Two subjects use this. `PRODUCT_IMAGE`, the default, is the pump on its own
+ * with the front cover removed, and it carries the catalogue: one render across
+ * the LQL series, with the specification rows separating the frame sizes, which
+ * is how an industrial catalogue normally works. `UNIT_IMAGE` is the complete
+ * set on its baseplate and carries the home hero.
+ *
+ * Neither retires the line drawings. Those moved to where a drawing genuinely
+ * does more than a render, which is the dimensional and sectional content.
  */
 export function ProductImage({
   locale,
+  image = PRODUCT_IMAGE,
   priority = false,
   sizes = '(min-width: 64rem) 46vw, 90vw',
   className,
 }: {
   locale: Locale
+  image?: Subject
   priority?: boolean
   sizes?: string
   className?: string
 }) {
   return (
     <Image
-      src={PRODUCT_IMAGE.src}
-      width={PRODUCT_IMAGE.width}
-      height={PRODUCT_IMAGE.height}
-      alt={PRODUCT_IMAGE.alt[locale]}
+      src={image.src}
+      width={image.width}
+      height={image.height}
+      alt={image.alt[locale]}
       sizes={sizes}
       priority={priority}
       className={className}

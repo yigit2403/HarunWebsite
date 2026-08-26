@@ -54,6 +54,22 @@ const IMAGES = [
     width: 1400,
     options: { quality: 78 },
   },
+  {
+    // Keyed cut-out, like the pump render: quality is spent on the machine
+    // rather than on a ground that is not there.
+    from: 'assets/photos/pump-unit.png',
+    to: 'public/photos/pump-unit.webp',
+    width: 1400, // 899 native, so this never enlarges
+    options: { quality: 86 },
+  },
+  {
+    // Line art. Lossy WebP frays a hairline edge, so this one is given a
+    // higher quality than a photograph would need.
+    from: 'assets/photos/pump-unit-drawing.png',
+    to: 'public/photos/pump-unit-drawing.webp',
+    width: 1400, // 1091 native
+    options: { quality: 92 },
+  },
 ]
 
 const kb = (bytes) => `${Math.round(bytes / 1024)} kB`
