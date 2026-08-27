@@ -106,3 +106,70 @@ for (const image of IMAGES) {
 }
 
 console.log(`${''.padEnd(40)} ${'total'.padStart(7)}  ${kb(before).padStart(8)} -> ${kb(after).padStart(8)}`)
+
+/* ------------------------------------------------------------- SOCIAL CARD
+   The pages declare twitter:card summary_large_image, and messaging apps ask
+   for og:image before showing a link at all, so a site without one unfurls as
+   bare text. Composed here from the pump-set master and the logo. JPEG, not
+   WebP: WhatsApp and several link scrapers still ignore WebP og:images.      */
+{
+  const logo = await sharp(await readFile(join(root, 'assets/brand/liquilob-logo.png')))
+    .resize({ width: 250 })
+    .toBuffer()
+  const unit = await sharp(await readFile(join(root, 'assets/photos/pump-unit.png')))
+    .resize({ width: 820 })
+    .toBuffer()
+
+  // The logo sits top-left and the machine below it; the machine's top edge
+  // starts under any plausible logo height, so the two can never collide.
+  const card = await sharp({
+    create: { width: 1200, height: 630, channels: 3, background: '#ffffff' },
+  })
+    .composite([
+      { input: logo, left: 56, top: 48 },
+      { input: unit, left: 190, top: 168 },
+    ])
+    .jpeg({ quality: 84, mozjpeg: true })
+    .toBuffer()
+
+  const target = join(root, 'public', 'photos', 'og-card.jpg')
+  await writeFile(target, card)
+  console.log(`public/photos/og-card.jpg ${' '.repeat(15)} 1200px  ${kb(card.length).padStart(8)}`)
+}
+
+/* ------------------------------------------------------------- FAVICON.ICO
+   app/icon.svg covers every modern browser, but old bookmarks, feed readers
+   and some crawlers request /favicon.ico blindly — and on this host a miss
+   serves the whole 404 page instead. The ICO wraps PNG frames, which every
+   current browser accepts.                                                   */
+{
+  const svg = await readFile(join(root, 'app', 'icon.svg'))
+  const frames = []
+  for (const size of [16, 32]) {
+    frames.push({ size, png: await sharp(svg).resize(size, size).png().toBuffer() })
+  }
+
+  // ICONDIR (6 bytes), then one ICONDIRENTRY (16 bytes) per frame, then the
+  // PNG payloads at the offsets the entries declare.
+  const header = Buffer.alloc(6)
+  header.writeUInt16LE(1, 2) // type: icon
+  header.writeUInt16LE(frames.length, 4)
+
+  const entries = []
+  let offset = 6 + 16 * frames.length
+  for (const frame of frames) {
+    const entry = Buffer.alloc(16)
+    entry.writeUInt8(frame.size === 256 ? 0 : frame.size, 0)
+    entry.writeUInt8(frame.size === 256 ? 0 : frame.size, 1)
+    entry.writeUInt16LE(1, 4) // colour planes
+    entry.writeUInt16LE(32, 6) // bits per pixel
+    entry.writeUInt32LE(frame.png.length, 8)
+    entry.writeUInt32LE(offset, 12)
+    entries.push(entry)
+    offset += frame.png.length
+  }
+
+  const ico = Buffer.concat([header, ...entries, ...frames.map((f) => f.png)])
+  await writeFile(join(root, 'public', 'favicon.ico'), ico)
+  console.log(`public/favicon.ico ${' '.repeat(23)} 16+32px ${kb(ico.length).padStart(8)}`)
+}

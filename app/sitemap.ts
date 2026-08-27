@@ -47,7 +47,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: absolute(pair[locale as Locale]),
         changeFrequency: 'monthly',
         priority: pair.priority,
-        alternates: { languages: { tr: absolute(pair.tr), en: absolute(pair.en) } },
+        alternates: {
+          languages: {
+            tr: absolute(pair.tr),
+            en: absolute(pair.en),
+            'x-default': absolute(pair.tr),
+          },
+        },
       })
     }
   }

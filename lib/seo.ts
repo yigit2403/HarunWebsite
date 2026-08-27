@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { UNIT_IMAGE } from '@/content/pages'
 import { COMPANY } from '@/content/site'
 import { LOCALES, LOCALE_TAG, type Locale } from '@/lib/i18n'
 
@@ -28,6 +29,19 @@ export function pageMetadata({
   const languages: Record<string, string> = {
     [LOCALE_TAG[locale]]: path,
     [LOCALE_TAG[other]]: alternatePath ?? `/${other}`,
+    // The fallback for a visitor whose language matches neither: the Turkish
+    // page, because Turkish is the site's default locale.
+    'x-default': locale === 'tr' ? path : (alternatePath ?? '/tr'),
+  }
+
+  // One card for the whole site: the pump set on white, composed at build time
+  // by tools/images.mjs. Declared per page because twitter:card is too — a
+  // summary_large_image card with no image unfurls as bare text.
+  const socialImage = {
+    url: '/photos/og-card.jpg',
+    width: 1200,
+    height: 630,
+    alt: UNIT_IMAGE.alt[locale],
   }
 
   return {
@@ -41,8 +55,9 @@ export function pageMetadata({
       description,
       url: path,
       locale: LOCALE_TAG[locale].replace('-', '_'),
+      images: [socialImage],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: { card: 'summary_large_image', title, description, images: [socialImage.url] },
   }
 }
 

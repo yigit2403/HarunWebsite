@@ -11,6 +11,8 @@ next-env.d.ts
 # content/ — see tools/images.mjs and tools/inquiry-data.mjs.
 public/inquiry-data.json
 public/photos/*.webp
+public/photos/og-card.jpg
+public/favicon.ico
 assets/brand/*.webp
 
 # Upload package built from out/ — see README, "Deploying".
