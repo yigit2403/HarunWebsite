@@ -118,6 +118,21 @@ export function InquiryForm({ locale }: { locale: Locale }) {
         </>
       ) : null}
 
+      {/* Honeypot. inquiry.php (and the parked Node route) discard any
+          submission that fills this: a person never sees it, a form-scraping
+          bot fills every field it finds. Off-canvas rather than display:none,
+          aria-hidden and untabbable so no real visitor can reach it. */}
+      <div className="field field--trap" aria-hidden="true">
+        <label htmlFor="inq-website">Website</label>
+        <input
+          id="inq-website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="form-grid">
         <div className="field">
           <label className="field__label" htmlFor="inq-name">
@@ -284,7 +299,7 @@ export function InquiryForm({ locale }: { locale: Locale }) {
         <button className="btn btn--primary" type="submit" disabled={status === 'sending'}>
           {status === 'sending' ? (
             <>
-              <IconLoader2 size={18} stroke={2} aria-hidden="true" />
+              <IconLoader2 size={18} stroke={2} aria-hidden="true" className="btn__spinner" />
               {UI.formSending[locale]}
             </>
           ) : (

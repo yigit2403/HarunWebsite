@@ -28,6 +28,15 @@
 
 .btn svg { flex: none; }
 
+/* The submit button's in-flight indicator. Status feedback, not decoration, so
+   it is the one thing on the site allowed to loop; the global reduced-motion
+   rule in base.css still stops it. */
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn__spinner { animation: btn-spin 900ms linear infinite; }
+
 /* Primary. Red is the only filled action colour on the site. */
 .btn--primary {
   background: var(--red);
@@ -50,7 +59,7 @@
 .slab .btn--secondary,
 .site-footer .btn--secondary {
   color: var(--on-dark);
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--hairline-dark-strong);
 }
 
 .slab .btn--secondary:hover,
@@ -504,7 +513,7 @@
   padding: var(--s3) var(--s4);
   background: var(--canvas);
   color: var(--ink);
-  border: 1px solid #a6a6a6;
+  border: 1px solid var(--hairline-strong);
   border-radius: var(--radius-interactive);
   font: var(--t-body);
   transition: border-color var(--dur-fast) var(--ease);
@@ -532,6 +541,18 @@
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
   padding-right: var(--s10);
+}
+
+/* The honeypot. inquiry.php discards any submission where this field carries a
+   value, because a person never fills a field they cannot see. Moved off-canvas
+   rather than display:none — the crawlers this exists to catch skip fields they
+   can see are hidden. */
+.field--trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .form-grid { display: grid; gap: var(--s5); }

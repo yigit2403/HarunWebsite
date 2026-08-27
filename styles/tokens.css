@@ -38,8 +38,11 @@
   /* Lines */
   --hairline: #d9d9d9;
   --hairline-soft: #e6e6e6;
+  --hairline-strong: #a6a6a6;  /* form input borders: AA 3:1 against --canvas */
   --hairline-dark: rgba(255, 255, 255, 0.14);
+  --hairline-dark-strong: rgba(255, 255, 255, 0.4); /* outlined button on a slab */
   --rule-strong: #111111;
+  --steel: #bfbfbf;            /* drawing centrelines, breadcrumb chevron       */
 
   /* ----------------------------------------------------------- TYPOGRAPHY */
   --font-sans: var(--font-plex-sans), "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;

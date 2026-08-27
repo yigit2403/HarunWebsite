@@ -1,0 +1,71 @@
+/* ==========================================================================
+   PRINT - a process engineer prints a specification page and files it
+   ==========================================================================
+
+   Two of these rules fix real breakage rather than polish. The entrance
+   reveal leaves everything below the first viewport at opacity 0 until the
+   IntersectionObserver has seen it, and print never scrolls — so without the
+   first rule a printed page is largely blank. And the dark slabs would print
+   white text into a white page once their backgrounds are stripped, which is
+   why every slab colour is forced back to ink.                              */
+
+@media print {
+  /* Reveal everything: the observer never fires for content below the fold. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Navigation chrome, calls to action and the inquiry form are meaningless
+     on paper. The address and phone number stay: they print from the contact
+     panel and the footerless page body. */
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .breadcrumb,
+  .anchor-nav,
+  .cta-band,
+  .drawer,
+  .btn,
+  .link-arrow,
+  form {
+    display: none !important;
+  }
+
+  /* Most printers default to omitting backgrounds, which would leave the
+     slabs' white text invisible. Print every band as ink on paper. */
+  .slab,
+  .slab-band,
+  .section--cloud,
+  .section--fog,
+  .cta-band {
+    background: none !important;
+    color: #111 !important;
+  }
+
+  .slab h1, .slab h2, .slab h3, .slab h4,
+  .slab p, .slab li, .slab .statement,
+  .slab .matrix__term, .slab .matrix__def,
+  .slab .figure-item__value, .slab .figure-item__label {
+    color: #111 !important;
+  }
+
+  /* Specification tables must print whole, not clipped to a scroll box. */
+  .table-scroll { overflow: visible; }
+  .spec-table { min-width: 0; }
+
+  .section,
+  .product-section,
+  .masthead,
+  .hero {
+    padding-block: 1rem;
+  }
+
+  .table-scroll,
+  .product-card,
+  .photo,
+  figure {
+    break-inside: avoid;
+  }
+}

@@ -280,6 +280,12 @@
 .product-section { padding-block: var(--space-section-tight); }
 .product-section + .product-section { border-top: 1px solid var(--hairline); }
 
+/* These sections sit under two layers of sticky chrome — the 72px header plus
+   the ~51px anchor nav. The global scroll-padding of 6.5rem clears the header
+   alone, so without this an anchor jump parks the section title behind the
+   anchor nav. */
+.product-section { scroll-margin-top: 8.5rem; }
+
 .product-section__title {
   font: var(--t-display-md);
   letter-spacing: var(--ls-display);

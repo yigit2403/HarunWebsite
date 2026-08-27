@@ -92,7 +92,7 @@
 /* Centrelines, dash-dot per drawing convention */
 .dwg-centre {
   fill: none;
-  stroke: #bfbfbf;
+  stroke: var(--steel);
   stroke-width: 1.25;
   stroke-dasharray: 26 6 4 6;
 }

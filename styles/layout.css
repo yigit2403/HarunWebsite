@@ -165,8 +165,8 @@
   content: '';
   width: 5px;
   height: 5px;
-  border-top: 1px solid var(--steel, #bfbfbf);
-  border-right: 1px solid var(--hairline);
+  border-top: 1px solid var(--steel);
+  border-right: 1px solid var(--steel);
   transform: rotate(45deg);
   flex: none;
 }
