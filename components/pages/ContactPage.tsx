@@ -27,7 +27,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
       <section className="section section--canvas" id={INQUIRY_ANCHOR[locale]}>
         <div className="container app-detail">
           <div data-reveal="">
-            <h2 className="section-head__title" style={{ fontSize: '1.75rem' }}>
+            <h2 className="section-head__title section-head__title--sm">
               {CONTACT_PAGE.formTitle[locale]}
             </h2>
             <p className="section-head__lead" style={{ marginBottom: 'var(--s10)' }}>

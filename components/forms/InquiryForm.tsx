@@ -159,7 +159,15 @@ export function InquiryForm({ locale }: { locale: Locale }) {
           <label className="field__label" htmlFor="inq-email">
             {UI.formEmail[locale]} {required}
           </label>
-          <input className="input" id="inq-email" name="email" type="email" required autoComplete="email" />
+          <input
+            className="input"
+            id="inq-email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            spellCheck={false}
+          />
         </div>
 
         <div className="field">
@@ -187,7 +195,14 @@ export function InquiryForm({ locale }: { locale: Locale }) {
           <label className="field__label" htmlFor="inq-fluid">
             {UI.formFluid[locale]}
           </label>
-          <input className="input" id="inq-fluid" name="fluid" type="text" aria-describedby="inq-fluid-hint" />
+          <input
+            className="input"
+            id="inq-fluid"
+            name="fluid"
+            type="text"
+            autoComplete="off"
+            aria-describedby="inq-fluid-hint"
+          />
           <p className="field__hint" id="inq-fluid-hint">
             {UI.formFluidHint[locale]}
           </p>
@@ -197,7 +212,19 @@ export function InquiryForm({ locale }: { locale: Locale }) {
           <label className="field__label" htmlFor="inq-flow">
             {UI.formFlow[locale]}
           </label>
-          <input className="input" id="inq-flow" name="flow" type="text" aria-describedby="inq-flow-hint" />
+          {/* Free text rather than type=number: engineers write ranges and
+              approximations ("30-40", "~25"). inputmode still raises the
+              numeric keypad on a phone. The temperature field below stays on
+              the full keyboard, because the decimal keypad has no minus. */}
+          <input
+            className="input"
+            id="inq-flow"
+            name="flow"
+            type="text"
+            inputMode="decimal"
+            autoComplete="off"
+            aria-describedby="inq-flow-hint"
+          />
           <p className="field__hint" id="inq-flow-hint">
             {UI.formFlowHint[locale]}
           </p>
@@ -212,6 +239,8 @@ export function InquiryForm({ locale }: { locale: Locale }) {
             id="inq-pressure"
             name="pressure"
             type="text"
+            inputMode="decimal"
+            autoComplete="off"
             aria-describedby="inq-pressure-hint"
           />
           <p className="field__hint" id="inq-pressure-hint">
@@ -228,6 +257,8 @@ export function InquiryForm({ locale }: { locale: Locale }) {
             id="inq-viscosity"
             name="viscosity"
             type="text"
+            inputMode="decimal"
+            autoComplete="off"
             aria-describedby="inq-viscosity-hint"
           />
           <p className="field__hint" id="inq-viscosity-hint">
@@ -244,6 +275,7 @@ export function InquiryForm({ locale }: { locale: Locale }) {
             id="inq-temperature"
             name="temperature"
             type="text"
+            autoComplete="off"
             aria-describedby="inq-temperature-hint"
           />
           <p className="field__hint" id="inq-temperature-hint">

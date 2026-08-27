@@ -444,7 +444,16 @@
   border-bottom: 1px solid var(--hairline);
 }
 
-.app-model__name { font: var(--t-title-md); }
+.app-model__name {
+  font: var(--t-title-md);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+/* These rows are links; without this they were the one interactive list on
+   the site that gave no hover feedback. Same vocabulary as .rotor-card__links. */
+.app-model:hover .app-model__name { border-bottom-color: var(--red); }
+
 .app-model__note { font: var(--t-value-sm); color: var(--graphite); }
 
 /* --------------------------------------------------------- RELATED ROW */
@@ -577,6 +586,13 @@
   padding: var(--s5);
   text-align: center;
 }
+
+/* On the home page each item wraps a link to its rotor's section; on the
+   rotors page the same strip is inert. The modifier marks the linked case so
+   the hover affordance appears only where a click goes somewhere — the same
+   border response the industry tiles use. */
+.rotor-strip__item--link { transition: border-color var(--dur) var(--ease); }
+.rotor-strip__item--link:hover { border-color: var(--ink); }
 
 .rotor-strip__name {
   font: var(--t-title-sm);

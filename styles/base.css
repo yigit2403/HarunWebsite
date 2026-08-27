@@ -53,6 +53,19 @@ a {
   text-decoration: none;
 }
 
+/* Interactive elements: no 300ms double-tap-zoom delay, and no grey tap
+   flash — every control here has its own hover, focus and active state, so
+   the platform overlay only fights them. */
+a,
+button,
+input,
+select,
+textarea,
+label {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 ul, ol {
   padding: 0;
   list-style: none;
@@ -141,8 +154,14 @@ hr {
 /* ------------------------------------------------------------ ENTRANCE
    The only page-load motion on the site: a short fade with a 12px lift,
    fired by IntersectionObserver, once per element. It communicates reading
-   order on long technical pages. Nothing loops, nothing parallaxes. */
-[data-reveal] {
+   order on long technical pages. Nothing loops, nothing parallaxes.
+
+   The hidden state applies only under html[data-js], which an inline script
+   in the layout sets before first paint. Content is therefore visible by
+   default: a browser with scripts disabled, blocked, or still downloading
+   shows the full page instead of blank bands waiting for an observer that
+   may never run. */
+[data-js] [data-reveal] {
   opacity: 0;
   transform: translateY(12px);
   transition:
@@ -150,7 +169,7 @@ hr {
     transform var(--dur-slow) var(--ease);
 }
 
-[data-reveal='shown'] {
+[data-js] [data-reveal='shown'] {
   opacity: 1;
   transform: none;
 }
@@ -169,6 +188,9 @@ hr {
     scroll-behavior: auto !important;
   }
 
+  /* Matches the specificity of the [data-js]-scoped hiding rule above, or it
+     would lose to it and reduced-motion visitors would wait on the observer. */
+  [data-js] [data-reveal],
   [data-reveal] {
     opacity: 1;
     transform: none;

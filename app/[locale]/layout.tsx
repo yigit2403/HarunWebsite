@@ -61,14 +61,22 @@ export default async function LocaleLayout({
   const locale = raw as Locale
 
   return (
-    <html lang={LOCALE_TAG[locale]} className={`${sans.variable} ${mono.variable}`}>
+    // suppressHydrationWarning: the inline script below stamps data-js onto
+    // <html> before React hydrates, and that attribute is meant to differ
+    // from the server-rendered markup.
+    <html
+      lang={LOCALE_TAG[locale]}
+      className={`${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
-        {/* Entrance reveal is driven by JavaScript. Without this, a browser
-            with scripts disabled — not rare on corporate IT — keeps every
-            data-reveal element at opacity 0 and the page appears empty. */}
-        <noscript>
-          <style>{`[data-reveal]{opacity:1;transform:none}`}</style>
-        </noscript>
+        {/* The entrance reveal hides content until an observer shows it, so
+            the hidden state must be opt-in from JavaScript: this runs inline
+            before first paint, and base.css scopes the hiding rule under
+            html[data-js]. A browser with scripts disabled, blocked, or still
+            arriving over a slow link shows the full page instead of blank
+            bands. */}
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.setAttribute('data-js','')` }} />
         <a className="skip-link" href="#main">
           {UI.skipToContent[locale]}
         </a>

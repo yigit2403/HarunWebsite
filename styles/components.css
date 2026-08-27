@@ -237,6 +237,15 @@
   letter-spacing: var(--ls-display);
 }
 
+/* The model name is a link but the card around it is not, so the name itself
+   must answer the pointer. */
+.product-card__name a {
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.product-card__name a:hover { border-bottom-color: var(--red); }
+
 .product-card__desc {
   font: var(--t-body-sm);
   color: var(--ink-soft);

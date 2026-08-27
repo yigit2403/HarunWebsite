@@ -61,7 +61,7 @@ export function ApplicationDetailPage({
         <div className="container app-detail">
           <div>
             <div className="prose" data-reveal="">
-              <h2 className="section-head__title" style={{ fontSize: '1.5rem' }}>
+              <h2 className="section-head__title section-head__title--sm">
                 {HEADINGS.process[locale]}
               </h2>
               {application.process[locale].map((p) => (
@@ -70,7 +70,7 @@ export function ApplicationDetailPage({
             </div>
 
             <div style={{ marginTop: 'var(--s12)' }} data-reveal="">
-              <h2 className="section-head__title" style={{ fontSize: '1.5rem', marginBottom: 'var(--s6)' }}>
+              <h2 className="section-head__title section-head__title--sm" style={{ marginBottom: 'var(--s6)' }}>
                 {HEADINGS.characteristics[locale]}
               </h2>
               <ul className="tick-list">
@@ -81,7 +81,7 @@ export function ApplicationDetailPage({
             </div>
 
             <div style={{ marginTop: 'var(--s12)' }} data-reveal="">
-              <h2 className="section-head__title" style={{ fontSize: '1.5rem', marginBottom: 'var(--s6)' }}>
+              <h2 className="section-head__title section-head__title--sm" style={{ marginBottom: 'var(--s6)' }}>
                 {HEADINGS.challenges[locale]}
               </h2>
               <ul className="tick-list">
@@ -96,7 +96,7 @@ export function ApplicationDetailPage({
             </figure>
 
             <div className="prose" style={{ marginTop: 'var(--s12)' }} data-reveal="">
-              <h2 className="section-head__title" style={{ fontSize: '1.5rem' }}>
+              <h2 className="section-head__title section-head__title--sm">
                 {HEADINGS.approach[locale]}
               </h2>
               {application.approach[locale].map((p) => (
@@ -105,7 +105,7 @@ export function ApplicationDetailPage({
             </div>
 
             <div style={{ marginTop: 'var(--s12)' }} data-reveal="">
-              <h2 className="section-head__title" style={{ fontSize: '1.5rem', marginBottom: 'var(--s6)' }}>
+              <h2 className="section-head__title section-head__title--sm" style={{ marginBottom: 'var(--s6)' }}>
                 {HEADINGS.materials[locale]}
               </h2>
               <div className="callout">{application.materials[locale]}</div>

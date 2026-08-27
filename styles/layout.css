@@ -76,6 +76,12 @@
   letter-spacing: var(--ls-display);
 }
 
+/* One step down the same scale, for in-page section headings that sit inside
+   a column — the application detail passages and the contact form. These used
+   to carry inline pixel sizes, which is exactly what the token contract in
+   styles/tokens.css forbids. */
+.section-head__title--sm { font: var(--t-display-sm); }
+
 .section-head__lead {
   font: var(--t-body-lg);
   color: var(--ink-soft);

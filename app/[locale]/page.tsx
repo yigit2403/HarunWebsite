@@ -164,7 +164,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           />
           <ol className="rotor-strip">
             {ROTORS_CONTENT.map((rotor) => (
-              <li className="rotor-strip__item" key={rotor.key} data-reveal="">
+              <li className="rotor-strip__item rotor-strip__item--link" key={rotor.key} data-reveal="">
                 <Link href={`${href(locale, 'rotors')}#${rotor.slug}`}>
                   <RotorProfile rotor={rotor.key} title={rotor.name[locale]} />
                   <h3 className="rotor-strip__name">{rotor.name[locale]}</h3>
