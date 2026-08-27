@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
-import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google'
 
 import '../globals.css'
 
+import { mono, sans } from '../fonts'
 import { Footer } from '@/components/site/Footer'
 import { Header } from '@/components/site/Header'
 import { JsonLd } from '@/components/ui/JsonLd'
@@ -14,27 +14,6 @@ import { COMPANY } from '@/content/site'
 import { isIndexable } from '@/lib/deployment'
 import { LOCALES, LOCALE_TAG, isLocale, type Locale } from '@/lib/i18n'
 import { organizationJsonLd } from '@/lib/seo'
-
-/**
- * IBM Plex Sans is an engineering typeface, drawn for technical documentation,
- * and it carries the full Turkish character set in latin-ext. Plex Mono sets
- * every number on the site: capacities, pressures, dimensions and the phone
- * number. Both are self-hosted through next/font, so there is no render-
- * blocking request to a font CDN.
- */
-const sans = IBM_Plex_Sans({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-plex-sans',
-})
-
-const mono = IBM_Plex_Mono({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600'],
-  display: 'swap',
-  variable: '--font-plex-mono',
-})
 
 export const viewport: Viewport = {
   themeColor: '#ffffff',
@@ -84,6 +63,12 @@ export default async function LocaleLayout({
   return (
     <html lang={LOCALE_TAG[locale]} className={`${sans.variable} ${mono.variable}`}>
       <body>
+        {/* Entrance reveal is driven by JavaScript. Without this, a browser
+            with scripts disabled — not rare on corporate IT — keeps every
+            data-reveal element at opacity 0 and the page appears empty. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1;transform:none}`}</style>
+        </noscript>
         <a className="skip-link" href="#main">
           {UI.skipToContent[locale]}
         </a>
