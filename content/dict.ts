@@ -41,6 +41,7 @@ export const UI = {
   allApplications: { tr: 'Tüm uygulamalar', en: 'All applications' },
 
   phone: { tr: 'Telefon', en: 'Phone' },
+  email: { tr: 'E-posta', en: 'Email' },
   callUs: { tr: 'Doğrudan arayın', en: 'Call us directly' },
   address: { tr: 'Adres', en: 'Address' },
   web: { tr: 'Web', en: 'Web' },
@@ -110,8 +111,8 @@ export const UI = {
     en: 'Your request has been received. Our engineering team will review your process data and get back to you.',
   },
   formErrorGeneric: {
-    tr: 'Talep gönderilemedi. Lütfen doğrudan telefonla ulaşın.',
-    en: 'The request could not be sent. Please reach us by phone instead.',
+    tr: 'Talep gönderilemedi. Lütfen telefonla veya e-posta ile ulaşın.',
+    en: 'The request could not be sent. Please reach us by phone or email instead.',
   },
   formErrorValidation: {
     tr: 'Lütfen zorunlu alanları doldurun.',

@@ -1,4 +1,4 @@
-import { IconMapPin, IconPhone, IconWorld } from '@tabler/icons-react'
+import { IconMail, IconMapPin, IconPhone, IconWorld } from '@tabler/icons-react'
 
 import { InquiryForm } from '@/components/forms/InquiryForm'
 import { Breadcrumb } from '@/components/site/Breadcrumb'
@@ -39,9 +39,9 @@ export function ContactPage({ locale }: { locale: Locale }) {
           <aside className="app-aside" data-reveal="">
             <h2 className="app-aside__title">{CONTACT_PAGE.officeTitle[locale]}</h2>
 
-            <ul className="footer-contact" style={{ marginTop: 0, color: 'var(--ink-soft)' }}>
+            <ul className="footer-contact footer-contact--light">
               <li>
-                <IconMapPin size={18} stroke={1.75} aria-hidden="true" style={{ color: 'var(--red)' }} />
+                <IconMapPin size={18} stroke={1.75} aria-hidden="true" />
                 <span>
                   <strong style={{ display: 'block', color: 'var(--ink)', fontWeight: 600 }}>
                     {COMPANY.legalName}
@@ -54,17 +54,21 @@ export function ContactPage({ locale }: { locale: Locale }) {
                 </span>
               </li>
               <li>
-                <IconPhone size={18} stroke={1.75} aria-hidden="true" style={{ color: 'var(--red)' }} />
+                <IconPhone size={18} stroke={1.75} aria-hidden="true" />
                 <a className="phone-link" href={COMPANY.phoneHref}>
                   {COMPANY.phoneDisplay}
                 </a>
               </li>
               <li>
-                <IconWorld size={18} stroke={1.75} aria-hidden="true" style={{ color: 'var(--red)' }} />
+                <IconMail size={18} stroke={1.75} aria-hidden="true" />
+                <a href={COMPANY.emailHref}>{COMPANY.email}</a>
+              </li>
+              <li>
+                <IconWorld size={18} stroke={1.75} aria-hidden="true" />
                 <span>
                   {COMPANY.sites.map((site) => (
                     <span key={site.href} style={{ display: 'block' }}>
-                      <a href={site.href} rel="noopener" style={{ color: 'var(--ink)' }}>
+                      <a href={site.href} rel="noopener">
                         {site.label}
                       </a>
                     </span>

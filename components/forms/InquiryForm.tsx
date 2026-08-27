@@ -314,6 +314,10 @@ export function InquiryForm({ locale }: { locale: Locale }) {
               <a href={COMPANY.phoneHref} style={{ borderBottom: '2px solid var(--red)' }}>
                 {COMPANY.phoneDisplay}
               </a>
+              {' · '}
+              <a href={COMPANY.emailHref} style={{ borderBottom: '2px solid var(--red)' }}>
+                {COMPANY.email}
+              </a>
             </span>
           </p>
         </div>

@@ -5,8 +5,8 @@ import type { Localised } from '@/lib/i18n'
  * Company facts. Every value here is taken from the Profimann / Liquilob
  * business card or from the written company brief. Nothing is invented.
  *
- * The card carries no email address and no social channels, so this site
- * publishes none. Add them here when they exist and they appear everywhere.
+ * The card carries no social channels, so this site publishes none. Add them
+ * here when they exist and they appear everywhere.
  */
 
 export const COMPANY = {
@@ -17,6 +17,13 @@ export const COMPANY = {
 
   phoneDisplay: '+90 505 353 50 75',
   phoneHref: 'tel:+905053535075',
+
+  // The public mailbox. liquilob@profimann.com also exists; this one is
+  // published because it matches the legal name beside it and stays right on
+  // both domains the site answers on. The inquiry form's delivery mailbox is
+  // configured separately, in inquiry-config.php on the server.
+  email: 'info@profimann.com',
+  emailHref: 'mailto:info@profimann.com',
 
   address: {
     street: 'Horozluhan Mah. Tekelioğlu Sk. No. 65',

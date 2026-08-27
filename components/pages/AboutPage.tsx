@@ -102,10 +102,17 @@ export function AboutPage({ locale }: { locale: Locale }) {
             </div>
             <div className="figure-item" data-reveal="">
               <span className="figure-item__label" style={{ marginTop: 0 }}>
+                {/* Phone and email share the item so the block keeps its three
+                    columns; a fourth item would wrap alone under the grid. */}
                 <strong style={{ color: 'var(--ink)', display: 'block', marginBottom: 4 }}>
-                  {UI.phone[locale]}
+                  {UI.ctaContactShort[locale]}
                 </strong>
-                <a href={COMPANY.phoneHref}>{COMPANY.phoneDisplay}</a>
+                <a href={COMPANY.phoneHref} style={{ display: 'block' }}>
+                  {COMPANY.phoneDisplay}
+                </a>
+                <a href={COMPANY.emailHref} style={{ display: 'block' }}>
+                  {COMPANY.email}
+                </a>
               </span>
             </div>
             <div className="figure-item" data-reveal="">

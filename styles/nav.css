@@ -276,6 +276,14 @@
 .footer-contact a { color: var(--on-dark); border-bottom: 1px solid transparent; }
 .footer-contact a:hover { border-bottom-color: var(--red-on-dark); }
 
+/* The same list on a light surface — the contact page aside. Without this the
+   base rules above paint the links in --on-dark, which is white on white: the
+   phone number was invisible there until this variant existed. */
+.footer-contact--light { margin-top: 0; color: var(--ink-soft); }
+.footer-contact--light svg { color: var(--red); }
+.footer-contact--light a { color: var(--ink); }
+.footer-contact--light a:hover { border-bottom-color: var(--red); }
+
 .footer-base {
   border-top: 1px solid var(--hairline-dark);
   padding-block: var(--s6);

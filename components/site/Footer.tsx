@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { IconMapPin, IconPhone, IconWorld } from '@tabler/icons-react'
+import { IconMail, IconMapPin, IconPhone, IconWorld } from '@tabler/icons-react'
 
 import { Brand } from './Brand'
 import { LanguageSwitcher } from './LanguageSwitcher'
@@ -36,6 +36,10 @@ export function Footer({ locale }: { locale: Locale }) {
               <li>
                 <IconPhone size={18} stroke={1.75} aria-hidden="true" />
                 <a href={COMPANY.phoneHref}>{COMPANY.phoneDisplay}</a>
+              </li>
+              <li>
+                <IconMail size={18} stroke={1.75} aria-hidden="true" />
+                <a href={COMPANY.emailHref}>{COMPANY.email}</a>
               </li>
               <li>
                 <IconWorld size={18} stroke={1.75} aria-hidden="true" />

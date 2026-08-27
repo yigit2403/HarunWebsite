@@ -70,6 +70,7 @@ export function organizationJsonLd(locale: Locale) {
     alternateName: [COMPANY.shortName, COMPANY.brand],
     url: COMPANY.origin,
     telephone: COMPANY.phoneDisplay,
+    email: COMPANY.email,
     address: {
       '@type': 'PostalAddress',
       streetAddress: COMPANY.address.street,
