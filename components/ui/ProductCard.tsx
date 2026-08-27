@@ -11,8 +11,20 @@ import { href } from '@/lib/routes'
  * Catalogue tile. Model, type, drawing, one line of description and the three
  * specification values an engineer scans first. There is deliberately no
  * price, no rating and no cart control anywhere in this component.
+ *
+ * `as` sets the heading level of the model name: h3 under a section heading on
+ * the home page, h2 on the catalogue page where the cards sit directly under
+ * the page h1 and an h3 would leave a hole in the outline.
  */
-export function ProductCard({ product, locale }: { product: Product; locale: Locale }) {
+export function ProductCard({
+  product,
+  locale,
+  as: Heading = 'h3',
+}: {
+  product: Product
+  locale: Locale
+  as?: 'h2' | 'h3'
+}) {
   const detail = href(locale, 'products', product.slug)
 
   return (
@@ -31,16 +43,16 @@ export function ProductCard({ product, locale }: { product: Product; locale: Loc
 
       <div className="product-card__body">
         <span className="product-card__type">{product.type[locale]}</span>
-        <h3 className="product-card__name">
+        <Heading className="product-card__name">
           <Link href={detail}>{product.name}</Link>
-        </h3>
+        </Heading>
         <p className="product-card__desc">{product.summary[locale]}</p>
 
         <dl className="product-card__specs">
           {product.keySpecs.map((spec) => (
             <div className="product-card__spec" key={spec.label.en}>
               <dt>{spec.label[locale]}</dt>
-              <dd>{spec.value}</dd>
+              <dd>{spec.value[locale]}</dd>
             </div>
           ))}
         </dl>

@@ -57,13 +57,18 @@ export function ProductsPage({ locale }: { locale: Locale }) {
               locale={locale}
               caption={COMPARE_CAPTION[locale]}
               columns={COMPARE_COLUMNS.map((c) => ({ key: c.key, label: c.label[locale] }))}
-              rows={PRODUCTS.map((p) => ({ model: p.name, values: COMPARE_ROWS[p.slug] }))}
+              rows={PRODUCTS.map((p) => ({
+                model: p.name,
+                values: Object.fromEntries(
+                  COMPARE_COLUMNS.map((c) => [c.key, COMPARE_ROWS[p.slug][c.key][locale]])
+                ),
+              }))}
             />
           </div>
 
           <div className="grid grid--4">
             {PRODUCTS.map((product) => (
-              <ProductCard key={product.slug} product={product} locale={locale} />
+              <ProductCard key={product.slug} product={product} locale={locale} as="h2" />
             ))}
           </div>
         </div>

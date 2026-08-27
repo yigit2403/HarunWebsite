@@ -26,6 +26,7 @@ export const UI = {
   closeMenu: { tr: 'Menüyü kapat', en: 'Close menu' },
   primaryNav: { tr: 'Ana gezinme', en: 'Primary navigation' },
   breadcrumb: { tr: 'Sayfa yolu', en: 'Breadcrumb' },
+  onThisPage: { tr: 'Sayfa içi bölümler', en: 'On this page' },
   language: { tr: 'Dil', en: 'Language' },
   home: { tr: 'Ana Sayfa', en: 'Home' },
 

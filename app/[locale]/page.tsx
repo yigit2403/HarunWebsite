@@ -42,7 +42,7 @@ const META = {
   tr: {
     title: 'Liquilob Loblu Rotorlu Pompalar · Profimann Makine',
     description:
-      'Gıda, süt, kimya, ilaç ve atıksu uygulamaları için Liquilob loblu rotorlu pompalar. Konya üretimi, uluslararası mühendislik pratiği. LQL serisi DN 25 - DN 150.',
+      'Gıda, süt, kimya, ilaç ve atıksu uygulamaları için Liquilob loblu rotorlu pompalar. Konya üretimi, uluslararası mühendislik pratiği. LQL serisi DN 25 – DN 150.',
   },
   en: {
     title: 'Liquilob Rotary Lobe Pumps · Profimann Makine',

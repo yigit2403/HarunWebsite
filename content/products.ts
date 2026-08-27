@@ -13,8 +13,9 @@ import type { Localised } from '@/lib/i18n'
 
 export type SpecRow = {
   label: Localised
-  /** A plain string for numeric values, a Localised for prose values. */
-  value: string | Localised
+  value: Localised
+  /** Prose renders in the text face; numeric values stay in the mono face. */
+  prose?: boolean
 }
 
 export type SpecGroup = {
@@ -30,14 +31,22 @@ export type SpecGroup = {
  * test data replaces the current placeholders.
  */
 export type ModelSpecs = {
-  capacity: string
-  pressure: string
-  displacement: string
-  speed: string
-  viscosity: string
-  connection: string
-  weight: string
+  capacity: Localised
+  pressure: Localised
+  displacement: Localised
+  speed: Localised
+  viscosity: Localised
+  connection: Localised
+  weight: Localised
 }
+
+/**
+ * The two languages punctuate numbers differently, and showing one form to the
+ * other audience misreads: Turkish "60.000 mPa·s" is sixty to an English
+ * reader, and "l/dev" is a Turkish abbreviation. Values that read identically
+ * in both languages are written once.
+ */
+const loc = (tr: string, en: string = tr): Localised => ({ tr, en })
 
 export type Product = {
   /** Model code. Identical in both languages by design. */
@@ -49,7 +58,7 @@ export type Product = {
   description: Localised<string[]>
   specs: ModelSpecs
   /** Derived from `specs`. Shown on the card and at the top of the detail page. */
-  keySpecs: { label: Localised; value: string }[]
+  keySpecs: { label: Localised; value: Localised }[]
   /** Derived from `specs`. */
   specGroups: SpecGroup[]
   advantages: { term: Localised; def: Localised }[]
@@ -59,7 +68,7 @@ export type Product = {
   drawScale: number
 }
 
-const TEMP_RANGE = '-20 ... +130 °C'
+const TEMP_RANGE = loc('−20 … +130 °C')
 
 const ROTOR_OPTIONS: Localised = {
   tr: 'Tek kanatlı, çift kanatlı, üç loblu veya çok pervaneli rotor',
@@ -108,12 +117,12 @@ function specGroupsFrom(o: ModelSpecs): SpecGroup[] {
       title: { tr: 'Mekanik yapı', en: 'Mechanical construction' },
       rows: [
         { label: { tr: 'Bağlantı ölçüsü', en: 'Port size' }, value: o.connection },
-        { label: { tr: 'Bağlantı tipleri', en: 'Connection types' }, value: CONNECTION_OPTIONS },
-        { label: { tr: 'Rotor seçenekleri', en: 'Rotor options' }, value: ROTOR_OPTIONS },
-        { label: { tr: 'Salmastra seçenekleri', en: 'Shaft seal options' }, value: SEAL_OPTIONS },
-        { label: { tr: 'Gövde malzemesi', en: 'Casing material' }, value: CASING_MATERIAL },
-        { label: { tr: 'Elastomerler', en: 'Elastomers' }, value: ELASTOMERS },
-        { label: { tr: 'Tahrik', en: 'Drive' }, value: DRIVE },
+        { label: { tr: 'Bağlantı tipleri', en: 'Connection types' }, value: CONNECTION_OPTIONS, prose: true },
+        { label: { tr: 'Rotor seçenekleri', en: 'Rotor options' }, value: ROTOR_OPTIONS, prose: true },
+        { label: { tr: 'Salmastra seçenekleri', en: 'Shaft seal options' }, value: SEAL_OPTIONS, prose: true },
+        { label: { tr: 'Gövde malzemesi', en: 'Casing material' }, value: CASING_MATERIAL, prose: true },
+        { label: { tr: 'Elastomerler', en: 'Elastomers' }, value: ELASTOMERS, prose: true },
+        { label: { tr: 'Tahrik', en: 'Drive' }, value: DRIVE, prose: true },
         { label: { tr: 'Pompa ağırlığı (yaklaşık)', en: 'Pump weight, approximate' }, value: o.weight },
       ],
     },
@@ -197,13 +206,13 @@ const MODELS: RawProduct[] = [
       ],
     },
     specs: {
-      capacity: '0,5 - 8 m³/h',
-      pressure: '8 bar',
-      displacement: '0,20 l/dev',
-      speed: '150 - 700 min-1',
-      viscosity: '1 - 60.000 mPa·s',
-      connection: 'DN 25 - DN 40',
-      weight: '38 kg',
+      capacity: loc('0,5 – 8 m³/h', '0.5 – 8 m³/h'),
+      pressure: loc('8 bar'),
+      displacement: loc('0,20 l/dev', '0.20 l/rev'),
+      speed: loc('150 – 700 dev/dk', '150 – 700 rpm'),
+      viscosity: loc('1 – 60.000 mPa·s', '1 – 60,000 mPa·s'),
+      connection: loc('DN 25 – DN 40'),
+      weight: loc('38 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['food-beverage', 'pharma-cosmetics', 'chemical'],
@@ -229,13 +238,13 @@ const MODELS: RawProduct[] = [
       ],
     },
     specs: {
-      capacity: '4 - 30 m³/h',
-      pressure: '10 bar',
-      displacement: '0,90 l/dev',
-      speed: '100 - 600 min-1',
-      viscosity: '1 - 100.000 mPa·s',
-      connection: 'DN 50 - DN 65',
-      weight: '76 kg',
+      capacity: loc('4 – 30 m³/h'),
+      pressure: loc('10 bar'),
+      displacement: loc('0,90 l/dev', '0.90 l/rev'),
+      speed: loc('100 – 600 dev/dk', '100 – 600 rpm'),
+      viscosity: loc('1 – 100.000 mPa·s', '1 – 100,000 mPa·s'),
+      connection: loc('DN 50 – DN 65'),
+      weight: loc('76 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['food-beverage', 'dairy', 'pharma-cosmetics'],
@@ -261,13 +270,13 @@ const MODELS: RawProduct[] = [
       ],
     },
     specs: {
-      capacity: '15 - 90 m³/h',
-      pressure: '12 bar',
-      displacement: '3,20 l/dev',
-      speed: '100 - 500 min-1',
-      viscosity: '1 - 150.000 mPa·s',
-      connection: 'DN 80 - DN 100',
-      weight: '145 kg',
+      capacity: loc('15 – 90 m³/h'),
+      pressure: loc('12 bar'),
+      displacement: loc('3,20 l/dev', '3.20 l/rev'),
+      speed: loc('100 – 500 dev/dk', '100 – 500 rpm'),
+      viscosity: loc('1 – 150.000 mPa·s', '1 – 150,000 mPa·s'),
+      connection: loc('DN 80 – DN 100'),
+      weight: loc('145 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['chemical', 'wastewater', 'industrial-process'],
@@ -293,13 +302,13 @@ const MODELS: RawProduct[] = [
       ],
     },
     specs: {
-      capacity: '60 - 220 m³/h',
-      pressure: '12 bar',
-      displacement: '9,50 l/dev',
-      speed: '80 - 400 min-1',
-      viscosity: '1 - 200.000 mPa·s',
-      connection: 'DN 125 - DN 150',
-      weight: '310 kg',
+      capacity: loc('60 – 220 m³/h'),
+      pressure: loc('12 bar'),
+      displacement: loc('9,50 l/dev', '9.50 l/rev'),
+      speed: loc('80 – 400 dev/dk', '80 – 400 rpm'),
+      viscosity: loc('1 – 200.000 mPa·s', '1 – 200,000 mPa·s'),
+      connection: loc('DN 125 – DN 150'),
+      weight: loc('310 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['wastewater', 'industrial-process', 'chemical'],
@@ -325,7 +334,7 @@ export const COMPARE_COLUMNS: { key: 'capacity' | 'pressure' | 'connection' | 'v
   { key: 'viscosity', label: { tr: 'Viskozite', en: 'Viscosity' } },
 ]
 
-export const COMPARE_ROWS: Record<string, Record<string, string>> = Object.fromEntries(
+export const COMPARE_ROWS: Record<string, Record<string, Localised>> = Object.fromEntries(
   PRODUCTS.map((p) => [
     p.slug,
     {

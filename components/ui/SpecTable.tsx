@@ -34,16 +34,12 @@ export function SpecTable({
           </tr>
         </thead>
         <tbody>
-          {group.rows.map((row) => {
-            const value = typeof row.value === 'string' ? row.value : row.value[locale]
-            const isProse = typeof row.value !== 'string'
-            return (
-              <tr key={row.label.en}>
-                <th scope="row">{row.label[locale]}</th>
-                <td className={isProse ? 'is-text' : undefined}>{value}</td>
-              </tr>
-            )
-          })}
+          {group.rows.map((row) => (
+            <tr key={row.label.en}>
+              <th scope="row">{row.label[locale]}</th>
+              <td className={row.prose ? 'is-text' : undefined}>{row.value[locale]}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
       {note && SPECS_ARE_PROVISIONAL ? (

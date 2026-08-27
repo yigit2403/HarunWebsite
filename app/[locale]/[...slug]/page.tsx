@@ -74,7 +74,7 @@ function seoFor(locale: Locale, resolved: Resolved) {
       const product = productBySlug(resolved.slug)!
       return {
         title: `${product.name} · ${product.type[locale]}`,
-        description: `${product.summary[locale]} ${product.keySpecs.map((s) => `${s.label[locale]}: ${s.value}`).join('. ')}.`,
+        description: `${product.summary[locale]} ${product.keySpecs.map((s) => `${s.label[locale]}: ${s.value[locale]}`).join('. ')}.`,
         path: href(locale, 'products', product.slug),
         alternatePath: href(other, 'products', product.slug),
       }

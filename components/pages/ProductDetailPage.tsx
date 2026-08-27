@@ -59,7 +59,7 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
               {product.keySpecs.map((spec) => (
                 <div className="key-spec" key={spec.label.en}>
                   <dt className="key-spec__label">{spec.label[locale]}</dt>
-                  <dd className="key-spec__value">{spec.value}</dd>
+                  <dd className="key-spec__value">{spec.value[locale]}</dd>
                 </div>
               ))}
             </dl>
@@ -74,7 +74,7 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
         </div>
       </section>
 
-      <nav className="anchor-nav" aria-label={product.name}>
+      <nav className="anchor-nav" aria-label={UI.onThisPage[locale]}>
         <div className="container anchor-nav__track">
           {ANCHORS.map((key) => (
             <a key={key} href={`#${key}`}>
@@ -209,7 +209,7 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
                 <h3 className="industry-tile__name">{item.name}</h3>
                 <p className="pillar__body">{item.summary[locale]}</p>
                 <p className="industry-tile__fluids">
-                  {item.keySpecs.map((s) => s.value).join('  ·  ')}
+                  {item.keySpecs.map((s) => s.value[locale]).join('  ·  ')}
                 </p>
                 <span className="industry-tile__go">
                   {UI.technicalDetails[locale]}

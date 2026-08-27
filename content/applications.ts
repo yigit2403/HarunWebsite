@@ -167,12 +167,12 @@ export const APPLICATIONS: Application[] = [
     approach: {
       tr: [
         'Hijyenik konfigürasyonda salmastra bölgesi CIP çözeltisinin ulaşabileceği şekilde tasarlanır. Yıkamalı çift mekanik salmastra seçildiğinde bariyer sıvısı hem sızdırmazlığı hem de temizlenebilirliği güvence altına alır.',
-        'Yoğurt ve krema transferinde çift kanatlı veya üç loblu rotor düşük kesme kuvveti sağlar. Devir 200 min-1 civarında tutulduğunda jel yapısı korunur.',
+        'Yoğurt ve krema transferinde çift kanatlı veya üç loblu rotor düşük kesme kuvveti sağlar. Devir 200 dev/dk civarında tutulduğunda jel yapısı korunur.',
         'SIP uygulanan hatlarda elastomer sınıfı EPDM olarak seçilir ve pompa gövdesi buhar sıcaklığına göre boyutlandırılır.',
       ],
       en: [
         'In the hygienic configuration the seal area is arranged so that CIP solution reaches it. With a flushed double mechanical seal the barrier fluid secures both sealing and cleanability.',
-        'For yoghurt and cream a bi-wing or tri-lobe rotor keeps shear low. Held near 200 min-1, the gel structure survives the transfer.',
+        'For yoghurt and cream a bi-wing or tri-lobe rotor keeps shear low. Held near 200 rpm, the gel structure survives the transfer.',
         'On lines with SIP the elastomer grade is specified as EPDM and the pump body is dimensioned for steam temperature.',
       ],
     },

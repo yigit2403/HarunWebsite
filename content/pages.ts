@@ -143,7 +143,7 @@ export const ENGINEERING_BAND = {
     },
     {
       value: 'DN 25',
-      unit: { tr: '- 150', en: '- 150' } as Localised,
+      unit: { tr: '– 150', en: '– 150' } as Localised,
       label: { tr: 'LQL serisinin kapsadığı bağlantı aralığı', en: 'Connection range covered by the LQL series' } as Localised,
     },
   ],
