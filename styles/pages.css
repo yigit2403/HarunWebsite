@@ -93,6 +93,19 @@
   color: var(--graphite);
 }
 
+/* On a phone the image is small and the caption wraps to two lines, which
+   overlaid a third of the machine. Below the frame it annotates instead of
+   covering. */
+@media (max-width: 30rem) {
+  .tech-frame__caption {
+    position: static;
+    margin-top: var(--s4);
+    padding: var(--s3) 0 0;
+    background: none;
+    border-right: 0;
+  }
+}
+
 /* ---------------------------------------------------------- PHOTO SLOT
    Reserved position for client photography that does not exist yet. It
    renders as a measured, labelled frame rather than a stock stand-in, so

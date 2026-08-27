@@ -142,8 +142,10 @@ export const ENGINEERING_BAND = {
       label: { tr: 'Tasarım pratiğinin dayandığı mühendislik ekolü: Amerikan ve Alman', en: 'Engineering schools the design practice draws on: American and German' } as Localised,
     },
     {
-      value: 'DN 25',
-      unit: { tr: '– 150', en: '– 150' } as Localised,
+      // One value, not value-plus-unit: split as "DN 25" + "–150" the small
+      // grey suffix read as a negative number beside the large red figure.
+      value: 'DN 25–150',
+      unit: { tr: '', en: '' } as Localised,
       label: { tr: 'LQL serisinin kapsadığı bağlantı aralığı', en: 'Connection range covered by the LQL series' } as Localised,
     },
   ],

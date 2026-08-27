@@ -678,6 +678,13 @@
   gap: var(--s6);
   overflow-x: auto;
   scrollbar-width: none;
+  /* The scrollbar is hidden, so on a narrow screen nothing said the track
+     continues past the edge. The fade is that signal. The extra end padding
+     keeps the last label out of the faded zone once the track is scrolled all
+     the way, so the fade never swallows the thing it points at. */
+  padding-inline-end: calc(var(--gutter) + var(--s8));
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
 }
 
 .anchor-nav__track::-webkit-scrollbar { display: none; }
