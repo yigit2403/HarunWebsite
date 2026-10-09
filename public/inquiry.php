@@ -25,6 +25,13 @@ $INQUIRY_TO = '';                // e.g. 'info@liquilob.com'
 $INQUIRY_FROM = '';              // e.g. 'site@liquilob.com', on this domain
 $INQUIRY_SUBJECT_PREFIX = '';    // optional, e.g. '[web] '
 
+// Where every genuine enquiry is written before mail() is asked to send it.
+// One level above the document root, so it is unreachable over HTTP and the
+// FTP deploy, which only touches public_html, can never delete it. On this
+// host that is domains/<domain>/inquiry-log/, one per domain. Set to '' in
+// inquiry-config.php to switch the log off.
+$INQUIRY_LOG_DIR = dirname(__DIR__) . '/inquiry-log';
+
 if (is_file(__DIR__ . '/inquiry-config.php')) {
     require __DIR__ . '/inquiry-config.php';
 }
@@ -47,6 +54,48 @@ function answer($status, $payload)
 function oneline($value)
 {
     return trim(str_replace([chr(13), chr(10)], '', $value));
+}
+
+/**
+ * Appends one JSON line to this month's log file. Never fails the request: a
+ * log that cannot be written costs a line in the PHP error log and nothing
+ * else, so the endpoint behaves exactly as it did before the log existed.
+ */
+function inquiry_log($dir, $record)
+{
+    if ($dir === '') {
+        return false;
+    }
+    // Every filesystem call is silenced: under an open_basedir that excludes
+    // $dir, a warning printed with display_errors on would corrupt the JSON
+    // answer, which is the one thing the log must never do.
+    if (!@is_dir($dir) && !@mkdir($dir, 0700, true)) {
+        error_log('[inquiry] cannot create log directory ' . $dir);
+        return false;
+    }
+    // Only matters if the directory was configured inside the document root,
+    // where without this the log would be downloadable by anyone who guessed
+    // its name.
+    if (!@is_file($dir . '/.htaccess')) {
+        @file_put_contents($dir . '/.htaccess', 'Require all denied' . chr(10));
+    }
+    $file = $dir . '/inquiries-' . gmdate('Y-m') . '.jsonl';
+    // Without the substitute flag, a value that the non-mbstring clean() cut
+    // mid-character makes json_encode return false and the record is lost.
+    $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE;
+    $line = json_encode($record, $flags) . chr(10);
+    if (@file_put_contents($file, $line, FILE_APPEND | LOCK_EX) === false) {
+        error_log('[inquiry] cannot write to ' . $file);
+        return false;
+    }
+    @chmod($file, 0600);
+    return true;
+}
+
+/** The second line of a record: what happened when it was sent. */
+function log_outcome($dir, $id, $result)
+{
+    inquiry_log($dir, ['id' => $id, 'time' => gmdate('c'), 'result' => $result]);
 }
 
 function clean($value, $max)
@@ -161,9 +210,30 @@ foreach ($rows as $row) {
 }
 $html .= '</table>';
 
+// ------------------------------------------------------------------------- LOG
+// mail() can refuse a message, and until this log existed a refused enquiry
+// existed nowhere: the visitor was sent to the phone, Profimann saw nothing.
+// So the enquiry is written down before any attempt to send it, and the
+// outcome is appended as a second line with the same id. A record with no
+// "sent" line after it is one that never reached the mailbox. The honeypot
+// has already answered above, so bots do not get this far.
+$log_id = gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3));
+$log_fields = [];
+foreach ($rows as $row) {
+    $log_fields[$row['label']] = $row['value'];
+}
+inquiry_log($INQUIRY_LOG_DIR, [
+    'id' => $log_id,
+    'time' => gmdate('c'),
+    'locale' => $locale,
+    'subject' => $subject,
+    'fields' => $log_fields,
+]);
+
 // ------------------------------------------------------------------------ SEND
 if ($INQUIRY_TO === '' || $INQUIRY_FROM === '') {
     error_log('[inquiry] no mailbox configured; inquiry from ' . $fields['email'] . ' not delivered');
+    log_outcome($INQUIRY_LOG_DIR, $log_id, 'not_configured');
     answer(503, ['error' => 'delivery_not_configured']);
 }
 
@@ -197,8 +267,12 @@ $sent = mail(
 );
 
 if (!$sent) {
-    error_log('[inquiry] mail() refused the message from ' . $fields['email']);
+    error_log('[inquiry] mail() refused the message from ' . $fields['email'] . '; kept as ' . $log_id);
+    log_outcome($INQUIRY_LOG_DIR, $log_id, 'mail_refused');
     answer(503, ['error' => 'delivery_failed']);
 }
 
+// "sent" means mail() accepted it for delivery, not that it arrived; a bounce
+// after this point is the mail server's to report.
+log_outcome($INQUIRY_LOG_DIR, $log_id, 'sent');
 answer(200, ['ok' => true, 'delivery' => 'mail']);

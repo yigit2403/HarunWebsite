@@ -144,6 +144,35 @@ cannot overwrite them. Ship the defaults in `inquiry.php` empty; an empty `$INQU
 makes the endpoint answer `503` and the form show the phone number, which is the correct
 behaviour for a build that has not been configured yet rather than a failure.
 
+### The inquiry log
+
+`mail()` can refuse a message, and before the log existed a refused enquiry existed
+nowhere. Now every genuine enquiry (the honeypot's catches are not written) is appended
+to a monthly file **before** sending is attempted, and its outcome follows as a second
+line with the same `id`:
+
+```
+domains/liquilob.com/inquiry-log/inquiries-2026-10.jsonl
+{"id":"20261009-101512-3fa2c1","time":"…","locale":"tr","subject":"…","fields":{"Ad Soyad":"…",…}}
+{"id":"20261009-101512-3fa2c1","time":"…","result":"sent"}
+```
+
+`result` is `sent` (accepted by `mail()`, which is not proof of arrival), `mail_refused`,
+or `not_configured`. A record with no `sent` line after it never reached the mailbox:
+those are the ones to phone back. Each domain keeps its own directory, because each runs
+its own copy of `inquiry.php`.
+
+The directory sits one level above `public_html`, so it cannot be fetched over HTTP and
+the deploy, which only writes inside `public_html`, cannot delete it. Logging never
+changes what the visitor is told: if the directory cannot be written, PHP's error log gets
+a line and the form behaves exactly as it did before. Set `$INQUIRY_LOG_DIR = '';` in
+`inquiry-config.php` to switch it off, or to another path to move it.
+
+The files hold names, email addresses and phone numbers, the same as the mailbox does, and
+nothing deletes them. Under KVKK that wants a retention decision; until one is made,
+clear old months by hand. Under `npm run preview` the log lands in `inquiry-log/` at the
+repository root, which is gitignored.
+
 Both addresses are on **the same domain, on the same server**, so form mail is delivered
 locally and never leaves the machine: no SPF evaluation, no relay, no spam classification in
 the path. Where the sender's domain does not host the site, this still works — the envelope

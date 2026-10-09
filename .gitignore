@@ -15,6 +15,11 @@ public/photos/og-card.jpg
 public/favicon.ico
 assets/brand/*.webp
 
+# Where inquiry.php writes enquiries under `npm run preview`, which serves out/
+# and so puts "one level above the document root" at the repository root.
+# Real enquiries hold personal data and must never be committed.
+inquiry-log/
+
 # Upload package built from out/ — see README, "Deploying".
 liquilob-site.zip
 

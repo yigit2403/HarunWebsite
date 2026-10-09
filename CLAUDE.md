@@ -245,10 +245,11 @@ moved to static hosting. Nothing there is built or imported, but it is kept type
 `server/README.md` explains what each file did, what replaced it, and the exact moves to
 switch it back on.
 
-Two of those decisions are reversible and may want reversing: log analytics cannot see a
-click that requests no URL, and `inquiry.php` has no store, so a failed `mail()` loses the
-enquiry. A small PHP inquiry log is the obvious fix and is the one thing PHP is genuinely
-well suited to here.
+One of those decisions is reversible and may want reversing: log analytics cannot see a
+click that requests no URL. The other, `inquiry.php` having no store, has been reversed:
+it appends every genuine enquiry to `domains/<domain>/inquiry-log/*.jsonl`, outside the
+document root, before calling `mail()`, then appends the outcome. A log failure only
+reaches PHP's error log and never changes the response. See README → *The inquiry log*.
 
 ---
 

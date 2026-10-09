@@ -15,8 +15,8 @@ export const COMPANY = {
   brand: 'Liquilob',
   brandEndorsement: 'BY PROFIMANN',
 
-  phoneDisplay: '+90 505 353 50 75',
-  phoneHref: 'tel:+905053535075',
+  phoneDisplay: '+90 533 336 32 17',
+  phoneHref: 'tel:+905333363217',
 
   // The public mailbox. liquilob@profimann.com also exists; this one is
   // published because it matches the legal name beside it and stays right on

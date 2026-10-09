@@ -29,8 +29,10 @@ Two of these decisions are reversible and may want reversing:
   travels with the inquiry itself, which is better, but the dashboard showed
   things the logs do not.
 - **Inquiry storage.** The Node route stored every inquiry as well as sending
-  it, so nothing was lost when email was misconfigured. `inquiry.php` has no
-  store: if `mail()` fails it answers 503 and the form shows the phone number.
+  it, so nothing was lost when email was misconfigured. `inquiry.php` now
+  does the same with a flat file: every genuine enquiry is appended to
+  `domains/<domain>/inquiry-log/` before `mail()` is tried. There is no
+  dashboard over it; it is read over FTP or in the panel's file manager.
 
 If the site moves back to a host that runs Node — Vercel, a VPS, or a panel's
 Node.js application manager — putting these back is a matter of moving the
