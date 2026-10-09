@@ -30,9 +30,9 @@ export function PumpElevation({
   title,
   className,
   /**
-   * Relative frame size, 1 = LQL-100. The four models really are different
+   * Relative frame size, 1 = LQL-65. The five models really are different
    * sizes, so the drawing is scaled rather than repeated identically across
-   * four catalogue cards. Implemented on the viewBox around the drawing
+   * five catalogue cards. Implemented on the viewBox around the drawing
    * centre, which keeps the line weights consistent between models.
    */
   scale = 1,

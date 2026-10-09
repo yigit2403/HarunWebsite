@@ -29,7 +29,7 @@ Every page exists at a localised address. There are no unlocalised routes.
 | --- | --- | --- |
 | Home | `/tr` | `/en` |
 | Catalogue | `/tr/urunler` | `/en/products` |
-| Product | `/tr/urunler/lql-100` | `/en/products/lql-100` |
+| Product | `/tr/urunler/lql-50` | `/en/products/lql-50` |
 | Rotor technologies | `/tr/rotor-teknolojileri` | `/en/rotor-technologies` |
 | Applications | `/tr/uygulamalar` | `/en/applications` |
 | Application | `/tr/uygulamalar/sut-urunleri` | `/en/applications/dairy` |
@@ -45,7 +45,7 @@ sitemap and the language switcher, so none of them can drift apart.
 A bare path is sent to `/tr`, or to `/en` when the browser asks for English. This happens
 in two places, because a static site has no middleware: [`proxy.ts`](proxy.ts) does it in
 `next dev`, and [`public/.htaccess`](public/.htaccess) does it on the server. **They must be
-changed together.** Model codes (`lql-100`) are identical in both languages; application
+changed together.** Model codes (`lql-50`) are identical in both languages; application
 slugs are translated.
 
 Exported pages are directories: `/tr/urunler/` is `out/tr/urunler/index.html`. Apache serves
@@ -71,7 +71,7 @@ All copy, in both languages, sits in `content/`. Nothing is hardcoded in a compo
 | `content/site.ts` | Company facts: legal name, phone, address, domains |
 | `content/dict.ts` | Interface strings: navigation, labels, table headers, form chrome |
 | `content/pages.ts` | Page prose: home sections, about, engineering, resources, contact |
-| `content/products.ts` | The four LQL models and their specifications |
+| `content/products.ts` | The five LQL models (LQL-25, 32, 40, 50, 65) and their specifications |
 | `content/rotors.ts` | The four rotor geometries |
 | `content/configurations.ts` | Jacketed and PP body variants |
 | `content/applications.ts` | The seven application pages |
@@ -92,13 +92,15 @@ specification table renders a visible advisory saying the figures are preliminar
 verification.
 
 The numbers currently in `content/products.ts` follow the internal geometry of the series
-(displacement × speed × 60 gives the stated capacity, for all four frames) so the catalogue
-is dimensionally coherent for review. **They are not measured test data.**
+(displacement × speed × 60 gives the stated capacity, for all five frames) so the catalogue
+is dimensionally coherent for review. **They are not measured test data.** LQL-32, LQL-40
+and LQL-65 were added later by interpolating between the existing frames on the same
+geometry; they have even less behind them than the others.
 
 Each model has one `specs` block and everything derives from it: the catalogue card, the
 comparison table on the catalogue page, the key specifications on the detail page and the
 technical data table. So replacing a figure is a single edit that cannot leave a stale copy
-behind somewhere else. When Profimann's verified data arrives, update those four blocks and
+behind somewhere else. When Profimann's verified data arrives, update those five blocks and
 set `SPECS_ARE_PROVISIONAL` to `false`; the advisories disappear on their own.
 
 ### 2. The imagery is CAD, not photography

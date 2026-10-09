@@ -37,6 +37,15 @@ DirectorySlash On
   # RewriteCond %{HTTP:X-Forwarded-Proto} !https
   # RewriteRule ^(.*)$ https://www.liquilob.com/$1 [R=301,L]
 
+  # --------------------------------------------------------- RETIRED MODELS
+  # LQL-100 and LQL-200 were dropped from the range when it was rebuilt around
+  # DN 25 to DN 65. Their pages had been indexed and may be linked from
+  # quotations, so they go to the catalogue rather than to a 404. Permanent,
+  # so search engines drop the old addresses. Production only: under
+  # `next dev` these addresses simply 404, which is harmless locally.
+  RewriteRule ^tr/urunler/lql-(100|200)/?$ /tr/urunler/ [R=301,L]
+  RewriteRule ^en/products/lql-(100|200)/?$ /en/products/ [R=301,L]
+
   # ------------------------------------------------------------------- LOCALE
   # The site has no unlocalised routes: every page lives under /tr or /en so
   # search engines index one canonical address per language. Turkish is the

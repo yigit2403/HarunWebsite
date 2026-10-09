@@ -42,12 +42,12 @@ const META = {
   tr: {
     title: 'Liquilob Loblu Rotorlu Pompalar · Profimann Makine',
     description:
-      'Gıda, süt, kimya, ilaç ve atıksu uygulamaları için Liquilob loblu rotorlu pompalar. Konya üretimi, uluslararası mühendislik pratiği. LQL serisi DN 25 – DN 150.',
+      'Gıda, süt, kimya, ilaç ve atıksu uygulamaları için Liquilob loblu rotorlu pompalar. Konya üretimi, uluslararası mühendislik pratiği. LQL serisi DN 25 – DN 65.',
   },
   en: {
     title: 'Liquilob Rotary Lobe Pumps · Profimann Makine',
     description:
-      'Liquilob rotary lobe pumps for food, dairy, chemical, pharmaceutical and wastewater duties. Manufactured in Konya to international engineering practice. LQL series, DN 25 to DN 150.',
+      'Liquilob rotary lobe pumps for food, dairy, chemical, pharmaceutical and wastewater duties. Manufactured in Konya to international engineering practice. LQL series, DN 25 to DN 65.',
   },
 } as const
 
@@ -140,7 +140,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </Link>
             }
           />
-          <div className="grid grid--4">
+          <div className="grid grid--5">
             {PRODUCTS.map((product) => (
               <ProductCard key={product.slug} product={product} locale={locale} />
             ))}

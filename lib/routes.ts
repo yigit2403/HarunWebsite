@@ -3,7 +3,7 @@ import { LOCALES, type Locale, type Localised } from './i18n'
 /**
  * Localised URL structure.
  *
- *   /tr/urunler/lql-100        /en/products/lql-100
+ *   /tr/urunler/lql-50        /en/products/lql-50
  *   /tr/uygulamalar/sut        /en/applications/dairy
  *
  * One table drives routing, the header, the footer, the sitemap and the
@@ -39,7 +39,7 @@ export function home(locale: Locale): string {
   return `/${locale}`
 }
 
-/** Build a localised path: href('tr', 'products', 'lql-100') -> /tr/urunler/lql-100 */
+/** Build a localised path: href('tr', 'products', 'lql-50') -> /tr/urunler/lql-50 */
 export function href(locale: Locale, page?: PageKey, ...rest: string[]): string {
   if (!page) return home(locale)
   const parts = [locale, SEGMENTS[page][locale], ...rest.filter(Boolean)]

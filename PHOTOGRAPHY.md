@@ -9,26 +9,44 @@ into the web file in the table below; `npm run build` does it for you.
 
 | Asset | Master | Served as | Where it appears |
 | --- | --- | --- | --- |
-| Complete pump set | `assets/photos/pump-unit.png` | `/photos/pump-unit.webp` | Home hero, and About beside the company story |
-| Product render, cover removed | `assets/photos/pump-render.png` | `/photos/pump-render.webp` | Catalogue cards, product detail hero |
+| Complete pump set, workshop background | `assets/photos/pump-set.jpg` | `/photos/pump-set.webp` | Home hero, and About beside the company story |
+| Product renders, badged DN 25 / 32 / 40 / 50 / 65 | `assets/photos/pump-render-dn{25,32,40,50,65}.png` | `/photos/pump-render-dn{…}.webp`, and `…-card.webp` at 700px | The matching LQL model's detail hero, and its catalogue card |
+| Product render, unbadged | `assets/photos/pump-render.png` | `/photos/pump-render.webp` | The social card; the fallback for a model without a render |
 | Pump set general arrangement | `assets/photos/pump-unit-drawing.png` | `/photos/pump-unit-drawing.webp` | Engineering, beside the philosophy |
 | Installation on a food line | `assets/photos/installation-food-line.jpg` | `/photos/installation-food-line.webp` | Home engineering band |
 | Rotor family | `assets/photos/rotor-family.jpg` | `/photos/rotor-family.webp` | Rotor technologies page |
 | Logo artwork | `assets/brand/liquilob-logo.png` | fingerprinted by Next | Header and footer |
 
-Together they weigh 1426 kB as masters and 235 kB as served files.
+The product renders are keyed cut-outs with an alpha channel, roughly 140 kB each at the
+detail hero's 1300px. The catalogue and home pages show all five at once, so each render is
+also encoded at 700px for the card, which is what those pages load; the full size is only
+fetched on a model's own page. Run `npm run images` for the current totals.
+
+Which model shows which render is `PRODUCT_IMAGES_BY_MODEL` in `content/pages.ts`, and
+`productImageFor(slug, 'card')` picks the card copy. A model without an entry falls back to
+the unbadged render.
+
+The renders are one machine at one scale with a different badge, not five sizes of
+machine. The card still shows the size step, because `ProductCard` scales each image by the
+model's `drawScale`; a side effect is that the badge is small on the LQL-25 card. It is
+fully legible on the detail page.
 
 The hero and the catalogue deliberately show different machines. The catalogue sells the
 pump, and the motor is selected per duty, so the cards carry the pump on its own. The hero
 has to say what the machine *is* to somebody who does not yet have the vocabulary, and a
 bare casing does not do that, so it carries the complete set on its baseplate.
 
-Four of these were processed before use:
+The set image is a finished picture with its own background and goes in as delivered. It
+replaced a keyed CAD render of the same set (`pump-unit.png`, still in git history), which
+read as a model rather than a machine.
 
-- **The render** arrived on an opaque white ground with a shadow slab beneath it. The
-  background was keyed out by flood-filling from the border, so white highlights *inside*
-  the machine survive, and the ground slab was cropped away at the feet. It now sits on any
-  surface. The original is in the source document if it is ever needed again.
+These were processed before use:
+
+- **The three product renders** arrived as 1536x1024 JPEGs on a white ground. Each went
+  through `tools/cad-cutout.mjs --margin=24` (no `--appearances`; the red is already right),
+  which keys the ground out from the border, so the brushed-steel highlights inside the
+  machine and the badge survive. They now sit on the grey card and hero surfaces without a
+  white box around them.
 - **The logo** arrived with a wide red margin that left the wordmark at half the plate
   height and `BY PROFIMANN` illegible at header size. It was cropped to its ink with even
   padding, which renders the wordmark about 40% larger in the same space. The mark itself is
@@ -76,23 +94,24 @@ where the container stops growing:
 
 | Position | Rendered at | Master | Effective |
 | --- | --- | --- | --- |
-| Home hero | 450px | 899px | 2.00x — clears a high-density screen |
-| Engineering, general arrangement | 686px | 1091px | 1.59x |
-| About, complete set | 686px | 899px | 1.31x — softest of the three |
+| Home hero | 450px | 1774px, served at 1400px | 3.11x |
+| Engineering, general arrangement | 686px | 1091px | 1.59x — the softest |
+| About, complete set | 686px | 1774px, served at 1400px | 2.04x |
 
-So the hero, which is seen first and matters most, is exactly at the 2x a high-density screen
-asks for, and that is not luck: the render is cropped tighter than the drawing precisely
-because the frame it sits in supplies its own padding. The two mid-page figures fall short
-and are the ones worth re-exporting for. One export at 3200x1800 clears every row at once.
+The set image cleared the two rows that used to fall short. The general arrangement drawing
+is now the only one below 2x, and the one worth re-exporting for.
 
 ### Re-cutting a CAD export
 
 When a bigger export arrives, drop it in `assets/cad/` and re-run the same commands:
 
 ```
-node tools/cad-cutout.mjs assets/cad/pump-unit-export.jpg assets/photos/pump-unit.png --margin=28 --appearances
 node tools/cad-cutout.mjs assets/cad/pump-unit-drawing-export.jpg assets/photos/pump-unit-drawing.png
 ```
+
+The colour set render was made the same way, with
+`--margin=28 --appearances`, before the set image replaced it; the export is still in
+`assets/cad/` if it is ever wanted again.
 
 `--margin` is in source pixels and scales with the export, so it needs raising in proportion
 if the export gets bigger: 28 and 56 are tuned to a 1600x900 frame, and a 3200x1800 one
@@ -151,7 +170,7 @@ two photographs that would replace one, in the order they are worth taking.
 | Slot | Currently | Ratio | Minimum width | Appears on |
 | --- | --- | --- | --- | --- |
 | `unitDrawing` | General arrangement drawing | 1091:494 | 2200px | Engineering |
-| `unit` | Complete pump set, render | 899:450 | 1800px | Home hero, About |
+| `unit` | Complete pump set, workshop background | 1774:887 | 1800px | Home hero, About |
 
 ### `unitDrawing` — a pump set on the bench during assembly
 
@@ -170,22 +189,22 @@ What sells this frame is the surface: swarf, a fresh cut, a measuring instrument
 shot. Close in on the work rather than photographing the whole shop floor. It is the frame
 that turns *we manufacture in Konya* from a claim into something the reader can see.
 
-Note that this slot is the *only* thing that would move: the hero draws on the same file
-through `UNIT_IMAGE`, and the hero should stay a render. A machine photographed on a bench
-is the wrong first impression for a catalogue; a clean isolated unit is the right one. Point
-the About slot at the photograph and leave `UNIT_IMAGE` where it is.
+Note that the hero draws on the same file through `UNIT_IMAGE`. The hero now carries the
+set image with its workshop background, by decision, in place of the earlier isolated
+render. A machining photograph should go to the About slot only, so give `PHOTOS.unit` its
+own `src` and leave `UNIT_IMAGE` where it is.
 
-Filling this one also ends the single repeat on the site, which is the complete-set render
-appearing both on the home hero and on About. Four per-model renders (below) would end it
-just as well, from the other direction.
+Filling this one also ends the single repeat on the site, which is the complete-set image
+appearing both on the home hero and on About.
 
 ## What to shoot for the rest of the site
 
-The catalogue now uses the supplied render. If a shoot is commissioned, ask for:
+The catalogue now uses the supplied renders. If a shoot is commissioned, ask for:
 
-- One isolated three-quarter view **per frame size** (LQL-25, 50, 100, 200), matching the
-  existing render's angle, lighting and background. Right now one render stands in for all
-  four models, which is normal for a catalogue but weaker than showing the real size step.
+- One isolated three-quarter view **per frame size** (LQL-25, 32, 40, 50, 65), matching
+  the existing render's angle, lighting and background. Right now one machine with five
+  badges stands in for all five models, which is normal for a catalogue but weaker than
+  showing the real size step.
 - One rotor close-up per geometry on a neutral background, to sit beside the generated
   section diagrams on the rotor technologies page.
 - One jacketed pump and one PP-bodied pump, for the configurations section.
@@ -194,7 +213,7 @@ Consistency matters more than production value here: four pumps photographed at 
 angle on the same background read as one product family. Four pumps photographed four
 different ways read as a stock library.
 
-The first of those does not need a shoot. The CAD model that produced `pump-unit.png` can
+The first of those does not need a shoot. The CAD model that produced the old set render can
 produce the same view of each frame size from the same camera, which is four exports and
 four runs of `tools/cad-cutout.mjs`. Four renders taken from one model are as consistent as
 photography ever gets, and the size step is exactly what a catalogue card should show.

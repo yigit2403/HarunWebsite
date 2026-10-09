@@ -28,8 +28,8 @@ const CONFIG_FOR = { tr: 'Tipik kullanım', en: 'Typical use' } as const
 
 /**
  * Catalogue. A comparison table sits above the grid, because an engineer who
- * already knows their duty point wants to read four models against each other
- * in one glance rather than open four cards to find out.
+ * already knows their duty point wants to read five models against each other
+ * in one glance rather than open five cards to find out.
  */
 export function ProductsPage({ locale }: { locale: Locale }) {
   return (
@@ -66,7 +66,7 @@ export function ProductsPage({ locale }: { locale: Locale }) {
             />
           </div>
 
-          <div className="grid grid--4">
+          <div className="grid grid--5">
             {PRODUCTS.map((product) => (
               <ProductCard key={product.slug} product={product} locale={locale} as="h2" />
             ))}

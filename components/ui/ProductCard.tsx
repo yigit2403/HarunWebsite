@@ -3,7 +3,8 @@ import { IconArrowRight } from '@tabler/icons-react'
 
 import { ProductImage } from '@/components/ui/ProductImage'
 import { UI } from '@/content/dict'
-import type { Product } from '@/content/products'
+import { productImageFor } from '@/content/pages'
+import { MAX_DRAW_SCALE, type Product } from '@/content/products'
 import type { Locale } from '@/lib/i18n'
 import { href } from '@/lib/routes'
 
@@ -31,13 +32,13 @@ export function ProductCard({
     <article className="product-card" data-reveal="">
       <div className="product-card__figure">
         {/* Scaled to the model's frame size, normalised against the largest,
-            so the four cards show the real size step instead of one photo
-            repeated four times. */}
+            so the cards show the real size step instead of one picture
+            repeated at one size. */}
         <div
           className="product-card__scale"
-          style={{ ['--scale' as string]: `${Math.round((product.drawScale / 1.15) * 100)}%` }}
+          style={{ ['--scale' as string]: `${Math.round((product.drawScale / MAX_DRAW_SCALE) * 100)}%` }}
         >
-          <ProductImage locale={locale} sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 44vw, 88vw" />
+          <ProductImage locale={locale} image={productImageFor(product.slug, 'card')} sizes="(min-width: 64rem) 30vw, (min-width: 40rem) 44vw, 88vw" />
         </div>
       </div>
 

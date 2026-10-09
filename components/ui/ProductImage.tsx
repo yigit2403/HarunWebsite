@@ -13,11 +13,12 @@ type Subject = {
 /**
  * A keyed render of the machine, sized by the layout rather than by the file.
  *
- * Two subjects use this. `PRODUCT_IMAGE`, the default, is the pump on its own
- * with the front cover removed, and it carries the catalogue: one render across
- * the LQL series, with the specification rows separating the frame sizes, which
- * is how an industrial catalogue normally works. `UNIT_IMAGE` is the complete
- * set on its baseplate and carries the home hero.
+ * Two subjects use this. The pump on its own carries the catalogue: one render
+ * of the machine across the LQL series, badged with its port size where a
+ * badged render exists (`productImageFor` in content/pages.ts) and plain
+ * otherwise, with the specification rows separating the frame sizes, which is
+ * how an industrial catalogue normally works. `UNIT_IMAGE` is the complete set
+ * on its baseplate, photographed, and carries the home hero.
  *
  * Neither retires the line drawings. Those moved to where a drawing genuinely
  * does more than a render, which is the dimensional and sectional content.

@@ -12,7 +12,7 @@ import { ProductImage } from '@/components/ui/ProductImage'
 import { SpecTable } from '@/components/ui/SpecTable'
 import { APPLICATIONS } from '@/content/applications'
 import { DETAIL_SECTIONS, NAV_LABEL, UI } from '@/content/dict'
-import { DOCUMENTS, HOME_CTA } from '@/content/pages'
+import { DOCUMENTS, HOME_CTA, productImageFor } from '@/content/pages'
 import { PRODUCTS, type Product } from '@/content/products'
 import type { Locale } from '@/lib/i18n'
 import { href, inquiryHref } from '@/lib/routes'
@@ -42,7 +42,7 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
       <section className="product-hero">
         <div className="container product-hero__grid">
           <figure className="tech-frame tech-frame--product">
-            <ProductImage locale={locale} priority sizes="(min-width: 64rem) 52vw, 92vw" />
+            <ProductImage locale={locale} image={productImageFor(product.slug)} priority sizes="(min-width: 64rem) 52vw, 92vw" />
             <figcaption className="tech-frame__caption">
               {product.name} · {product.type[locale]}
             </figcaption>

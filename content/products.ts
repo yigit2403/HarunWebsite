@@ -64,7 +64,7 @@ export type Product = {
   advantages: { term: Localised; def: Localised }[]
   /** Keys into content/applications.ts */
   applications: string[]
-  /** Relative body scale used by the elevation drawing, 1 = LQL-100. */
+  /** Relative body scale used by the elevation drawing and the cards, 1 = LQL-65, the largest. */
   drawScale: number
 }
 
@@ -211,12 +211,76 @@ const MODELS: RawProduct[] = [
       displacement: loc('0,20 l/dev', '0.20 l/rev'),
       speed: loc('150 – 700 dev/dk', '150 – 700 rpm'),
       viscosity: loc('1 – 60.000 mPa·s', '1 – 60,000 mPa·s'),
-      connection: loc('DN 25 – DN 40'),
+      connection: loc('DN 25'),
       weight: loc('38 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['food-beverage', 'pharma-cosmetics', 'chemical'],
     drawScale: 0.78,
+  },
+  {
+    slug: 'lql-32',
+    name: 'LQL-32',
+    series: 'Liquilob LQL',
+    type: { tr: 'Loblu Rotorlu Pompa', en: 'Rotary Lobe Pump' },
+    summary: {
+      tr: 'Küçük partiler, numune hatları ve hassas dozaj için bir adım büyük gövde.',
+      en: 'One step up from the smallest frame, for small batches, sampling lines and precise dosing.',
+    },
+    description: {
+      tr: [
+        'LQL-32, dozajlama hassasiyetini koruyarak LQL-25’ten daha yüksek debi gerektiren hatlar için tasarlanmıştır. Küçük parti üretimi yapan süt, kozmetik ve gıda tesislerinde ürün değişimlerine uygundur.',
+        'Ön kapaktan bakım ve düşük ölü hacim, sık temizlik ve ürün değişimi olan hatlarda duruş süresini kısaltır.',
+      ],
+      en: [
+        'LQL-32 is built for lines that need more flow than LQL-25 without giving up dosing precision. It suits plants running small batches in dairy, cosmetics and food, where products change often.',
+        'Front-loading maintenance and low dead volume shorten downtime on lines that are cleaned and changed over frequently.',
+      ],
+    },
+    specs: {
+      capacity: loc('1 – 14 m³/h'),
+      pressure: loc('8 bar'),
+      displacement: loc('0,35 l/dev', '0.35 l/rev'),
+      speed: loc('150 – 700 dev/dk', '150 – 700 rpm'),
+      viscosity: loc('1 – 80.000 mPa·s', '1 – 80,000 mPa·s'),
+      connection: loc('DN 32'),
+      weight: loc('46 kg'),
+    },
+    advantages: SHARED_ADVANTAGES,
+    applications: ['dairy', 'pharma-cosmetics', 'food-beverage'],
+    drawScale: 0.83,
+  },
+  {
+    slug: 'lql-40',
+    name: 'LQL-40',
+    series: 'Liquilob LQL',
+    type: { tr: 'Loblu Rotorlu Pompa', en: 'Rotary Lobe Pump' },
+    summary: {
+      tr: 'Viskoz ürünlerin transferi ve dolum besleme için orta-küçük gövde.',
+      en: 'A lower mid-range frame for viscous product transfer and filling feed.',
+    },
+    description: {
+      tr: [
+        'LQL-40, kremalar, soslar ve dolgu kütleleri gibi viskoz ürünlerin dolum makinelerine beslenmesinde kullanılır. Düşük devirde yüksek hacimsel verim, ürün yapısını korurken debiyi sabit tutar.',
+        'Ceketli gövde seçeneğiyle çikolata ve dolgu gibi sıcaklığa duyarlı ürünlerde de kullanılabilir.',
+      ],
+      en: [
+        'LQL-40 feeds viscous products such as creams, sauces and fillings into filling machines. High volumetric efficiency at low speed holds the flow steady while preserving the structure of the product.',
+        'With the jacketed body option it also handles temperature-sensitive products such as chocolate and fillings.',
+      ],
+    },
+    specs: {
+      capacity: loc('2 – 20 m³/h'),
+      pressure: loc('10 bar'),
+      displacement: loc('0,55 l/dev', '0.55 l/rev'),
+      speed: loc('120 – 650 dev/dk', '120 – 650 rpm'),
+      viscosity: loc('1 – 100.000 mPa·s', '1 – 100,000 mPa·s'),
+      connection: loc('DN 40'),
+      weight: loc('58 kg'),
+    },
+    advantages: SHARED_ADVANTAGES,
+    applications: ['chocolate', 'food-beverage', 'pharma-cosmetics'],
+    drawScale: 0.87,
   },
   {
     slug: 'lql-50',
@@ -243,78 +307,49 @@ const MODELS: RawProduct[] = [
       displacement: loc('0,90 l/dev', '0.90 l/rev'),
       speed: loc('100 – 600 dev/dk', '100 – 600 rpm'),
       viscosity: loc('1 – 100.000 mPa·s', '1 – 100,000 mPa·s'),
-      connection: loc('DN 50 – DN 65'),
+      connection: loc('DN 50'),
       weight: loc('76 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['food-beverage', 'dairy', 'pharma-cosmetics'],
-    drawScale: 0.9,
+    drawScale: 0.92,
   },
   {
-    slug: 'lql-100',
-    name: 'LQL-100',
+    slug: 'lql-65',
+    name: 'LQL-65',
     series: 'Liquilob LQL',
     type: { tr: 'Loblu Rotorlu Pompa', en: 'Rotary Lobe Pump' },
     summary: {
-      tr: 'Yüksek viskoziteli ve katı madde içeren akışkanlar için ana proses pompası.',
-      en: 'The principal process pump for high-viscosity media and fluids carrying solids.',
+      tr: 'Yüksek viskoziteli ve katı madde içeren akışkanlar için serinin en büyük gövdesi.',
+      en: 'The largest frame in the series, for high-viscosity media and fluids carrying solids.',
     },
     description: {
       tr: [
-        'LQL-100, yüksek viskoziteli ürünlerin ve katı madde taşıyan akışkanların sürekli transferi için tasarlanmıştır. Geniş emme ağzı, sıvılaştırılmış çamur ve pulplu ürünlerde tıkanma riskini azaltır.',
+        'LQL-65, yüksek viskoziteli ürünlerin ve katı madde taşıyan akışkanların sürekli transferi için tasarlanmıştır. Geniş emme ağzı, çamur ve pulplu ürünlerde tıkanma riskini azaltır.',
         'Aşınma plakaları ve rotor uçları ayrı parçalar olarak üretilir; aşınma durumunda gövde değiştirilmeden yenilenir. Bu, atıksu ve dolgu macunu gibi abrazif uygulamalarda toplam işletme maliyetini doğrudan etkiler.',
       ],
       en: [
-        'LQL-100 is built for continuous transfer of high-viscosity products and fluids carrying solids. A wide suction port reduces the risk of blockage with thickened sludge and pulp-bearing products.',
+        'LQL-65 is built for continuous transfer of high-viscosity products and fluids carrying solids. A wide suction port reduces the risk of blockage with sludge and pulp-bearing products.',
         'Wear plates and rotor tips are separate parts and are renewed without replacing the casing. On abrasive duties such as wastewater and filler compounds this drives the operating cost directly.',
       ],
     },
     specs: {
-      capacity: loc('15 – 90 m³/h'),
+      capacity: loc('8 – 50 m³/h'),
       pressure: loc('12 bar'),
-      displacement: loc('3,20 l/dev', '3.20 l/rev'),
-      speed: loc('100 – 500 dev/dk', '100 – 500 rpm'),
+      displacement: loc('1,60 l/dev', '1.60 l/rev'),
+      speed: loc('100 – 550 dev/dk', '100 – 550 rpm'),
       viscosity: loc('1 – 150.000 mPa·s', '1 – 150,000 mPa·s'),
-      connection: loc('DN 80 – DN 100'),
-      weight: loc('145 kg'),
+      connection: loc('DN 65'),
+      weight: loc('105 kg'),
     },
     advantages: SHARED_ADVANTAGES,
     applications: ['chemical', 'wastewater', 'industrial-process'],
     drawScale: 1,
   },
-  {
-    slug: 'lql-200',
-    name: 'LQL-200',
-    series: 'Liquilob LQL',
-    type: { tr: 'Loblu Rotorlu Pompa', en: 'Rotary Lobe Pump' },
-    summary: {
-      tr: 'Arıtma tesisleri ve büyük hacimli proses hatları için en büyük gövde boyu.',
-      en: 'The largest frame in the series, for treatment plants and high-volume process lines.',
-    },
-    description: {
-      tr: [
-        'LQL-200, arıtma tesislerinde yoğunlaştırılmış çamur sirkülasyonu ve büyük hacimli proses transferleri için kullanılır. Düşük devirde yüksek debi verecek şekilde boyutlandırılmıştır; bu da aşınmayı ve enerji tüketimini sınırlar.',
-        'Takviyeli mil ve büyütülmüş yatak grubu, uzun basma hatlarında oluşan eksenel yükleri karşılar.',
-      ],
-      en: [
-        'LQL-200 handles thickened sludge circulation in treatment plants and high-volume process transfer. It is dimensioned to deliver high flow at low shaft speed, which limits both wear and energy consumption.',
-        'A reinforced shaft and an enlarged bearing set carry the axial loads that build up on long discharge lines.',
-      ],
-    },
-    specs: {
-      capacity: loc('60 – 220 m³/h'),
-      pressure: loc('12 bar'),
-      displacement: loc('9,50 l/dev', '9.50 l/rev'),
-      speed: loc('80 – 400 dev/dk', '80 – 400 rpm'),
-      viscosity: loc('1 – 200.000 mPa·s', '1 – 200,000 mPa·s'),
-      connection: loc('DN 125 – DN 150'),
-      weight: loc('310 kg'),
-    },
-    advantages: SHARED_ADVANTAGES,
-    applications: ['wastewater', 'industrial-process', 'chemical'],
-    drawScale: 1.15,
-  },
 ]
+
+/** The largest model's drawScale, which the catalogue cards normalise against. */
+export const MAX_DRAW_SCALE = Math.max(...MODELS.map((m) => m.drawScale))
 
 export const PRODUCTS: Product[] = MODELS.map((model) => ({
   ...model,

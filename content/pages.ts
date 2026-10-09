@@ -64,8 +64,8 @@ export const PRODUCTS_SECTION = {
   kicker: { tr: 'LIQUILOB ürün ailesi', en: 'LIQUILOB product family' } as Localised,
   title: { tr: 'LQL Serisi loblu rotorlu pompalar', en: 'LQL Series rotary lobe pumps' } as Localised,
   lead: {
-    tr: 'Dört gövde boyu, ortak bir hidrolik tasarım ve akışkana göre seçilen rotor, salmastra ve malzeme konfigürasyonu.',
-    en: 'Four frame sizes on one hydraulic design, with rotor, seal and material configuration selected for the medium.',
+    tr: 'Beş gövde boyu, ortak bir hidrolik tasarım ve akışkana göre seçilen rotor, salmastra ve malzeme konfigürasyonu.',
+    en: 'Five frame sizes on one hydraulic design, with rotor, seal and material configuration selected for the medium.',
   } as Localised,
 }
 
@@ -507,13 +507,12 @@ export const PHOTOS: Record<string, PhotoSlot> = {
   },
   unit: {
     id: 'unit',
-    // The master's own ratio, so the keyed cut-out is never cropped by the
-    // cover fit and the air the crop built in survives to the page.
-    ratio: '899 / 450',
-    src: '/photos/pump-unit.webp',
+    // The master's own ratio, so the cover fit never crops the machine.
+    ratio: '1774 / 887',
+    src: '/photos/pump-set.webp',
     label: {
-      tr: 'Ortak şase üzerinde komple Liquilob pompa grubu: loblu pompa, kaplin muhafazası, redüktör ve elektrik motoru',
-      en: 'A complete Liquilob pump set on a common baseplate: lobe pump, coupling guard, gear reducer and electric motor',
+      tr: 'Paslanmaz çelik ortak şase üzerinde komple Liquilob pompa grubu: loblu pompa, kaplin muhafazası, redüktör ve elektrik motoru',
+      en: 'A complete Liquilob pump set on a stainless steel baseplate: lobe pump, coupling guard, gear reducer and electric motor',
     },
   },
   unitDrawing: {
@@ -542,22 +541,62 @@ export const PHOTOS: Record<string, PhotoSlot> = {
  */
 export const UNIT_IMAGE = {
   src: PHOTOS.unit.src as string,
-  width: 899,
-  height: 450,
+  width: 1774,
+  height: 887,
   alt: PHOTOS.unit.label,
 }
 
 /**
  * The isolated product render, used wherever the pump itself is the subject:
  * the catalogue cards and the product detail page. Its background has been
- * keyed out, so it sits on any surface.
+ * keyed out, so it sits on any surface. This is the unbadged one: the social
+ * card uses it, and a model added without a render of its own falls back to it.
  */
 export const PRODUCT_IMAGE = {
   src: '/photos/pump-render.webp',
-  width: 612,
-  height: 516,
+  width: 1413,
+  height: 953,
   alt: {
-    tr: 'Liquilob loblu rotorlu pompa, ön kapak çıkarılmış halde üç loblu rotor çifti görünür',
-    en: 'Liquilob rotary lobe pump with the front cover removed, showing the tri-lobe rotor pair',
+    tr: 'Liquilob loblu rotorlu pompa: paslanmaz çelik pompa gövdesi ve ön kapak, kırmızı dişli kutusu, rakorlu hijyenik bağlantı ağızları ve tahrik mili',
+    en: 'Liquilob rotary lobe pump: stainless steel pump casing and front cover, red gear case, threaded hygienic ports and drive shaft',
   } as Localised,
+}
+
+export type ProductPicture = typeof PRODUCT_IMAGE & {
+  /** A 700px copy for the catalogue card, generated beside the full one. */
+  cardSrc?: string
+}
+
+/**
+ * The same machine with its port size badged in the artwork. Keyed by model
+ * slug, so a model without an entry falls back to PRODUCT_IMAGE rather than
+ * to nothing. The badge is part of the picture, so the alt text has to say
+ * it, or a screen reader hears less than a sighted visitor sees.
+ */
+const badged = (dn: number, height: number): ProductPicture => ({
+  src: `/photos/pump-render-dn${dn}.webp`,
+  cardSrc: `/photos/pump-render-dn${dn}-card.webp`,
+  width: 1494,
+  height,
+  alt: {
+    tr: `${PRODUCT_IMAGE.alt.tr}; DN ${dn} bağlantı ölçüsü etiketiyle`,
+    en: `${PRODUCT_IMAGE.alt.en}; labelled with the DN ${dn} port size`,
+  },
+})
+
+// Heights are each cut-out's own, as tools/cad-cutout.mjs reported them; a
+// pixel off either way and next/image reserves the wrong box. The card copy
+// keeps the same ratio, so the same width and height describe it.
+export const PRODUCT_IMAGES_BY_MODEL: Record<string, ProductPicture> = {
+  'lql-25': badged(25, 953),
+  'lql-32': badged(32, 952),
+  'lql-40': badged(40, 953),
+  'lql-50': badged(50, 952),
+  'lql-65': badged(65, 953),
+}
+
+/** The model's render, at the size the place it is shown can use. */
+export function productImageFor(slug: string, size: 'hero' | 'card' = 'hero'): ProductPicture {
+  const image: ProductPicture = PRODUCT_IMAGES_BY_MODEL[slug] ?? PRODUCT_IMAGE
+  return size === 'card' && image.cardSrc ? { ...image, src: image.cardSrc } : image
 }

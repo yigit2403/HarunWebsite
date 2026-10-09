@@ -108,7 +108,7 @@ export const APPLICATIONS: Application[] = [
     models: [
       { slug: 'lql-50', note: { tr: 'Dolum ve proses besleme', en: 'Filling and process feed' } },
       { slug: 'lql-25', note: { tr: 'Aroma ve katkı dozajı', en: 'Flavour and additive dosing' } },
-      { slug: 'lql-100', note: { tr: 'Yüksek viskoziteli hatlar', en: 'High-viscosity lines' } },
+      { slug: 'lql-40', note: { tr: 'Viskoz ürün ve sos hatları', en: 'Viscous product and sauce lines' } },
     ],
   },
   {
@@ -182,7 +182,7 @@ export const APPLICATIONS: Application[] = [
     },
     models: [
       { slug: 'lql-50', note: { tr: 'Fermantasyon ve dolum hattı', en: 'Fermentation and filling line' } },
-      { slug: 'lql-100', note: { tr: 'Tank boşaltma ve transfer', en: 'Tank emptying and transfer' } },
+      { slug: 'lql-65', note: { tr: 'Tank boşaltma ve transfer', en: 'Tank emptying and transfer' } },
       { slug: 'lql-25', note: { tr: 'Kültür ve katkı dozajı', en: 'Culture and additive dosing' } },
     ],
   },
@@ -257,7 +257,7 @@ export const APPLICATIONS: Application[] = [
     },
     models: [
       { slug: 'lql-50', note: { tr: 'Kalıplama ve dolum besleme', en: 'Moulding and filling feed' } },
-      { slug: 'lql-100', note: { tr: 'Tank ve hat transferi', en: 'Tank and line transfer' } },
+      { slug: 'lql-40', note: { tr: 'Tank ve hat transferi', en: 'Tank and line transfer' } },
       { slug: 'lql-25', note: { tr: 'Dolgu ve ganaj dozajı', en: 'Filling and ganache dosing' } },
     ],
   },
@@ -331,9 +331,9 @@ export const APPLICATIONS: Application[] = [
       en: 'Casing and rotors are produced in 1.4404 (AISI 316L) or, where the duty calls for it, a higher alloy. The elastomer grade is specified as FKM, FFKM or EPDM to suit the medium. Connections are made to DIN EN 1092-1 flange standard.',
     },
     models: [
-      { slug: 'lql-100', note: { tr: 'Reçine ve polimer transferi', en: 'Resin and polymer transfer' } },
+      { slug: 'lql-65', note: { tr: 'Reçine ve polimer transferi', en: 'Resin and polymer transfer' } },
       { slug: 'lql-50', note: { tr: 'Ara ürün ve dozaj hatları', en: 'Intermediate and dosing lines' } },
-      { slug: 'lql-200', note: { tr: 'Büyük hacimli transfer', en: 'High-volume transfer' } },
+      { slug: 'lql-25', note: { tr: 'Katkı ve inhibitör dozajı', en: 'Additive and inhibitor dosing' } },
     ],
   },
   {
@@ -408,7 +408,7 @@ export const APPLICATIONS: Application[] = [
     models: [
       { slug: 'lql-25', note: { tr: 'Dozajlama ve küçük partiler', en: 'Dosing and small batches' } },
       { slug: 'lql-50', note: { tr: 'Krem ve emülsiyon transferi', en: 'Cream and emulsion transfer' } },
-      { slug: 'lql-100', note: { tr: 'Yüksek viskoziteli macunlar', en: 'High-viscosity pastes' } },
+      { slug: 'lql-40', note: { tr: 'Yüksek viskoziteli macunlar', en: 'High-viscosity pastes' } },
     ],
   },
   {
@@ -481,8 +481,7 @@ export const APPLICATIONS: Application[] = [
       en: 'The casing is specified as EN-GJL-250 cast iron or 1.4404 stainless steel. Rotors are produced elastomer-coated or with a hardened surface. Connections are made to DIN EN 1092-1 flange standard.',
     },
     models: [
-      { slug: 'lql-200', note: { tr: 'Çürütücü sirkülasyonu', en: 'Digester circulation' } },
-      { slug: 'lql-100', note: { tr: 'Susuzlaştırma beslemesi', en: 'Dewatering feed' } },
+      { slug: 'lql-65', note: { tr: 'Çamur transferi ve susuzlaştırma beslemesi', en: 'Sludge transfer and dewatering feed' } },
       { slug: 'lql-25', note: { tr: 'Polimer dozajlama', en: 'Polymer dosing' } },
     ],
   },
@@ -556,8 +555,8 @@ export const APPLICATIONS: Application[] = [
       en: 'The casing is specified as 1.4404 stainless steel or EN-GJL-250 cast iron. Elastomers are chosen as NBR or FKM to suit the medium. Connections are made to DIN EN 1092-1 flange standard.',
     },
     models: [
-      { slug: 'lql-100', note: { tr: 'Yağ ve macun transferi', en: 'Oil and compound transfer' } },
-      { slug: 'lql-200', note: { tr: 'Depo ve hat besleme', en: 'Storage and line feed' } },
+      { slug: 'lql-65', note: { tr: 'Yağ ve macun transferi', en: 'Oil and compound transfer' } },
+      { slug: 'lql-40', note: { tr: 'Depo ve hat besleme', en: 'Storage and line feed' } },
       { slug: 'lql-50', note: { tr: 'Dolum ve variller arası', en: 'Filling and drum transfer' } },
     ],
   },

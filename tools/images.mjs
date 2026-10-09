@@ -37,11 +37,32 @@ const IMAGES = [
     options: { lossless: true },
   },
   {
+    // The catalogue renders are keyed cut-outs of the same machine, made with
+    // tools/cad-cutout.mjs. Each badged one carries its model's port size in
+    // the artwork; the plain one is the fallback and the social card's.
     from: 'assets/photos/pump-render.png',
     to: 'public/photos/pump-render.webp',
-    width: 1224, // 612 native, kept at 2x for the product hero
+    width: 1300, // product hero renders at ~650px
     options: { quality: 86 },
   },
+  // One badged render per model, each in two sizes. The static export has no
+  // image optimiser to build a srcset, so without the card size the catalogue
+  // and home pages would each download five 1300px files (~690 kB) to show
+  // them at about 344px at most.
+  ...[25, 32, 40, 50, 65].flatMap((dn) => [
+    {
+      from: `assets/photos/pump-render-dn${dn}.png`,
+      to: `public/photos/pump-render-dn${dn}.webp`,
+      width: 1300, // product detail hero
+      options: { quality: 86 },
+    },
+    {
+      from: `assets/photos/pump-render-dn${dn}.png`,
+      to: `public/photos/pump-render-dn${dn}-card.webp`,
+      width: 700, // the card's image area is ~344px at its widest, in the 3-column grid
+      options: { quality: 84 },
+    },
+  ]),
   {
     from: 'assets/photos/installation-food-line.jpg',
     to: 'public/photos/installation-food-line.webp',
@@ -55,12 +76,12 @@ const IMAGES = [
     options: { quality: 78 },
   },
   {
-    // Keyed cut-out, like the pump render: quality is spent on the machine
-    // rather than on a ground that is not there.
-    from: 'assets/photos/pump-unit.png',
-    to: 'public/photos/pump-unit.webp',
-    width: 1400, // 899 native, so this never enlarges
-    options: { quality: 86 },
+    // A photograph with its workshop behind it, not a cut-out: it replaced the
+    // keyed CAD render of the same set, which read as a model, not a machine.
+    from: 'assets/photos/pump-set.jpg',
+    to: 'public/photos/pump-set.webp',
+    width: 1400, // 1774 native
+    options: { quality: 80 },
   },
   {
     // Line art. Lossy WebP frays a hairline edge, so this one is given a
@@ -110,24 +131,27 @@ console.log(`${''.padEnd(40)} ${'total'.padStart(7)}  ${kb(before).padStart(8)} 
 /* ------------------------------------------------------------- SOCIAL CARD
    The pages declare twitter:card summary_large_image, and messaging apps ask
    for og:image before showing a link at all, so a site without one unfurls as
-   bare text. Composed here from the pump-set master and the logo. JPEG, not
-   WebP: WhatsApp and several link scrapers still ignore WebP og:images.      */
+   bare text. Composed here from the unbadged pump render and the logo. The
+   set photograph cannot be used: it carries its own background, and pasted
+   onto white it reads as a picture of a picture. JPEG, not WebP: WhatsApp
+   and several link scrapers still ignore WebP og:images.                     */
 {
   const logo = await sharp(await readFile(join(root, 'assets/brand/liquilob-logo.png')))
     .resize({ width: 250 })
     .toBuffer()
-  const unit = await sharp(await readFile(join(root, 'assets/photos/pump-unit.png')))
-    .resize({ width: 820 })
+  const pump = await sharp(await readFile(join(root, 'assets/photos/pump-render.png')))
+    .resize({ height: 470 })
     .toBuffer()
+  const pumpWidth = (await sharp(pump).metadata()).width
 
-  // The logo sits top-left and the machine below it; the machine's top edge
-  // starts under any plausible logo height, so the two can never collide.
+  // The logo sits top-left and the machine bottom-right; the machine's left
+  // edge starts well right of the 250px logo, so the two can never collide.
   const card = await sharp({
     create: { width: 1200, height: 630, channels: 3, background: '#ffffff' },
   })
     .composite([
       { input: logo, left: 56, top: 48 },
-      { input: unit, left: 190, top: 168 },
+      { input: pump, left: 1200 - 56 - pumpWidth, top: 630 - 40 - 470 },
     ])
     .jpeg({ quality: 84, mozjpeg: true })
     .toBuffer()

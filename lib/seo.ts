@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { UNIT_IMAGE } from '@/content/pages'
+import { PRODUCT_IMAGE } from '@/content/pages'
 import { COMPANY } from '@/content/site'
 import { LOCALES, LOCALE_TAG, type Locale } from '@/lib/i18n'
 
@@ -34,14 +34,14 @@ export function pageMetadata({
     'x-default': locale === 'tr' ? path : (alternatePath ?? '/tr'),
   }
 
-  // One card for the whole site: the pump set on white, composed at build time
+  // One card for the whole site: the pump render on white, composed at build time
   // by tools/images.mjs. Declared per page because twitter:card is too — a
   // summary_large_image card with no image unfurls as bare text.
   const socialImage = {
     url: '/photos/og-card.jpg',
     width: 1200,
     height: 630,
-    alt: UNIT_IMAGE.alt[locale],
+    alt: PRODUCT_IMAGE.alt[locale],
   }
 
   return {

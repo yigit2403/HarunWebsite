@@ -128,6 +128,20 @@
   .grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
+/* The model catalogue: five cards, three over two. Not five in a row: even at
+   the full 1320px container a fifth column leaves a card about 230px wide,
+   which breaks "0,5 – 8 m³/h" onto two lines in every specification row.
+   Measured, not guessed — that layout was tried first. */
+.grid--5 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+@media (min-width: 40rem) {
+  .grid--5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 64rem) {
+  .grid--5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 /* Editorial split: copy column plus a wider asset column. */
 .split {
   display: grid;

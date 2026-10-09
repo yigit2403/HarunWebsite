@@ -21,7 +21,7 @@ import { SEGMENTS, href, pageKeyFromSegment, type PageKey } from '@/lib/routes'
 /**
  * Every interior page resolves through here.
  *
- * URL segments are localised, so /tr/urunler/lql-100 and /en/products/lql-100
+ * URL segments are localised, so /tr/urunler/lql-50 and /en/products/lql-50
  * are the same page in two languages rather than two separate route trees. One
  * table in lib/routes.ts drives the resolution, generateStaticParams, the
  * header, the footer, the sitemap and the language switcher.
