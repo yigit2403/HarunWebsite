@@ -118,6 +118,10 @@ export const UI = {
     tr: 'Lütfen zorunlu alanları doldurun.',
     en: 'Please complete the required fields.',
   },
+  formErrorEmail: {
+    tr: 'Lütfen e-posta adresinizi kontrol edin; örneğin ad@firma.com.tr.',
+    en: 'Please check your email address, for example name@company.com.',
+  },
 
   // Empty / pending states
   curvesTitle: { tr: 'Performans eğrileri', en: 'Performance curves' },

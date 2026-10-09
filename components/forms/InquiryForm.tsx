@@ -18,6 +18,28 @@ import type { Locale } from '@/lib/i18n'
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 /**
+ * Why a submission failed. The visitor can fix the first two themselves, so
+ * those say what to fix; only a real delivery failure sends them to the phone.
+ * Before this split every refusal read "could not be sent", which told a
+ * visitor with a mistyped address that the site was broken.
+ */
+type Failure = 'email' | 'fields' | 'delivery'
+
+/** Maps inquiry.php's error codes onto what the visitor is told. */
+function failureFrom(code: unknown): Failure {
+  if (code === 'invalid_email') return 'email'
+  if (code === 'missing_required_fields') return 'fields'
+  return 'delivery'
+}
+
+/**
+ * The browser's own type="email" check accepts a domain with no dot
+ * ("ali@firma"), which inquiry.php's FILTER_VALIDATE_EMAIL rejects. Checking
+ * the same thing here catches the typo before the round trip.
+ */
+const looksDeliverable = (email: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())
+
+/**
  * Technical inquiry form.
  *
  * The fields are the ones an application engineer needs before recommending a
@@ -46,6 +68,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
 const ENDPOINT = process.env.NEXT_PUBLIC_INQUIRY_ENDPOINT || '/inquiry.php'
 export function InquiryForm({ locale }: { locale: Locale }) {
   const [status, setStatus] = useState<Status>('idle')
+  const [failure, setFailure] = useState<Failure>('delivery')
   const [doc, setDoc] = useState<ReturnType<typeof findDocument>>(null)
 
   // Read from the address rather than with useSearchParams: this keeps the
@@ -60,6 +83,13 @@ export function InquiryForm({ locale }: { locale: Locale }) {
     event.preventDefault()
     const form = event.currentTarget
 
+    // Cleared again on input, so a corrected address is accepted without a
+    // second, stale bubble. Empty is left to `required`, which words it better.
+    const email = form.elements.namedItem('email') as HTMLInputElement
+    email.setCustomValidity(
+      email.value.trim() === '' || looksDeliverable(email.value) ? '' : UI.formErrorEmail[locale]
+    )
+
     if (!form.checkValidity()) {
       form.reportValidity()
       return
@@ -73,10 +103,20 @@ export function InquiryForm({ locale }: { locale: Locale }) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ ...payload, locale }),
       })
-      if (!response.ok) throw new Error(String(response.status))
+      if (!response.ok) {
+        // The endpoint answers {"error": "<code>"}; anything unreadable, such as
+        // a host error page, is treated as a delivery failure.
+        const body = await response.json().catch(() => null)
+        setFailure(failureFrom(body?.error))
+        setStatus('error')
+        if (body?.error === 'invalid_email') email.focus()
+        return
+      }
       setStatus('sent')
       form.reset()
     } catch {
+      // No answer at all: offline, blocked, or the host is down.
+      setFailure('delivery')
       setStatus('error')
     }
   }
@@ -167,6 +207,7 @@ export function InquiryForm({ locale }: { locale: Locale }) {
             required
             autoComplete="email"
             spellCheck={false}
+            onInput={(event) => event.currentTarget.setCustomValidity('')}
           />
         </div>
 
@@ -309,16 +350,22 @@ export function InquiryForm({ locale }: { locale: Locale }) {
               aria-hidden="true"
               style={{ flex: 'none', marginTop: 2 }}
             />
-            <span>
-              {UI.formErrorGeneric[locale]}{' '}
-              <a href={COMPANY.phoneHref} style={{ borderBottom: '2px solid var(--red)' }}>
-                {COMPANY.phoneDisplay}
-              </a>
-              {' · '}
-              <a href={COMPANY.emailHref} style={{ borderBottom: '2px solid var(--red)' }}>
-                {COMPANY.email}
-              </a>
-            </span>
+            {failure === 'email' ? (
+              <span>{UI.formErrorEmail[locale]}</span>
+            ) : failure === 'fields' ? (
+              <span>{UI.formErrorValidation[locale]}</span>
+            ) : (
+              <span>
+                {UI.formErrorGeneric[locale]}{' '}
+                <a href={COMPANY.phoneHref} style={{ borderBottom: '2px solid var(--red)' }}>
+                  {COMPANY.phoneDisplay}
+                </a>
+                {' · '}
+                <a href={COMPANY.emailHref} style={{ borderBottom: '2px solid var(--red)' }}>
+                  {COMPANY.email}
+                </a>
+              </span>
+            )}
           </p>
         </div>
       ) : null}
