@@ -6,12 +6,14 @@ import { ApplicationDetailPage } from '@/components/pages/ApplicationDetailPage'
 import { ApplicationsPage } from '@/components/pages/ApplicationsPage'
 import { ContactPage } from '@/components/pages/ContactPage'
 import { EngineeringPage } from '@/components/pages/EngineeringPage'
+import { GearPumpPage } from '@/components/pages/GearPumpPage'
 import { ProductDetailPage } from '@/components/pages/ProductDetailPage'
 import { ProductsPage } from '@/components/pages/ProductsPage'
 import { RotorsPage } from '@/components/pages/RotorsPage'
 import { SupportPage } from '@/components/pages/SupportPage'
 import { APPLICATIONS, applicationBySlug } from '@/content/applications'
 import { NAV_LABEL } from '@/content/dict'
+import { GEAR_PUMP } from '@/content/gear-pump'
 import { ABOUT_PAGE, APPLICATIONS_SECTION, CONTACT_PAGE, ENGINEERING_PAGE, PRODUCTS_SECTION, SUPPORT_PAGE } from '@/content/pages'
 import { ROTOR_INTRO } from '@/content/rotors'
 import { PRODUCTS, productBySlug } from '@/content/products'
@@ -31,6 +33,7 @@ type Resolved =
   | { kind: PageKey }
   | { kind: 'product'; slug: string }
   | { kind: 'application'; slug: string }
+  | { kind: 'gearPump' }
 
 function resolve(locale: Locale, slug: string[]): Resolved | null {
   const [section, detail, ...rest] = slug
@@ -41,6 +44,7 @@ function resolve(locale: Locale, slug: string[]): Resolved | null {
 
   if (!detail) return { kind: key }
   if (key === 'products' && productBySlug(detail)) return { kind: 'product', slug: detail }
+  if (key === 'products' && detail === GEAR_PUMP.slug[locale]) return { kind: 'gearPump' }
   if (key === 'applications' && applicationBySlug(locale, detail)) {
     return { kind: 'application', slug: detail }
   }
@@ -57,6 +61,7 @@ export function generateStaticParams() {
     for (const product of PRODUCTS) {
       params.push({ locale, slug: [SEGMENTS.products[locale], product.slug] })
     }
+    params.push({ locale, slug: [SEGMENTS.products[locale], GEAR_PUMP.slug[locale]] })
     for (const app of APPLICATIONS) {
       params.push({ locale, slug: [SEGMENTS.applications[locale], app.slug[locale]] })
     }
@@ -79,6 +84,13 @@ function seoFor(locale: Locale, resolved: Resolved) {
         alternatePath: href(other, 'products', product.slug),
       }
     }
+    case 'gearPump':
+      return {
+        title: `${GEAR_PUMP.name[locale]} · ${GEAR_PUMP.type[locale]}`,
+        description: GEAR_PUMP.summary[locale],
+        path: href(locale, 'products', GEAR_PUMP.slug[locale]),
+        alternatePath: href(other, 'products', GEAR_PUMP.slug[other]),
+      }
     case 'application': {
       const app = applicationBySlug(locale, resolved.slug)!
       return {
@@ -151,6 +163,8 @@ export default async function InteriorPage({
       return <ProductDetailPage product={productBySlug(resolved.slug)!} locale={locale} />
     case 'application':
       return <ApplicationDetailPage application={applicationBySlug(locale, resolved.slug)!} locale={locale} />
+    case 'gearPump':
+      return <GearPumpPage locale={locale} />
     case 'products':
       return <ProductsPage locale={locale} />
     case 'rotors':

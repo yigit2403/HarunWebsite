@@ -15,6 +15,9 @@ into the web file in the table below; `npm run build` does it for you.
 | Pump set general arrangement | `assets/photos/pump-unit-drawing.png` | `/photos/pump-unit-drawing.webp` | Engineering, beside the philosophy |
 | Installation on a food line | `assets/photos/installation-food-line.jpg` | `/photos/installation-food-line.webp` | Home engineering band |
 | Rotor family | `assets/photos/rotor-family.jpg` | `/photos/rotor-family.webp` | Rotor technologies page |
+| Internal gear pump, side | `assets/photos/gear-pump-side.jpg` | `/photos/gear-pump-side.webp` | Internal gear pump page hero |
+| Internal gear pump set | `assets/photos/gear-pump-set.jpg` | `/photos/gear-pump-set.webp` | Gear pump page, and the teaser on the catalogue and home pages |
+| Internal gear pump, front cover | `assets/photos/gear-pump-front.jpg` | `/photos/gear-pump-front.webp` | Internal gear pump page |
 | Logo artwork | `assets/brand/liquilob-logo.png` | fingerprinted by Next | Header and footer |
 
 The product renders are keyed cut-outs with an alpha channel, roughly 140 kB each at the

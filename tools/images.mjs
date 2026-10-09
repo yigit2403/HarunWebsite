@@ -83,6 +83,14 @@ const IMAGES = [
     width: 1400, // 1774 native
     options: { quality: 80 },
   },
+  // The internal gear pump: finished pictures with their workshop behind
+  // them, like the lobe pump set, so they are framed rather than keyed.
+  ...['gear-pump-side', 'gear-pump-set', 'gear-pump-front'].map((name) => ({
+    from: `assets/photos/${name}.jpg`,
+    to: `public/photos/${name}.webp`,
+    width: 1400, // 1690 native; the widest position is the ~650px page hero
+    options: { quality: 80 },
+  })),
   {
     // Line art. Lossy WebP frays a hairline edge, so this one is given a
     // higher quality than a photograph would need.

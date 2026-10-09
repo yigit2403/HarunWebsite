@@ -3,6 +3,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 
 import { Breadcrumb } from '@/components/site/Breadcrumb'
 import { CtaBand } from '@/components/site/CtaBand'
+import { GearPumpTeaser } from '@/components/ui/GearPumpTeaser'
 import { ProductCard } from '@/components/ui/ProductCard'
 import { SectionHead } from '@/components/ui/SectionHead'
 import { CompareTable } from '@/components/ui/SpecTable'
@@ -73,6 +74,8 @@ export function ProductsPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
+
+      <GearPumpTeaser locale={locale} />
 
       {/* Configurations cut across the range, so they sit below the models
           rather than pretending to be more models. */}

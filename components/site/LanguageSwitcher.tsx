@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 
 import { APPLICATIONS } from '@/content/applications'
 import { UI } from '@/content/dict'
+import { GEAR_PUMP } from '@/content/gear-pump'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n'
 import { INQUIRY_ANCHOR, PAGE_KEYS, SEGMENTS } from '@/lib/routes'
 
@@ -30,7 +31,11 @@ function translatePath(pathname: string, target: Locale): string {
   const translatedSection = SEGMENTS[pageKey][target]
   if (!detail) return `/${target}/${translatedSection}`
 
-  // Model codes are identical in both languages. Application slugs are not.
+  // Model codes are identical in both languages. Application slugs and the
+  // internal gear pump's are not.
+  if (pageKey === 'products' && detail === GEAR_PUMP.slug[current]) {
+    return `/${target}/${translatedSection}/${GEAR_PUMP.slug[target]}`
+  }
   if (pageKey === 'applications') {
     const app = APPLICATIONS.find((a) => a.slug[current] === detail)
     if (!app) return `/${target}/${translatedSection}`

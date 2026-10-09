@@ -9,6 +9,7 @@ import { ApplicationIcon } from '@/components/ui/ApplicationIcon'
 import { BleedBand } from '@/components/ui/BleedBand'
 import { DocList } from '@/components/ui/DocList'
 import { ProductCard } from '@/components/ui/ProductCard'
+import { GearPumpTeaser } from '@/components/ui/GearPumpTeaser'
 import { ProductImage } from '@/components/ui/ProductImage'
 import { SectionHead } from '@/components/ui/SectionHead'
 import { APPLICATIONS } from '@/content/applications'
@@ -147,6 +148,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </section>
+
+      <GearPumpTeaser locale={locale} />
 
       {/* 4. Rotor family. The product's real differentiator, so it earns a
           section rather than a row in a specification table. */}

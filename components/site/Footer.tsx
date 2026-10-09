@@ -5,6 +5,7 @@ import { Brand } from './Brand'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { APPLICATIONS } from '@/content/applications'
 import { NAV_LABEL, UI } from '@/content/dict'
+import { GEAR_PUMP } from '@/content/gear-pump'
 import { PRODUCTS } from '@/content/products'
 import { ADDRESS_LINES, COMPANY } from '@/content/site'
 import type { Locale, Localised } from '@/lib/i18n'
@@ -64,6 +65,9 @@ export function Footer({ locale }: { locale: Locale }) {
                   <Link href={href(locale, 'products', product.slug)}>{product.name}</Link>
                 </li>
               ))}
+              <li>
+                <Link href={href(locale, 'products', GEAR_PUMP.slug[locale])}>{GEAR_PUMP.name[locale]}</Link>
+              </li>
               <li>
                 <Link href={href(locale, 'products')}>{UI.allProducts[locale]}</Link>
               </li>

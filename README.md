@@ -75,6 +75,7 @@ All copy, in both languages, sits in `content/`. Nothing is hardcoded in a compo
 | `content/rotors.ts` | The four rotor geometries |
 | `content/configurations.ts` | Jacketed and PP body variants |
 | `content/applications.ts` | The seven application pages |
+| `content/gear-pump.ts` | The internal gear pump, a second pump type with its own page at `/tr/urunler/ic-disli-pompa` / `/en/products/internal-gear-pump`. It is not in `products.ts`: the lobe-pump spec structure does not describe it, and no figures have been issued for it, so the page states none |
 | `content/inquiry.ts` | The contact form's fields, and how they are labelled in the email |
 
 Editing Turkish and English side by side is the point: every entry is

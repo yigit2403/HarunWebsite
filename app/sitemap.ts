@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { APPLICATIONS } from '@/content/applications'
+import { GEAR_PUMP } from '@/content/gear-pump'
 import { PRODUCTS } from '@/content/products'
 import { COMPANY } from '@/content/site'
 import { LOCALES, type Locale } from '@/lib/i18n'
@@ -33,6 +34,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     })
   }
+  pairs.push({
+    tr: href('tr', 'products', GEAR_PUMP.slug.tr),
+    en: href('en', 'products', GEAR_PUMP.slug.en),
+    priority: 0.9,
+  })
   for (const app of APPLICATIONS) {
     pairs.push({
       tr: href('tr', 'applications', app.slug.tr),
