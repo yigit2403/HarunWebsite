@@ -21,10 +21,15 @@ export const GEAR_PUMP = {
   slug: { tr: 'ic-disli-pompa', en: 'internal-gear-pump' } as Localised,
   name: { tr: 'İç Dişli Pompa', en: 'Internal Gear Pump' } as Localised,
   type: { tr: 'Pozitif deplasmanlı pompa', en: 'Positive displacement pump' } as Localised,
+  /** The browser title: the searched phrase first, then what it is for. */
+  seoTitle: {
+    tr: 'İç Dişli Pompa · Yüksek Viskoziteli Sıvılar İçin',
+    en: 'Internal Gear Pump for Viscous Liquids',
+  } as Localised,
 
   summary: {
-    tr: 'Farklı viskozitelerdeki sıvıların hassas, güvenilir ve kesintisiz transferi için iç dişli pompa.',
-    en: 'An internal gear pump for precise, reliable and continuous transfer of liquids across a wide range of viscosities.',
+    tr: 'Yağ, reçine ve boya gibi düşükten yüksek viskoziteye kadar farklı sıvıların hassas, güvenilir ve kesintisiz transferi için iç dişli pompa.',
+    en: 'An internal gear pump for precise, reliable and continuous transfer of liquids from thin to highly viscous, such as oils, resins and paints.',
   } as Localised,
 
   overview: {
@@ -74,7 +79,7 @@ export const GEAR_PUMP = {
       },
     },
     {
-      term: { tr: 'Yüksek viskozitede etkili transfer', en: 'Effective with viscous liquids' },
+      term: { tr: 'Yüksek viskoziteli akışkanlarda etkili transfer', en: 'Effective with high-viscosity liquids' },
       def: {
         tr: 'Viskozite arttıkça iç kaçak azalır; reçine, yağ ve boya gibi koyu akışkanlar düşük devirde verimli biçimde taşınır.',
         en: 'Internal slip falls as viscosity rises, so thick liquids such as resins, oils and paints are moved efficiently at low speed.',
@@ -102,6 +107,12 @@ export const GEAR_PUMP = {
       },
     },
   ],
+
+  /** Its line in the "suitable pumps" list on those application pages. */
+  asideNote: {
+    tr: 'Yağ, reçine ve boya gibi temiz, viskoz sıvılar',
+    en: 'Clean, viscous liquids such as oils, resins and paints',
+  } as Localised,
 
   /** Keys into content/applications.ts, for the industries that have a page. */
   applications: ['chemical', 'food-beverage', 'pharma-cosmetics', 'industrial-process'],

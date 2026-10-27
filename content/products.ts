@@ -70,6 +70,16 @@ export type Product = {
 
 const TEMP_RANGE = loc('−20 … +130 °C')
 
+/**
+ * What buyers type into a search engine for this machine. The catalogue's own
+ * name for it is 'loblu rotorlu pompa', but 'lob pompa' is the far commoner
+ * search, so page titles and descriptions use this alongside the type.
+ */
+export const SEARCH_NAME: { title: Localised; inline: Localised } = {
+  title: { tr: 'Lob Pompa', en: 'Rotary Lobe Pump' },
+  inline: { tr: 'lob pompa', en: 'rotary lobe pump' },
+}
+
 const ROTOR_OPTIONS: Localised = {
   tr: 'Tek kanatlı, çift kanatlı, üç loblu veya çok pervaneli rotor',
   en: 'Single-wing, bi-wing, tri-lobe or multi-impeller rotor',

@@ -16,7 +16,7 @@ import { NAV_LABEL } from '@/content/dict'
 import { GEAR_PUMP } from '@/content/gear-pump'
 import { ABOUT_PAGE, APPLICATIONS_SECTION, CONTACT_PAGE, ENGINEERING_PAGE, PRODUCTS_SECTION, SUPPORT_PAGE } from '@/content/pages'
 import { ROTOR_INTRO } from '@/content/rotors'
-import { PRODUCTS, productBySlug } from '@/content/products'
+import { PRODUCTS, SEARCH_NAME, productBySlug } from '@/content/products'
 import { LOCALES, isLocale, type Locale } from '@/lib/i18n'
 import { SEGMENTS, href, pageKeyFromSegment, type PageKey } from '@/lib/routes'
 
@@ -77,16 +77,23 @@ function seoFor(locale: Locale, resolved: Resolved) {
   switch (resolved.kind) {
     case 'product': {
       const product = productBySlug(resolved.slug)!
+      // "LQL-50 Lob Pompa · DN 50 · Loblu Rotorlu Pompa": the searched name, the
+      // port size buyers also search by, then the trade name. The trade name is
+      // dropped where it would only repeat the search name, as in English.
+      const name = SEARCH_NAME.title[locale]
+      const type = product.type[locale]
       return {
-        title: `${product.name} · ${product.type[locale]}`,
-        description: `${product.summary[locale]} ${product.keySpecs.map((s) => `${s.label[locale]}: ${s.value[locale]}`).join('. ')}.`,
+        title: [`${product.name} ${name}`, product.specs.connection[locale], type === name ? null : type]
+          .filter(Boolean)
+          .join(' · '),
+        description: `${product.name} ${SEARCH_NAME.inline[locale]}. ${product.summary[locale]} ${product.keySpecs.map((s) => `${s.label[locale]}: ${s.value[locale]}`).join('. ')}.`,
         path: href(locale, 'products', product.slug),
         alternatePath: href(other, 'products', product.slug),
       }
     }
     case 'gearPump':
       return {
-        title: `${GEAR_PUMP.name[locale]} · ${GEAR_PUMP.type[locale]}`,
+        title: GEAR_PUMP.seoTitle[locale],
         description: GEAR_PUMP.summary[locale],
         path: href(locale, 'products', GEAR_PUMP.slug[locale]),
         alternatePath: href(other, 'products', GEAR_PUMP.slug[other]),
@@ -94,8 +101,12 @@ function seoFor(locale: Locale, resolved: Resolved) {
     case 'application': {
       const app = applicationBySlug(locale, resolved.slug)!
       return {
-        title: `${app.name[locale]} · ${NAV_LABEL.applications[locale]}`,
-        description: app.lead[locale],
+        // "Dairy Pumps · Dairy" says the same word twice; drop the name when the
+        // search term already contains it.
+        title: app.pumpTerm[locale].toLocaleLowerCase(locale).includes(app.name[locale].toLocaleLowerCase(locale))
+          ? app.pumpTerm[locale]
+          : `${app.pumpTerm[locale]} · ${app.name[locale]}`,
+        description: `${app.pumpTerm[locale]}: ${app.lead[locale]}`,
         path: href(locale, 'applications', app.slug[locale]),
         alternatePath: href(other, 'applications', app.slug[other]),
       }
@@ -104,11 +115,11 @@ function seoFor(locale: Locale, resolved: Resolved) {
       const key = resolved.kind
       const copy: Record<PageKey, { title: string; description: string }> = {
         products: {
-          title: PRODUCTS_SECTION.title[locale],
+          title: PRODUCTS_SECTION.seoTitle[locale],
           description: PRODUCTS_SECTION.lead[locale],
         },
         rotors: {
-          title: locale === 'tr' ? 'Rotor Teknolojileri' : 'Rotor Technologies',
+          title: locale === 'tr' ? 'Lob Pompa Rotor Tipleri · Rotor Teknolojileri' : 'Lobe Pump Rotor Types · Rotor Technologies',
           description: ROTOR_INTRO[locale],
         },
         applications: {

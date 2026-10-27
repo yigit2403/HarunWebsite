@@ -12,6 +12,12 @@ export type Application = {
   slug: Localised
   icon: IconKey
   name: Localised
+  /**
+   * The pump as a buyer searches for it ('gıda pompası'), shown above the
+   * heading and leading the page title. The name above stays the industry,
+   * because it is also the label in lists, the footer and the inquiry form.
+   */
+  pumpTerm: Localised
   /** One line on the homepage tile. */
   short: Localised
   /** Typical media, shown at the foot of the tile. */
@@ -41,6 +47,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'gida-icecek', en: 'food-beverage' },
     icon: 'food',
     name: { tr: 'Gıda ve İçecek', en: 'Food & Beverage' },
+    pumpTerm: { tr: 'Gıda Pompası', en: 'Food Pumps' },
     short: {
       tr: 'Parçacıklı ve viskoz ürünlerin yapısını bozmadan transferi.',
       en: 'Transfer of particulate and viscous products without breaking their structure.',
@@ -116,6 +123,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'sut-urunleri', en: 'dairy' },
     icon: 'dairy',
     name: { tr: 'Süt ve Süt Ürünleri', en: 'Dairy' },
+    pumpTerm: { tr: 'Süt Pompası', en: 'Dairy Pumps' },
     short: {
       tr: 'CIP ve SIP rejimlerine uygun hijyenik transfer ve dozajlama.',
       en: 'Hygienic transfer and dosing built around CIP and SIP regimes.',
@@ -191,6 +199,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'cikolata', en: 'chocolate' },
     icon: 'chocolate',
     name: { tr: 'Çikolata ve Kremamsı Ürünler', en: 'Chocolate & Confectionery' },
+    pumpTerm: { tr: 'Çikolata Pompası', en: 'Chocolate Pumps' },
     short: {
       tr: 'Ceketli gövde ile sıcaklık kontrollü, düşük kesmeli transfer.',
       en: 'Temperature-controlled, low-shear transfer with a jacketed body.',
@@ -266,6 +275,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'kimya', en: 'chemical' },
     icon: 'chemical',
     name: { tr: 'Kimya', en: 'Chemical' },
+    pumpTerm: { tr: 'Kimyasal Transfer Pompası', en: 'Chemical Transfer Pumps' },
     short: {
       tr: 'Agresif ve yüksek viskoziteli akışkanlarda malzeme uyumlu transfer.',
       en: 'Material-compatible transfer of aggressive and high-viscosity media.',
@@ -341,6 +351,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'ilac-kozmetik', en: 'pharmaceutical-cosmetics' },
     icon: 'pharma',
     name: { tr: 'İlaç ve Kozmetik', en: 'Pharmaceutical & Cosmetics' },
+    pumpTerm: { tr: 'Kozmetik ve İlaç Pompası', en: 'Cosmetic and Pharmaceutical Pumps' },
     short: {
       tr: 'Emülsiyon yapısını koruyan, doğrulanabilir temizlik rejimine uygun transfer.',
       en: 'Transfer that protects emulsion structure and suits a verifiable cleaning regime.',
@@ -416,6 +427,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'atiksu-cevre', en: 'wastewater-environment' },
     icon: 'wastewater',
     name: { tr: 'Atıksu ve Çevre', en: 'Wastewater & Environment' },
+    pumpTerm: { tr: 'Çamur Pompası', en: 'Sludge Pumps' },
     short: {
       tr: 'Katı madde ve abrazif içerikli çamurlarda kesintisiz çalışma.',
       en: 'Uninterrupted operation on sludge carrying solids and abrasives.',
@@ -490,6 +502,7 @@ export const APPLICATIONS: Application[] = [
     slug: { tr: 'endustriyel-proses', en: 'industrial-process' },
     icon: 'industrial',
     name: { tr: 'Endüstriyel Proses', en: 'Industrial Process' },
+    pumpTerm: { tr: 'Yüksek Viskoziteli Pompa', en: 'High-Viscosity Pumps' },
     short: {
       tr: 'Yağ, gres ve dolgu malzemelerinde yüksek viskoziteli transfer.',
       en: 'High-viscosity transfer of oils, greases and filler compounds.',

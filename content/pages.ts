@@ -14,8 +14,8 @@ export const HERO = {
     en: ['Precise flow.', 'Reliable performance.'],
   } as Localised<string[]>,
   lead: {
-    tr: 'Endüstriyel uygulamalar için yüksek verimli, dayanıklı ve hassas loblu pompa çözümleri.',
-    en: 'High-efficiency, durable rotary lobe pumps engineered for demanding industrial duties.',
+    tr: 'Gıda, süt, kimya ve proses hatları için lob pompa (loblu rotorlu pompa), yüksek viskoziteli sıvılar için iç dişli pompa. LQL serisi Konya’da üretilir.',
+    en: 'Rotary lobe pumps for food, dairy, chemical and process lines, and internal gear pumps for viscous liquids. The LQL series is manufactured in Konya.',
   } as Localised,
   // Names what is in the hero figure. The caption changed with the figure: the
   // hero now carries the complete set rather than the bare pump, and the
@@ -62,10 +62,19 @@ export const PRODUCTS_SECTION = {
   // lowercase i to a dotted capital, which would print the brand as LIQUILOB
   // with a dot. Turkish words below the brand still transform correctly.
   kicker: { tr: 'LIQUILOB ürün ailesi', en: 'LIQUILOB product family' } as Localised,
-  title: { tr: 'LQL Serisi loblu rotorlu pompalar', en: 'LQL Series rotary lobe pumps' } as Localised,
+  title: { tr: 'LQL Serisi lob pompalar', en: 'LQL Series rotary lobe pumps' } as Localised,
+  /**
+   * The browser title, which carries more weight in search than the heading.
+   * Buyers search 'lob pompa' far more than the trade term 'loblu rotorlu
+   * pompa', so the title names both; the heading stays short enough to set.
+   */
+  seoTitle: {
+    tr: 'Lob Pompa · LQL Serisi Loblu Rotorlu Pompalar',
+    en: 'Rotary Lobe Pumps · LQL Series, DN 25 to DN 65',
+  } as Localised,
   lead: {
-    tr: 'Beş gövde boyu, ortak bir hidrolik tasarım ve akışkana göre seçilen rotor, salmastra ve malzeme konfigürasyonu.',
-    en: 'Five frame sizes on one hydraulic design, with rotor, seal and material configuration selected for the medium.',
+    tr: 'Lob pompa, lobe pompa ya da loblu rotorlu pompa: aynı makinenin üç adı. Beş gövde boyu (DN 25 – DN 65), ortak bir hidrolik tasarım ve akışkana göre seçilen rotor, salmastra ve malzeme konfigürasyonu.',
+    en: 'Rotary lobe pumps in five frame sizes, DN 25 to DN 65, on one hydraulic design, with rotor, seal and material configuration selected for the medium.',
   } as Localised,
 }
 

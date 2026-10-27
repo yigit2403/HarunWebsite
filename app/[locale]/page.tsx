@@ -41,14 +41,14 @@ const ROTORS_TITLE = {
 
 const META = {
   tr: {
-    title: 'Liquilob Loblu Rotorlu Pompalar · Profimann Makine',
+    title: 'Lob Pompa ve İç Dişli Pompa · Liquilob – Profimann, Konya',
     description:
-      'Gıda, süt, kimya, ilaç ve atıksu uygulamaları için Liquilob loblu rotorlu pompalar. Konya üretimi, uluslararası mühendislik pratiği. LQL serisi DN 25 – DN 65.',
+      'Lob pompa (loblu rotorlu pompa) ve iç dişli pompa: gıda, süt, çikolata, kimya, kozmetik, atıksu ve yüksek viskoziteli sıvılar için. Konya üretimi LQL serisi, DN 25 – DN 65.',
   },
   en: {
-    title: 'Liquilob Rotary Lobe Pumps · Profimann Makine',
+    title: 'Rotary Lobe Pumps and Internal Gear Pumps · Liquilob – Profimann',
     description:
-      'Liquilob rotary lobe pumps for food, dairy, chemical, pharmaceutical and wastewater duties. Manufactured in Konya to international engineering practice. LQL series, DN 25 to DN 65.',
+      'Rotary lobe pumps and internal gear pumps for food, dairy, chocolate, chemical, cosmetics, wastewater and high-viscosity duties. LQL series DN 25 to DN 65, manufactured in Konya, Turkey.',
   },
 } as const
 

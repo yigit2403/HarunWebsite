@@ -8,6 +8,7 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { PhotoSlot } from '@/components/ui/PhotoSlot'
 import type { Application } from '@/content/applications'
 import { NAV_LABEL, UI } from '@/content/dict'
+import { GEAR_PUMP } from '@/content/gear-pump'
 import { HOME_CTA, PHOTOS } from '@/content/pages'
 import { productBySlug } from '@/content/products'
 import type { Locale } from '@/lib/i18n'
@@ -20,7 +21,7 @@ const HEADINGS = {
   challenges: { tr: 'Karşılaşılan zorluklar', en: 'Where it gets difficult' },
   approach: { tr: 'Liquilob yaklaşımı', en: 'The Liquilob approach' },
   materials: { tr: 'Malzeme ve hijyen', en: 'Materials and hygiene' },
-  models: { tr: 'Uygun gövde boyları', en: 'Suitable frame sizes' },
+  models: { tr: 'Uygun pompalar', en: 'Suitable pumps' },
 } as const
 
 export function ApplicationDetailPage({
@@ -50,9 +51,13 @@ export function ApplicationDetailPage({
             name={application.icon}
             className="industry-tile__icon"
           />
-          <h1 className="masthead__title" style={{ marginTop: 'var(--s5)' }}>
-            {application.name[locale]}
-          </h1>
+          {/* The pump as it is searched for, above the industry name. Visible
+              text, not only a title tag: search engines weigh what the page
+              shows, and a buyer who typed "gıda pompası" sees it answered. */}
+          <span className="kicker" style={{ marginTop: 'var(--s5)' }}>
+            {application.pumpTerm[locale]}
+          </span>
+          <h1 className="masthead__title">{application.name[locale]}</h1>
           <p className="masthead__lead">{application.lead[locale]}</p>
         </div>
       </section>
@@ -125,6 +130,15 @@ export function ApplicationDetailPage({
                   </Link>
                 )
               })}
+              {/* The second pump type, on the industries Profimann lists it
+                  for. Without this the gear pump is linked from no page that
+                  a search for the industry lands on. */}
+              {GEAR_PUMP.applications.includes(application.key) ? (
+                <Link className="app-model" href={href(locale, 'products', GEAR_PUMP.slug[locale])}>
+                  <span className="app-model__name">{GEAR_PUMP.name[locale]}</span>
+                  <span className="app-model__note">{GEAR_PUMP.asideNote[locale]}</span>
+                </Link>
+              ) : null}
             </div>
             <Link className="link-arrow" href={href(locale, 'products')}>
               {UI.allProducts[locale]}
