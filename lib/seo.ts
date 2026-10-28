@@ -83,28 +83,15 @@ export function organizationJsonLd(locale: Locale) {
   }
 }
 
-export function productJsonLd({
-  name,
-  description,
-  category,
-  url,
-}: {
-  name: string
-  description: string
-  category: string
-  url: string
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name,
-    description,
-    category,
-    url: `${COMPANY.origin}${url}`,
-    brand: { '@type': 'Brand', name: COMPANY.brand },
-    manufacturer: { '@type': 'Organization', name: COMPANY.legalName },
-  }
-}
+/*
+ * There is deliberately no Product markup. Google treats a Product without
+ * "offers", "review" or "aggregateRating" as a critical error in Search
+ * Console, and Profimann has none to give: pumps are sold by quotation, with
+ * no list price, and there are no reviews. Inventing either breaks Google's
+ * structured data policy and this site's rule against unstated claims, and
+ * the markup earns nothing without them. Restore it only with a real price
+ * or real reviews.
+ */
 
 export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
   return {
@@ -114,7 +101,10 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `${COMPANY.origin}${item.url}`,
+      // trailingSlash is on, so /tr/urunler redirects and /tr/urunler/ is the
+      // page. Name the address that answers 200, as the sitemap and the
+      // canonical tag do, rather than one that redirects to it.
+      item: `${COMPANY.origin}${item.url.replace(/\/$/, '')}/`,
     })),
   }
 }

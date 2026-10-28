@@ -16,7 +16,7 @@ import { DOCUMENTS, HOME_CTA, productImageFor } from '@/content/pages'
 import { PRODUCTS, type Product } from '@/content/products'
 import type { Locale } from '@/lib/i18n'
 import { href, inquiryHref } from '@/lib/routes'
-import { breadcrumbJsonLd, productJsonLd } from '@/lib/seo'
+import { breadcrumbJsonLd } from '@/lib/seo'
 
 const ANCHORS = ['overview', 'advantages', 'applications', 'technical', 'configuration', 'documents'] as const
 
@@ -223,14 +223,6 @@ export function ProductDetailPage({ product, locale }: { product: Product; local
 
       <CtaBand locale={locale} title={HOME_CTA.title[locale]} body={HOME_CTA.body[locale]} />
 
-      <JsonLd
-        data={productJsonLd({
-          name: `${product.series} ${product.name}`,
-          description: product.summary[locale],
-          category: product.type[locale],
-          url,
-        })}
-      />
       <JsonLd
         data={breadcrumbJsonLd([
           { name: UI.home[locale], url: href(locale) },

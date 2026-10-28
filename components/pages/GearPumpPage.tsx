@@ -13,7 +13,7 @@ import { HOME_CTA } from '@/content/pages'
 import { COMPANY } from '@/content/site'
 import type { Locale } from '@/lib/i18n'
 import { href, inquiryHref } from '@/lib/routes'
-import { breadcrumbJsonLd, productJsonLd } from '@/lib/seo'
+import { breadcrumbJsonLd } from '@/lib/seo'
 
 /**
  * The internal gear pump. Laid out like an LQL model page so the two pump
@@ -158,14 +158,6 @@ export function GearPumpPage({ locale }: { locale: Locale }) {
 
       <CtaBand locale={locale} title={HOME_CTA.title[locale]} body={HOME_CTA.body[locale]} />
 
-      <JsonLd
-        data={productJsonLd({
-          name: `${COMPANY.brand} ${GEAR_PUMP.name[locale]}`,
-          description: GEAR_PUMP.summary[locale],
-          category: GEAR_PUMP.type[locale],
-          url,
-        })}
-      />
       <JsonLd
         data={breadcrumbJsonLd([
           { name: UI.home[locale], url: href(locale) },
